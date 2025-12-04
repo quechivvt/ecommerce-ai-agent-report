@@ -3,7 +3,12 @@
 %\usepackage[english,vietnam]{babel}
 %\usepackage[utf8]{inputenc}
 \usepackage{mathptmx}[ptm]
-%\usepackage[utf8]{inputenc}
+
+%--------references--------------
+\usepackage[utf8]{inputenc}
+\usepackage[style=numeric, backend=biber]{biblatex}
+\addbibresource{references/references.bib}
+%--------------------------------
 %\usepackage[francais]{babel}
 \usepackage{a4wide,amssymb,epsfig,latexsym,array,hhline,fancyhdr}
 \usepackage[normalem]{ulem}
@@ -35,6 +40,7 @@
 \usepackage{epsfig}
 \usepackage{tikz}
 \usepackage{titlesec}
+\usepackage{enumitem}
 
 \usetikzlibrary{arrows,snakes,backgrounds,calc}
 \usepackage[unicode]{hyperref}
@@ -270,7 +276,7 @@ morekeywords={}
 \end{titlepage}
 \newpage
 %%%%%%%%%%%%%%%%%INTRO SET UP%%%%%%%%%%%%%%%%%%%
-\fontsize{13pt}{15.6pt}\selectfont
+\fontsize{12pt}{14.2pt}\selectfont
 \setlength{\parskip}{1.5ex}
 
 \titleformat{\section}[block]
@@ -293,6 +299,7 @@ morekeywords={}
   {1em}
   {}
 \titlespacing*{\subsubsection}{0pt}{0.3em}{0.1em}
+\setlist[itemize,1]{label=-}
 %%%%%%%%%%%%%%%%%INTRO%%%%%%%%%%%%%%%%%%%
 \input{intro/loi_cam_on}
 \input{intro/loi_cam_doan}
@@ -316,17 +323,17 @@ morekeywords={}
   {1em}
   {}
 \setcounter{page}{1}
-%\input{contents/chap1}
+\input{contents/chap1}
 \clearpage
-\input{contents/chap2}
+%\input{contents/chap2}
 \clearpage
-%\input{contents/chap3}
+\input{contents/chap3}
 \clearpage
-%\input{contents/chap4}
+\input{contents/chap4}
 \clearpage
 %\input{contents/chap5}
 \clearpage
-%\input{contents/chap6}
+\input{contents/chap6}
 \clearpage
 %%%%%%%%%%%%%%%%%OUTRO%%%%%%%%%%%%%%%%%%%
 \input{outro/tai_lieu_tham_khao}
