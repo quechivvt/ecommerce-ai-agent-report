@@ -1,0 +1,46 @@
+ \subsection{Yêu cầu phi chức năng}
+
+\subsubsection{Đối với khách hàng}
+
+\begin{itemize}
+
+\item \textbf{[NFR1] Hiệu năng của phản hồi chung} \quad (\textit{Ưu tiên: Cao})\\
+    Thời gian phản hồi của hệ thống (cho các tác vụ không liên quan đến trợ lý ảo) không vượt quá 3 giây trong điều kiện tải bình thường.
+
+\item \textbf{[NFR2] Hiệu năng trợ lý ảo} \quad (\textit{Ưu tiên: Cao})\\
+    Thời gian phản hồi của trợ lý ảo khi trả lời câu hỏi hoặc gợi ý sản phẩm không vượt quá 5 giây.
+
+\item \textbf{[NFR3] Đơn giản hóa giao diện} \quad (\textit{Ưu tiên: Cao})\\
+    Giao diện người dùng phải thân thiện, cho phép khách hàng hoàn thành thao tác đặt hàng cơ bản trong tối đa 5 bước.
+
+\item \textbf{[NFR4] Khả năng dẫn dắt khách hàng} \quad (\textit{Ưu tiên: Trung bình})\\
+    Trợ lý ảo có khả năng hướng dẫn khách hàng mới sử dụng hệ thống thành thạo trong tối đa 3 lần tương tác.
+
+\item \textbf{[NFR5] Dễ dàng học cách dùng} \quad (\textit{Ưu tiên: Cao})\\
+    Người dùng có thể học cách sử dụng các chức năng chính như tìm kiếm, so sánh, giỏ hàng, thanh toán chỉ sau 2 lần thử nghiệm thực tế.
+
+\item \textbf{[NFR6] Chất lượng giao tiếp của trợ lý ảo} \quad (\textit{Ưu tiên: Cao})\\
+    Trợ lý ảo cần sử dụng ngôn ngữ tự nhiên dễ hiểu, tránh thuật ngữ kỹ thuật, đảm bảo 80\% câu trả lời ở mức chấp nhận được theo đánh giá từ nhóm thử nghiệm nội bộ.
+
+\end{itemize}
+
+\subsubsection{Đối với quản trị viên và nhóm kỹ thuật}
+
+\begin{itemize}
+    \item \textbf{[NFR7] Độ ổn định dịch vụ} \quad (\textit{Ưu tiên: Trung bình})\\
+    Hệ thống cần duy trì hoạt động ổn định; tỷ lệ gián đoạn dịch vụ (downtime) không được vượt quá 1\% tổng thời gian hoạt động trong suốt giai đoạn thử nghiệm/demo.
+
+\item \textbf{[NFR8] Bảo mật dữ liệu người dùng} \quad (\textit{Ưu tiên: Cao})\\
+    Hệ thống phải bảo vệ thông tin cá nhân của người dùng bằng cách mã hóa dữ liệu nhạy cảm và tuyệt đối không lưu trữ mật khẩu dưới dạng văn bản rõ ràng.
+
+\item \textbf{[NFR9] Khả năng mở rộng} \quad (\textit{Ưu tiên: Trung bình})\\
+    Thiết kế hệ thống phải linh hoạt, cho phép tích hợp thêm các tính năng mới như phương thức thanh toán hoặc dịch vụ giao hàng mà không cần thay đổi kiến trúc tổng thể của ứng dụng.
+
+\item \textbf{[NFR10] Hiệu suất báo cáo admin} \quad (\textit{Ưu tiên: Thấp})\\
+    Giao diện quản trị phải hiển thị các báo cáo tổng hợp (ví dụ: 1000 đơn hàng) trong vòng 5 giây để đảm bảo hiệu quả cho việc thử nghiệm và đánh giá hệ thống.
+
+\item \textbf{[NFR11] Tính toàn vẹn} \quad (\textit{Ưu tiên: Cao})\\
+    Hệ thống phải đảm bảo cơ chế đồng bộ hóa dữ liệu khi xử lý đặt hàng để ngăn chặn tình trạng số lượng sản phẩm bị âm. Cần có biện pháp kiểm soát tính nhất quán giữa dữ liệu cache và cơ sở dữ liệu gốc (nếu có).
+
+\end{itemize}
+

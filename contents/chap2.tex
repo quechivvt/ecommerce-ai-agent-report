@@ -1,0 +1,62 @@
+\section{Phân tích yêu cầu}
+
+%Section 2.1 (old): Problem description
+%Nội dung chương này hoàn toàn được bao hàm bên trong lý do chọn đề tài cũng như mục tiêu đề tài. Nên QC lược bớt.
+
+%Section 2.1 (new): Stakeholders and their benefit
+%Dời chương 2.3 lên này
+\input{contents/chap2/1_stakeholder}
+
+%Section 2.2
+\subsection{Khảo sát thị trường}
+Trong giai đoạn đầu của quá trình phát triển đề tài, nhóm tiến hành khảo sát thực tế các nền tảng thương mại điện tử phổ biến tại Việt Nam trong lĩnh vực bán lẻ điện thoại và thiết bị công nghệ như: CellphoneS, FPT Shop và Thế Giới Di Động. Mục tiêu của quá trình khảo sát là đánh giá chức năng cốt lõi, trải nghiệm người dùng (UI/UX), và đặc biệt là khả năng hỗ trợ khách hàng thông qua chatbot hoặc trợ lý ảo của các hệ thống hiện có.
+
+Kết quả khảo sát cho thấy các nền tảng này đều đã xây dựng hệ thống thương mại điện tử hiện đại, có giao diện trực quan, quy trình mua hàng rõ ràng và khả năng tra cứu sản phẩm nhanh chóng. Người dùng có thể dễ dàng xem thông tin chi tiết, so sánh giá, đặt hàng và thanh toán trực tuyến. Tuy nhiên, khi đi sâu vào khả năng hỗ trợ thông minh, nhóm nhận thấy rằng đa số các hệ thống hiện nay vẫn hoạt động dựa trên cơ chế tương tác truyền thống, chủ yếu yêu cầu người dùng thao tác thủ công để thực hiện tìm kiếm hoặc truy vấn thông tin.
+
+Một số nền tảng như CellphoneS và Thế Giới Di Động đã tích hợp chatbot hỗ trợ khách hàng, tuy nhiên các chatbot này chỉ dừng lại ở mức trả lời câu hỏi hoặc hướng dẫn cơ bản, chẳng hạn như cung cấp thông tin khuyến mãi, tra cứu đơn hàng qua mã đơn, hoặc tư vấn sản phẩm theo từ khóa có sẵn. Các chatbot chưa thể hiểu được ngữ cảnh người dùng, không có khả năng ghi nhớ trạng thái hội thoại, và chưa thực hiện được các hành động trực tiếp trên hệ thống như đặt hàng, thêm sản phẩm vào giỏ, hoặc hủy đơn.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/khao_sat_thi_truong/tgdd-good.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/khao_sat_thi_truong/tgdd-bad.png}
+\end{minipage}
+\vspace{0.5cm}
+\caption{Trợ lý ảo của Thế Giới Di Động}
+\end{figure}
+
+Đối với FPT Shop, hệ thống hỗ trợ khách hàng chủ yếu được triển khai dưới dạng cửa sổ trò chuyện với nhân viên tư vấn trực tuyến cho các tác vụ tương tác sâu như kiểm tra thông tin giỏ hàng và các đơn hàng đã đặt, thay vì chatbot tự động. Cách tiếp cận này giúp tăng tính chính xác trong phản hồi, song không đảm bảo khả năng phản hồi nhanh và tự động hóa quy trình chăm sóc khách hàng khi lưu lượng truy cập tăng cao.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/khao_sat_thi_truong/fpt-good.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/khao_sat_thi_truong/fpt-bad.png}
+\end{minipage}
+\vspace{0.5cm}
+\caption{Trợ lý ảo của FPT Shop}
+\end{figure}
+
+Qua kết quả khảo sát, nhóm nhận thấy rằng mặc dù các doanh nghiệp trong ngành đã có bước tiến lớn trong việc số hóa hoạt động bán lẻ, chưa có nền tảng nào tại Việt Nam tích hợp Trợ lý Ảo thông minh có khả năng giao tiếp tự nhiên và thực hiện hành động thực tế trên hệ thống. Khoảng trống này mở ra cơ hội để nhóm nghiên cứu và phát triển một mô hình thương mại điện tử tích hợp Trợ lý Ảo AI Agent, hướng đến việc nâng cao trải nghiệm người dùng, tự động hóa quy trình giao dịch, và tăng tính cá nhân hóa trong tương tác mua sắm.
+
+%Section 2.3: Fuctional requirement
+\input{contents/chap2/3_functional_requirements}
+%Section 2.4: Non-Fuctional requirement
+\input{contents/chap2/4_non-functional_requirements}
+
+%Section 2.5: Use case diagram and format table
+\input{contents/chap2/5_use_case}
+
+%Section 2.6, 2.7: @TranNguyeAnhKhoa viết tiếp nhó
+\input{contents/chap2/6_activity_diagram}
+\input{contents/chap2/7_sequence_diagram}

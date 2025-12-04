@@ -1,0 +1,56 @@
+\subsection{Frontend Development}
+
+Để đảm bảo hiệu năng, khả năng mở rộng và tối ưu hoá SEO cho hệ thống thương mại điện tử, phía Client (Frontend) được thiết kế dựa trên các thực hành tốt nhất hiện nay trong hệ sinh thái React. Mục tiêu kỹ thuật là: rút nhỏ lượng JavaScript gửi tới client, tối ưu First Contentful Paint (FCP) và giảm độ phức tạp vận hành khi quy mô hệ thống tăng.
+
+\subsubsection{Ngôn ngữ và Nền tảng (Language \& Core Framework)}
+\begin{itemize}
+  \item \textbf{TypeScript:} Sử dụng TypeScript để cung cấp định kiểu tĩnh (static typing), giúp phát hiện lỗi sớm ở thời điểm biên dịch, tăng độ an toàn của giao diện API giữa Backend và Frontend, đồng thời cải thiện trải nghiệm IDE (autocomplete, refactor an toàn). TypeScript đặc biệt hữu ích trong các codebase quy mô lớn, nơi sai lệch kiểu dữ liệu có thể dẫn tới lỗi thời runtime khó dò. 
+  \item \textbf{Next.js (App Router) \& React Server Components (RSC):} Lựa chọn Next.js với App Router để tận dụng khả năng Server-Side Rendering (SSR), Static Site Generation (SSG) và mô hình Server Components. Kết hợp RSC giúp giảm JavaScript client-side bằng cách render các phần không cần tương tác trên server, từ đó cải thiện FCP và tốc độ tải trang đầu tiên — lợi ích quan trọng cho trang sản phẩm thương mại điện tử và SEO.
+\end{itemize}
+
+\subsubsection{Giao diện và Trải nghiệm người dùng (UI \& UX)}
+\begin{itemize}
+  \item \textbf{Tailwind CSS:} Áp dụng utility-first để giảm CSS không dùng tới, tăng tốc độ phát triển, thuận tiện khi tuỳ biến theme và giảm xung đột tên lớp so với các cách đặt tên truyền thống.
+  \item \textbf{shadcn/ui \& Radix Primitives:} Dùng các component headless (có thể sao chép và tuỳ biến trực tiếp) để toàn quyền kiểm soát markup, style và tối ưu accessibility mà không bị ràng buộc bởi styles/behaviour “mặc định” của thư viện lớn.
+\end{itemize}
+
+\subsubsection{Quản lý trạng thái và Dữ liệu (State Management \& Data Fetching)}
+\begin{itemize}
+  \item \textbf{Server state — TanStack Query:} Giải quyết việc fetch và cache dữ liệu phía server, hỗ trợ cache, deduplication (tránh gọi API trùng lặp), background refetch và stale-while-revalidate patterns để UX mượt mà khi người dùng duyệt sản phẩm.
+  \item \textbf{Client state — Zustand:} Chọn Zustand cho các trạng thái application-level nhẹ (ví dụ: giỏ hàng, theme, modal), vì API hook-based đơn giản, footprint nhỏ và ít boilerplate so với Redux, phù hợp với yêu cầu hiệu năng và tốc độ phát triển.
+\end{itemize}
+
+\subsubsection{Form \& Validation}
+\begin{itemize}
+  \item \textbf{React Hook Form:} Giảm re-render không cần thiết khi nhập liệu, phù hợp cho các form phức tạp (checkout, user profile).
+  \item \textbf{Zod:} Khai báo schema validation mạnh mẽ, dễ đồng bộ với TypeScript để đảm bảo dữ liệu client/backend cùng kiểu và giảm lỗi logic.
+\end{itemize}
+
+\subsubsection{Kiến trúc, Build và DevOps}
+\begin{itemize}
+  \item \textbf{Monorepo (Turborepo + pnpm):} Quản lý front/back/shared packages trong một repo để tái sử dụng code, đồng bộ phiên bản và giảm chi phí bảo trì.
+  \item \textbf{Build tool — Turbopack:} Sử dụng Turbopack (Rust-based) để có tốc độ build/dev server nhanh hơn so với toolchain JavaScript truyền thống; điều này rút ngắn thời gian phản hồi của dev-server ở các dự án lớn.
+  \item \textbf{CI/CD \& Hosting:} GitHub Actions cho pipeline kiểm thử (unit/E2E với Vitest/Playwright) và triển khai tự động lên Vercel — nền tảng tối ưu hóa cho Next.js với các tính năng phục vụ SSR/Edge functions.
+\end{itemize}
+
+\subsubsection{Tóm tắt công nghệ}
+\begin{table}[H]
+\centering
+\caption{Tổng hợp các công nghệ sử dụng tại Frontend}
+\label{tab:frontend_tech}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Ghi chú/Vai trò} \\ \hline
+Ngôn ngữ & TypeScript & Định kiểu tĩnh, an toàn dữ liệu \\ \hline
+Framework & Next.js (App Router) & SSR, SSG, React Server Components \\ \hline
+Build Tool & Turbopack & Bundler dev nhanh, Rust-based \\ \hline
+Styling & Tailwind CSS & Utility-first, nhanh khi phát triển \\ \hline
+UI Library & shadcn/ui + Radix & Headless, dễ tuỳ biến và accessible \\ \hline
+Form Handling & React Hook Form & Hiệu năng form (giảm re-render) \\ \hline
+Validation & Zod & Schema-first validation, Type-safe \\ \hline
+Server State & TanStack Query & Cache, dedupe, background updates \\ \hline
+Client State & Zustand & Lightweight global state \\ \hline
+Testing & Vitest, Playwright & Unit + E2E \\ \hline
+Deployment & Vercel & Hosting + SSR/Edge optimizations \\ \hline
+\end{tabular}
+\end{table}
