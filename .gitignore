@@ -1,0 +1,12 @@
+main.log
+main.lof
+*.aux
+main.bbl
+main.bcf
+main.blg
+main.lot
+main.out
+main.pdf
+main.run.xml
+main.toc
+report.pdf
