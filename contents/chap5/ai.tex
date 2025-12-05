@@ -1,0 +1,57 @@
+\subsection{AI Agent}
+\subsubsection{LangGraph}
+LangGraph là framework chuyên dụng để xây dựng AI Agent có khả năng lập luận theo từng bước (\textit{step-by-step reasoning}), duy trì trạng thái (stateful) và phối hợp nhiều công cụ (tools) theo luồng xử lý dạng đồ thị. LangGraph mở rộng mô hình ngôn ngữ lớn (LLM) bằng cách cho phép quản lý logic xử lý rõ ràng và có thể kiểm soát được.
+
+\textbf{Vai trò trong hệ thống}
+\begin{itemize}
+    \item Tạo AI Agent có khả năng phân tích yêu cầu của khách hàng.
+    \item Điều phối quá trình reasoning: nhận câu hỏi → xác định nhu cầu → quyết định công cụ cần dùng → thực thi → tổng hợp kết quả.
+    \item Kết nối với Milvus và Neo4j thông qua các tool tùy chỉnh.
+    \item Đảm bảo hệ thống AI hoạt động ổn định, minh bạch và có thể debug.
+\end{itemize}
+
+\textbf{Lý do lựa chọn}
+\begin{itemize}
+    \item Hỗ trợ thiết kế workflow linh hoạt và dễ mở rộng.
+    \item Tích hợp tốt với các mô hình LLM hiện đại.
+    \item Tích hợp tốt với nhiều công cụ và cơ sở dữ liệu.
+    \item Tối ưu cho bài toán AI Agent phức tạp thay vì chỉ chat đơn thuần.
+\end{itemize}
+
+
+
+\subsubsection{Milvus}
+Milvus là cơ sở dữ liệu vector hiệu năng cao, được thiết kế để lưu trữ và truy vấn các embedding từ dữ liệu phi cấu trúc. Milvus hỗ trợ các thuật toán indexing như IVF, HNSW giúp tìm kiếm tương đồng nhanh chóng và chính xác.
+
+\textbf{Vai trò trong hệ thống}
+\begin{itemize}
+    \item Lưu trữ vector của tài liệu phi cấu trúc như mô tả sản phẩm, FAQ, chính sách, hướng dẫn sử dụng.
+    \item Hỗ trợ AI Agent thực hiện RAG để lấy đúng thông tin liên quan từ kho dữ liệu.
+    \item Giảm hiện tượng hallucination của LLM bằng việc cung cấp dữ liệu tham chiếu tin cậy.
+\end{itemize}
+
+\textbf{Lý do lựa chọn}
+\begin{itemize}
+    \item Tốc độ tìm kiếm nhanh, ổn định ngay cả khi dữ liệu lớn.
+    \item Hỗ trợ mở rộng theo chiều ngang dễ dàng.
+    \item Tích hợp trực tiếp với hệ sinh thái AI như LangChain, LangGraph, HuggingFace.
+\end{itemize}
+
+
+
+\subsubsection{Neo4j}
+Neo4j là hệ quản trị cơ sở dữ liệu đồ thị hàng đầu, được tối ưu cho việc lưu trữ và truy vấn dữ liệu có nhiều mối quan hệ phức tạp. Dữ liệu được tổ chức thành node (thực thể) và relationship (quan hệ), và được truy vấn bằng ngôn ngữ Cypher.
+
+\textbf{Vai trò trong hệ thống}
+\begin{itemize}
+    \item Hỗ trợ AI Reasoning nhờ khả năng truy vấn theo quan hệ.
+    \item Hỗ trợ Recommendation System bằng cách tìm sản phẩm liên quan, tương đồng hoặc bổ trợ.
+    \item Cung cấp nền tảng tri thức có cấu trúc giúp AI đưa ra kết luận chính xác hơn.
+\end{itemize}
+
+\textbf{Lý do lựa chọn}
+\begin{itemize}
+    \item Hiệu quả cao trong các bài toán quan hệ mà SQL khó tối ưu.
+    \item Dễ mô hình hóa tri thức, trực quan, mở rộng linh hoạt.
+    \item Tương thích tốt với AI Agent thông qua truy vấn Cypher.
+\end{itemize}
