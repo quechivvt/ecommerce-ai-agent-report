@@ -1,0 +1,65 @@
+\subsection{Lý thuyết về AI Agent}
+\subsubsection{Trí tuệ nhân tạo}
+Trí tuệ nhân tạo (Artificial Intelligence) là các hệ thống được nghiên cứu và xây dựng để có khả năng thực hiện những nhiệm vụ vốn đòi hỏi trí tuệ con người, như học tập, lập luận, hiểu ngôn ngữ hoặc đưa ra quyết định. Mục tiêu của AI là mô phỏng quá trình nhận thức của con người thông qua mô hình toán học và thuật toán\cite{c4-ai}.
+
+Các lĩnh vực chính của AI gồm:
+\begin{itemize}
+    \item Học máy (Machine Learning)
+    \item Thị giác máy tính (Computer Vision)
+    \item Xử lý ngôn ngữ tự nhiên (Natural Language Processing)
+\end{itemize}
+
+Phần lớn hệ thống AI hiện nay là AI hẹp (Narrow AI)\cite{c4-ai}, hoạt động tối ưu cho một nhiệm vụ cụ thể như phân loại dữ liệu, nhận diện giọng nói hoặc tư vấn khách hàng.
+
+
+
+\subsubsection{AI Agent}
+AI Agent là mô hình Trí tuệ nhân tạo được mở rộng thêm khả năng hành động thông qua các công cụ được tích hợp. Thay vì chỉ sinh văn bản, Agent có thể phân tích yêu cầu, lập kế hoạch, lựa chọn hành động phù hợp và truy xuất dữ liệu thực tế từ các nguồn bên ngoài\cite{c4-agent}.
+
+Một AI Agent điển hình bao gồm:
+\begin{itemize}
+    \item \textbf{Bộ tư duy (reasoning loop)} để phân tích và hiểu mục tiêu\cite{c4-agent}.
+    \item \textbf{Bộ lập kế hoạch (planner)} để xác định các bước thực hiện\cite{c4-agent}.
+    \item \textbf{Cơ chế tool/function calling} để gọi API, truy vấn cơ sở dữ liệu hoặc xử lý thông tin\cite{c4-agent}.
+\end{itemize}
+
+
+
+\subsubsection{RAG}
+RAG (Retrieval-Augmented Generation) là kỹ thuật kết hợp mô hình ngôn ngữ với hệ thống truy xuất thông tin nhằm nâng cao độ chính xác và tính nhất quán của câu trả lời. Thay vì dựa hoàn toàn vào kiến thức có sẵn trong mô hình, RAG tìm kiếm các tài liệu liên quan từ nguồn dữ liệu bên ngoài rồi đưa chúng vào ngữ cảnh (context) để mô hình sinh câu trả lời\cite{c4-rag}.
+
+Quy trình RAG gồm ba bước:
+\begin{itemize}
+    \item \textbf{Embedding}: chuyển tài liệu thành dạng vector số\cite{c4-rag}.
+    \item \textbf{Retrieval}: tìm các vector gần nhất với vector ứng với câu hỏi của người dùng\cite{c4-rag}.
+    \item \textbf{Augmentation}: đưa nội dung truy xuất được vào ngữ cảnh trước khi cho mô hình trả lời\cite{c4-rag}.
+\end{itemize}
+
+RAG đặc biệt hữu ích trong các hệ thống yêu cầu thông tin chính xác, cập nhật và bám sát dữ liệu nội bộ, giúp giảm thiểu hiện tượng mô hình sinh ra những thông tin, sự kiện không có thật\cite{c4-rag}.
+
+
+
+\subsubsection{Đồ thị tri thức}
+Đồ thị tri thức (Knowledge Graph) là mô hình biểu diễn tri thức dưới dạng đồ thị, trong đó các thực thể được biểu diễn bằng các nút (nodes) và các quan hệ giữa chúng bằng cạnh (edges)\cite{c4-kg}. Cấu trúc này cho phép lưu trữ thông tin có tính liên kết cao và hỗ trợ suy luận logic.
+
+Một đồ thị tri thức thường bao gồm:
+\begin{itemize}
+    \item \textbf{Nút}: để biểu diễn các thực thể có dữ liệu và quan hệ với các thực thể khác\cite{c4-kg}.
+    \item \textbf{Cạnh}: để thể hiện mối quan hệ giữa các nút\cite{c4-kg}.
+    \item \textbf{Nhãn (Label)}: lưu trữ thông tin, dữ liệu của nút hoặc cạnh\cite{c4-kg}.
+\end{itemize}
+
+Đồ thị tri thức giúp các hệ thống giảm thời gian truy xuất các dữ liệu có tính liên kết cao. Bên cạnh đó, nhờ đặc tính lưu trữ dữ liệu theo quan hệ nên đồ thị tri thức mang lại khả năng suy luận ra các tri thức, quan hệ mới dựa trên các quan hệ đã có.
+
+
+
+\subsubsection{Hệ thống đề xuất}
+Hệ thống đề xuất (Recommendation System) là những hệ thống nhằm cung cấp trải nghiệm cá nhân hóa cho người dùng bằng cách đề xuất các sản phẩm phù hợp với nhu cầu hoặc sở thích. Các phương pháp phổ biến bao gồm:
+
+\begin{itemize}
+    \item \textbf{Lọc cộng tác (Collaborative filtering)}: lọc và đề xuất gợi ý cho một người dùng dựa trên sự tương đồng về đặc điểm và hành vi người dùng của họ so với những người dùng đã sử dụng sản phẩm, dịch vụ\cite{c4-rs}.
+    \item \textbf{Lọc theo nội dung (Content-based filtering)}: lọc và đề xuất gợi ý cho một người dùng dựa trên đặc điểm của các sản phẩm, dịch vụ mà họ đã sử dụng\cite{c4-rs}.
+    \item \textbf{Phương pháp đề xuất lai (Hybrid)}: kết hợp hai phương pháp trên nhằm tối ưu độ chính xác\cite{c4-rs}.
+\end{itemize}
+
+Hệ thống đề xuất có ý nghĩa to lớn cho cả doanh nghiệp và người dùng. Hệ thống đề xuất giúp cải thiện trải nghiệm người dùng, từ đó giúp tăng khả năng giữ chân khách hàng và nâng cao tỉ lệ chuyển đổi từ người dùng thành khách hàng\cite{c4-rs}. 

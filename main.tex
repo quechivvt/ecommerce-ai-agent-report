@@ -3,12 +3,7 @@
 %\usepackage[english,vietnam]{babel}
 %\usepackage[utf8]{inputenc}
 \usepackage{mathptmx}[ptm]
-
-%--------references--------------
-\usepackage[utf8]{inputenc}
-\usepackage[style=numeric, backend=biber]{biblatex}
-\addbibresource{references/references.bib}
-%--------------------------------
+%\usepackage[utf8]{inputenc}
 %\usepackage[francais]{babel}
 \usepackage{a4wide,amssymb,epsfig,latexsym,array,hhline,fancyhdr}
 \usepackage[normalem]{ulem}
@@ -40,7 +35,7 @@
 \usepackage{epsfig}
 \usepackage{tikz}
 \usepackage{titlesec}
-\usepackage{enumitem}
+\usepackage{url}
 
 \usetikzlibrary{arrows,snakes,backgrounds,calc}
 \usepackage[unicode]{hyperref}
@@ -275,8 +270,17 @@ morekeywords={}
 \end{center}
 \end{titlepage}
 \newpage
+\clearpage
+\thispagestyle{empty}
+\mbox{}
+\clearpage
+
+
+
+
+
 %%%%%%%%%%%%%%%%%INTRO SET UP%%%%%%%%%%%%%%%%%%%
-\fontsize{12pt}{14.2pt}\selectfont
+\fontsize{13pt}{15.6pt}\selectfont
 \setlength{\parskip}{1.5ex}
 
 \titleformat{\section}[block]
@@ -299,12 +303,12 @@ morekeywords={}
   {1em}
   {}
 \titlespacing*{\subsubsection}{0pt}{0.3em}{0.1em}
-\setlist[itemize,1]{label=-}
 %%%%%%%%%%%%%%%%%INTRO%%%%%%%%%%%%%%%%%%%
-\input{intro/loi_cam_on}
-\input{intro/loi_cam_doan}
-\input{intro/tom_tat}
-\newpage
+\input{intro_outro/chu_ky_thay.tex}
+\input{intro_outro/loi_cam_on.tex}
+\input{intro_outro/loi_cam_doan.tex}
+\input{intro_outro/tom_tat.tex}
+\clearpage
 
 
 
@@ -316,6 +320,11 @@ morekeywords={}
 \clearpage
 \listoftables
 \clearpage
+
+
+
+
+
 %%%%%%%%%%%%%%%%%CONTENTS%%%%%%%%%%%%%%%%%%%
 \titleformat{\section}[block] 
   {\normalfont\fontsize{15pt}{18pt}\selectfont\bfseries}
@@ -323,20 +332,140 @@ morekeywords={}
   {1em}
   {}
 \setcounter{page}{1}
-\input{contents/chap1}
+
+
+
+
+
+\section{Giới thiệu đề tài}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm trình bày tổng quan về đề tài nghiên cứu, bao gồm bối cảnh và lý do lựa chọn đề tài, mục tiêu cần đạt được cũng như phạm vi thực hiện của hệ thống. Thông qua đó, chương này nhằm xác định rõ ý nghĩa, hướng phát triển và giới hạn của đề tài.
+\end{center}
+\end{minipage}
+\end{center}
+\input{contents/chap1/ly_do.tex}
+\input{contents/chap1/muc_tieu.tex}
+\input{contents/chap1/pham_vi.tex}
 \clearpage
-%\input{contents/chap2}
+
+
+
+
+
+\section{Khảo sát thị trường}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm khảo sát, tìm hiểu và trải nghiệm các hệ thống tương tự hiện có trên thị trường. Sau đó, nhóm so sánh các hệ thống và tìm ra khoảng trống trên thị trường. Thông qua đó, xác định hướng phát triển hợp lý của đề tài.
+\end{center}
+\end{minipage}
+\end{center}
+\input{contents/chap2/cellphones.tex}
+\input{contents/chap2/fpt.tex}
+\input{contents/chap2/tgdd.tex}
+\input{contents/chap2/so_sanh.tex}
 \clearpage
-\input{contents/chap3}
+
+
+
+
+
+\section{Phân tích yêu cầu}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm ...
+\end{center}
+\end{minipage}
+\end{center}
 \clearpage
-\input{contents/chap4}
+
+
+
+
+
+\section{Cơ sở lý thuyết}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Chương này tập trung vào các cơ sở lý thuyết quan trọng về kiến trúc hệ thống và AI Agent. Những cơ sở lý thuyết này đóng vai trò làm nền tảng cho việc thực hiện đề tài.
+\end{center}
+\end{minipage}
+\end{center}
+\input{contents/chap4/kien_truc.tex}
+\input{contents/chap4/ai.tex}
 \clearpage
-%\input{contents/chap5}
+
+
+
+
+
+\section{Công nghệ}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã tìm hiểu, nghiên cứu và quyết định lựa chọn để thực hiện đồ án.
+\end{center}
+\end{minipage}
+\end{center}
+\input{contents/chap5/fe.tex}
+\input{contents/chap5/be.tex}
+\input{contents/chap5/ai.tex}
 \clearpage
-\input{contents/chap6}
+
+
+
+
+
+\section{Thiết kế hệ thống}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm ...
+\end{center}
+\end{minipage}
+\end{center}
+\input{contents/chap6/kien_truc.tex}
 \clearpage
+
+
+
+
+
+\section{Kết luận và hướng phát triển}
+\hrule
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{center}
+\itshape
+Trong chương này, nhóm ...
+\end{center}
+\end{minipage}
+\end{center}
+\clearpage
+
+
+
+
+
 %%%%%%%%%%%%%%%%%OUTRO%%%%%%%%%%%%%%%%%%%
-\input{outro/tai_lieu_tham_khao}
-\newpage
-\input{outro/phu_luc}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\clearpage
+\input{intro_outro/phu_luc.tex}
+\clearpage
 \end{document}
