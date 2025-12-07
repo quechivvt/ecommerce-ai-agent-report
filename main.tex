@@ -42,8 +42,6 @@
 \hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true} 
 \usepackage{listings}
 
-%\usepackage{pstcol} 								% PSTricks with the standard color package
-
 \usepackage[normalem]{ulem}
 
 \newtheorem{theorem}{{\bf Định lý}}
@@ -276,9 +274,6 @@ morekeywords={}
 \clearpage
 
 
-
-
-
 %%%%%%%%%%%%%%%%%INTRO SET UP%%%%%%%%%%%%%%%%%%%
 \fontsize{13pt}{15.6pt}\selectfont
 \setlength{\parskip}{1.5ex}
@@ -309,8 +304,6 @@ morekeywords={}
 \input{intro_outro/loi_cam_doan.tex}
 \input{intro_outro/tom_tat.tex}
 \clearpage
-
-
 
 
 
@@ -374,18 +367,22 @@ Trong chương này, nhóm khảo sát, tìm hiểu và trải nghiệm các h�
 
 
 
-
-
 \section{Phân tích yêu cầu}
 \hrule
 \begin{center}
 \begin{minipage}{0.75\textwidth}
 \begin{center}
 \itshape
-Trong chương này, nhóm ...
+Trong chương này, nhóm trình bày phân tích yêu cầu của hệ thống, gồm yêu cầu chức năng, phi chức năng và mô tả các trường hợp sử dụng. Bên cạnh đó, nhóm xây dựng các mô hình UML như use case diagram, activity diagram và sequence diagram để minh họa luồng hoạt động, tương tác giữa các thành phần và hành vi của hệ thống. Kết quả phân tích giúp xác định phạm vi, chức năng cốt lõi và là cơ sở cho các bước thiết kế tiếp theo.
 \end{center}
 \end{minipage}
 \end{center}
+\input{contents/chap3/stakeholder.tex}
+\input{contents/chap3/functional_requirements.tex}
+\input{contents/chap3/non-functional_requirements.tex}
+\input{contents/chap3/use_case.tex}
+\input{contents/chap3/activity_diagram.tex}
+\input{contents/chap3/sequence_diagram.tex}
 \clearpage
 
 
@@ -406,10 +403,6 @@ Chương này tập trung vào các cơ sở lý thuyết quan trọng về ki�
 \input{contents/chap4/ai.tex}
 \clearpage
 
-
-
-
-
 \section{Công nghệ}
 \hrule
 \begin{center}
@@ -420,8 +413,9 @@ Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã 
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap5/fe.tex}
-\input{contents/chap5/be.tex}
+\input{contents/chap5/frontend.tex}
+\input{contents/chap5/backend.tex}
+\input{contents/chap5/infrastructure.tex}
 \input{contents/chap5/ai.tex}
 \clearpage
 
@@ -435,11 +429,13 @@ Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã 
 \begin{minipage}{0.75\textwidth}
 \begin{center}
 \itshape
-Trong chương này, nhóm ...
+Trong chương này, nhóm trình bày các nội dung thiết kế hệ thống dựa trên kết quả phân tích ở các chương trước. Cụ thể, chương giới thiệu kiến trúc tổng thể của hệ thống theo hướng microservice, mô hình cơ sở dữ liệu bằng sơ đồ ERD, cùng các thiết kế giao diện người dùng. Các phần trình bày nhằm mô tả rõ các thành phần dịch vụ, cách chúng giao tiếp và phối hợp với nhau, qua đó tạo nền tảng cho quá trình hiện thực hóa và triển khai toàn bộ hệ thống.
 \end{center}
 \end{minipage}
 \end{center}
 \input{contents/chap6/kien_truc.tex}
+\input{contents/chap6/erd.tex}
+\input{contents/chap6/ui_ux.tex}
 \clearpage
 
 
@@ -452,7 +448,7 @@ Trong chương này, nhóm ...
 \begin{minipage}{0.75\textwidth}
 \begin{center}
 \itshape
-Trong chương này, nhóm ...
+Trong chương này, nhóm tổng kết những kết quả đã đạt được trong quá trình nghiên cứu và triển khai hệ thống. Các nội dung chính, những điểm mạnh, hạn chế và bài học kinh nghiệm sẽ được trình bày nhằm đánh giá mức độ hoàn thành mục tiêu đề tài. Bên cạnh đó, chương cũng đề xuất một số hướng phát triển trong tương lai, bao gồm cải tiến chức năng, mở rộng quy mô và nâng cao hiệu năng hệ thống, nhằm đáp ứng tốt hơn nhu cầu thực tế và khả năng ứng dụng trong môi trường vận hành thực.
 \end{center}
 \end{minipage}
 \end{center}
