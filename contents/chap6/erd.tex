@@ -30,7 +30,7 @@ Hình \ref{fig:erd_mapping} biểu diễn sơ đồ ánh xạ ERD đã mô tả 
 
 Để cụ thể hơn cho từng service, các phần dưới đây sẽ trình bày chi tiết về các thực thể và quan hệ nội bộ trong từng ranh giới domain của năm dịch vụ cốt lõi sử dụng CSDL quan hệ PostgreSQL.
 
-\subsection{ERD chi tiết cho user service}
+\subsubsection{ERD chi tiết cho user service}
 
 Hình \ref{fig:user-service} bên dưới chính là ERD chi tiết cho user service, nó mô tả chi tiết các entity và quan hệ bên trong nội bộ service.
 
@@ -48,7 +48,7 @@ Thực thể Customer mở rộng vai trò của người dùng thông thường
 
 User service độc lập và chỉ quản lý các thực thể thuộc phạm vi người dùng. Mọi service khác trong kiến trúc Microservice, như Order Service, sẽ chỉ tham chiếu đến dữ liệu này bằng ID (ví dụ: userId, addressId) mà không cần lưu trữ lại thông tin chi tiết.
 
-\subsection{ERD chi tiết cho order service}
+\subsubsection{ERD chi tiết cho order service}
 
 Order Service chịu trách nhiệm xử lý toàn bộ vòng đời của một giao dịch mua hàng, bao gồm việc quản lý đặt hàng, thanh toán, và phản hồi từ khách hàng. Thiết kế dữ liệu xoay quanh thực thể Order. Order lưu trữ thông tin tổng quan về giao dịch và địa chỉ giao hàng chi tiết (no, street, city, province) để đảm bảo tính bất biến của đơn hàng tại thời điểm đặt.
 
@@ -74,7 +74,7 @@ Hình \ref{fig:order-service} chính là ERD chi tiết của order service. Qua
 
 Trong thực tế, Order Service sẽ chỉ lưu trữ các ID ngoại lai (như UserID hoặc ProductID) mà không có ràng buộc khóa ngoại vật lý, nhằm duy trì tính độc lập (autonomy) và khả năng phục hồi của CSDL theo đúng kiến trúc Microservice.
 
-\subsection{ERD chi tiết cho product service}
+\subsubsection{ERD chi tiết cho product service}
 
 Product Service là domain cốt lõi chịu trách nhiệm quản lý toàn bộ dữ liệu danh mục sản phẩm, bao gồm các thông tin liên quan đến tồn kho, thương hiệu, phân loại, và khuyến mãi. Thiết kế dữ liệu xoay quanh thực thể Product.
 
@@ -94,7 +94,7 @@ Hình \ref{fig:order-service} chính là ERD chi tiết của order service. Qua
 
 Product service là một trong những nguồn dữ liệu quan trọng nhất của hệ thống và được các service khác tham chiếu đến. Order service và cart service sử dụng khóa ngoại logic (ProductID) để xác định sản phẩm. Khi có sự thay đổi về giá cả hoặc tồn kho, product service chịu trách nhiệm phát hành các sự kiện lên Apache Kafka để đồng bộ hóa dữ liệu với các service tiêu thụ khác.
 
-\subsection{ERD chi tiết cho cart service}
+\subsubsection{ERD chi tiết cho cart service}
 
 Cart Service là domain có thiết kế tối giản, tập trung vào việc quản lý trạng thái giỏ hàng tạm thời của khách hàng. Dịch vụ này cần duy trì hiệu suất cao vì nó xử lý các thao tác đọc/ghi thường xuyên. Thiết kế dữ liệu xoay quanh thực thể Cart, đại diện cho một giỏ hàng của khách hàng.
 
@@ -115,7 +115,7 @@ Hình \ref{fig:cart-service} bên dưới mô tả các entity và các quan h�
     \label{fig:cart-service}
 \end{figure}
 
-\subsection{ERD chi tiết cho admin service}
+\subsubsection{ERD chi tiết cho admin service}
 
 Admin Service là domain phụ trợ, có vai trò cốt lõi là duy trì tính minh bạch (accountability) của các hành động quản trị và quản lý các báo cáo thống kê của hệ thống. Dịch vụ này được thiết kế với hai thực thể chính.
 

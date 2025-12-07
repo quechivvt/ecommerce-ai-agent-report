@@ -1,0 +1,29 @@
+\subsection{Kết quả đạt được}
+
+So với mục tiêu ban đầu, nhóm đã hoàn thành như dự định giai đoạn thiết kế kiến trúc và mô hình hoá cho một hệ thống thương mại điện tử chuyên biệt, đáp ứng đầy đủ các yêu cầu về chức năng, khả năng mở rộng và tích hợp AI Agent.
+
+Trong giai đoạn thiết kế, nhóm đã đạt được các kết quả chính sau:
+
+Đầu tiên là hoàn thiện thiết kế Kiến trúc Microservices. Nhóm đã xây dựng mô hình kiến trúc Microservices cho toàn hệ thống, bảo đảm các service có thể vận hành độc lập, dễ mở rộng và thuận tiện cho việc triển khai thực tế ở các giai đoạn tiếp theo.
+
+Tiếp đó, nhóm đã thiết kế event Sourcing và data-driven. Các nguyên tắc Event Sourcing và Data-Driven đã được phân tích và áp dụng cho các sự kiện quan trọng, cho phép hệ thống bảo đảm khả năng lưu vết, tái dựng trạng thái và duy trì tính nhất quán dữ liệu. Đây là nền tảng quan trọng giúp chuẩn bị cho quá trình triển khai thực tế trong tương lai.
+
+Sau đó, nhóm đã xây dựng kiến trúc cho Trợ lý Ảo AI Agent dựa trên LangGraph, bao gồm các thành phần Lập luận và Lập kế hoạch (Reasoning \& Planning). AI Agent được thiết kế để tương tác với hệ thống thông qua Tool Calling, cho phép tự động hoá nhiều quy trình trong quá trình phát triển sau này.
+
+Cuối cùng, nhóm cũng tiến hành thiết kế cấu trúc dữ liệu hỗ trợ AI:
+
+\begin{itemize}
+    \item Milvus (Vector Database): dùng để lưu trữ embedding của tài liệu sản phẩm và FAQ, tạo nền tảng cho việc áp dụng RAG (Retrieval-Augmented Generation) nhằm nâng cao độ chính xác phản hồi của AI Agent.
+    \item Neo4j (Graph Database): thiết kế đồ thị tri thức (Knowledge Graph) về sản phẩm và người dùng, hỗ trợ logic suy luận phức tạp cũng như các thuật toán gợi ý trong tương lai.
+\end{itemize}
+
+Tuy đã hoàn thiện giai đoạn thiết kế, nhóm nhận thấy hệ thống vẫn còn nhiều hướng có thể cải thiện trong tương lai, đặc biệt khi bước vào giai đoạn triển khai và mở rộng thực tế. Một số hướng phát triển quan trọng bao gồm:
+
+\begin{itemize}
+    \item Nâng cấp Trợ lý Ảo với RAG: Ở giai đoạn hiện tại, thiết kế Agent mới dừng ở mức phản hồi dựa trên logic từ khoá cơ bản. Trong tương lai, hệ thống có thể được nâng cấp bằng việc tích hợp pipeline RAG hoàn chỉnh kết hợp Milvus nhằm tăng cường khả năng hiểu ngữ cảnh, tra cứu thông tin và cải thiện độ chính xác của câu trả lời.
+    \item Phát triển Hệ thống Gợi ý (Recommendation System): Nền tảng dữ liệu đồ thị tri thức với Neo4j đã được thiết kế sẵn, nhưng các thuật toán gợi ý chuyên sâu như Collaborative Filtering hoặc Content-based Filtering vẫn chưa được hiện thực. Đây sẽ là hướng mở rộng quan trọng giúp khai thác hiệu quả cấu trúc dữ liệu và nâng cao trải nghiệm cá nhân hoá cho người dùng.
+\end{itemize}
+
+
+
+
