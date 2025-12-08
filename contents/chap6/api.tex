@@ -1,1 +1,358 @@
 \subsection{Thiết kế API}
+
+\subsubsection{Mục tiêu của thiết kế API}
+
+API trong hệ thống thương mại điện tử được xây dựng nhằm cung cấp điểm truy cập thống nhất cho ứng dụng Frontend. API sử dụng chuẩn RESTful, được triển khai độc lập cho từng microservice. Các API chỉ phục vụ giao tiếp giữa người dùng (frontend) và hệ thống; mọi giao tiếp giữa các service backend đều được xử lý dưới dạng sự kiện bất đồng bộ (event-driven), không nằm trong phạm vi phần này.
+
+Việc thiết kế API tuân theo các tiêu chí:
+
+\begin{itemize}
+    \item Đơn giản – rõ ràng – tách biệt theo domain.
+    \item Phản hồi thống nhất theo cấu trúc BaseResponse.
+    \item Request/Response chuẩn hóa thông qua DTO, không lộ dữ liệu nội bộ của service.
+    \item Đảm bảo khả năng mở rộng, dễ thay đổi khi kiến trúc microservice tăng số lượng tài nguyên.
+\end{itemize}
+
+Do số lượng API lớn, nhóm chỉ tập trung mô tả các nhóm chức năng chính và một số endpoint tiêu biểu nhằm minh họa cách mỗi service cung cấp dữ liệu cho frontend và phối hợp với các service khác thông qua Kafka.
+
+Hầu hết các API trong hệ thống (trừ một số trường hợp đặc biệt như đăng nhập Google – nơi việc đăng ký được thực hiện tự động ngay trong lần đăng nhập đầu tiên) đều được thiết kế theo kiến trúc Event Sourcing. Thay vì cập nhật trực tiếp dữ liệu, mỗi thao tác của người dùng sẽ ghi nhận một sự kiện (event) vào event store. Các sự kiện này sau đó được xử lý bất đồng bộ để xây dựng read model và đồng bộ trạng thái với các service khác qua Kafka.
+
+Nhờ cơ chế này, API chỉ cần xác nhận đã ghi nhận sự kiện thành công, còn việc cập nhật dữ liệu, đồng bộ liên service và chuẩn bị dữ liệu trả về cho frontend sẽ được thực hiện bởi các consumer phía sau.
+
+
+\subsubsection{Nguyên tắt thiết kế API}
+
+Để đảm bảo một hệ thống API đồng bộ, dễ hiểu, dễ mở rộng và an toàn, việc tuân thủ một bộ các nguyên tắc thiết kế thống nhất là điều tối quan trọng. Các nguyên tắc dưới đây tập trung vào việc áp dụng mô hình Resource-Oriented và chuẩn mực RESTful cùng với các biện pháp bảo mật và quản lý phiên bản hiệu quả:
+\begin{itemize}
+    \item Theo mô hình Resource-Oriented (dựa trên tài nguyên: users, products, carts, orders…).
+    \item RESTful: sử dụng GET/POST/PUT/DELETE.
+    \item Áp dụng DTO cho mọi request/response, hạn chế lộ entity gốc.
+    \item Sử dụng token-based authentication cho những API yêu cầu xác thực.
+\end{itemize}
+
+\subsubsection{Cấu trúc mẫu của Request/Response trong API}
+
+Để đảm bảo tính thống nhất giữa các microservice và giảm thiểu trùng lặp trong quá trình thiết kế API, hệ thống chuẩn hóa toàn bộ phản hồi và truy vấn phân trang thông qua ba lớp cơ sở: BaseResponse, BasePaginationResponse, và BasePaginationRequest. Các thành phần này đóng vai trò làm khuôn mẫu chung (template) được sử dụng xuyên suốt tất cả service nghiệp vụ (User, Product, Order, Cart, Admin, AI).
+
+\textbf{texttit{a/ BaseResponse<T> – Cấu trúc phản hồi chuẩn }}
+
+BaseResponse được sử dụng cho tất cả API không yêu cầu phân trang. Đây là cấu trúc phản hồi đơn giản nhưng thống nhất, giúp frontend xử lý kết quả và lỗi một cách dễ dàng.
+
+Các trường thông tin:
+
+\begin{itemize}
+    \item status (int): Mã trạng thái HTTP hoặc mã nội bộ xác định kết quả xử lý, ví dụ: 200, 400, 404,...
+    \item data (T): Payload chứa dữ liệu cần trả về cho frontend, có thể là DTO hoặc bất kỳ kiểu dữ liệu nào.
+    \item message (String): Thông tin mô tả kết quả xử lý, ví dụ: "Success", "Invalid credentials".
+\end{itemize}
+
+Việc áp dụng các nguyên tắc này có ý nghĩa quan trọng trong việc chuẩn hóa giao diện API giữa các service, đảm bảo tính đồng nhất và khả năng tích hợp dễ dàng. Sự chuẩn hóa này cũng trực tiếp hỗ trợ logging và tracking dễ dàng hơn, giúp hệ thống theo dõi và xử lý lỗi hiệu quả. Hơn nữa, nó còn giúp giảm thiểu số lượng schema response lặp lại, tối ưu hóa mã nguồn và đơn giản hóa việc phát triển cho các ứng dụng client.
+
+\textbf{texttit{BasePaginationResponse<T> – Cấu trúc phản hồi phân trang}}
+
+BasePaginationResponse được sử dụng cho các API trả về danh sách có phân trang (ví dụ: danh sách sản phẩm, danh sách đơn hàng, danh sách người dùng admin).
+
+Lớp này mở rộng cấu trúc BaseResponse bằng cách bổ sung các thông tin phân trang cần thiết.
+
+Các trường thông tin:
+
+\begin{itemize}
+    \item status (int): Mã trạng thái HTTP hoặc mã nội bộ xác định kết quả xử lý, ví dụ: 200, 400, 404,\dots
+    \item page\_number (int): Số trang hiện tại (zero-based).
+    \item page\_size (int): Số lượng item trên mỗi trang.
+    \item count\_items (long): Tổng số item lấy được từ truy vấn.
+    \item count\_pages (int): Tổng số trang có thể hiển thị.
+    \item data (T): Payload chứa dữ liệu cần trả về cho frontend, có thể là DTO hoặc bất kỳ kiểu dữ liệu nào.
+    \item message (String): Thông tin mô tả kết quả xử lý, ví dụ: "Success", "Invalid credentials".
+\end{itemize}
+
+Việc thống nhất cơ chế phân trang mang lại ý nghĩa then chốt là chuẩn hóa mọi API phân trang trên các service, tạo ra một giao diện đồng nhất. Điều này không chỉ giúp frontend hiển thị giao diện phân trang (paginated UI) dễ dàng hơn nhờ vào cấu trúc response đã được định trước, mà còn hỗ trợ backend sử dụng các công cụ như Spring Data xây dựng phân trang hiệu quả và nhất quán xuyên suốt hệ thống.
+
+\textbf{texttit{BasePaginationRequest – Chuẩn hóa Request phân trang}}
+
+BasePaginationRequest là lớp DTO dùng cho toàn bộ API cần phân trang. Lớp này hỗ trợ Spring Data trực tiếp thông qua hàm toPageable(), giúp code service gọn và tránh lặp lại logic phân trang.
+
+Các trường thông tin:
+\begin{itemize}
+    \item page (int): Chỉ số trang (bắt đầu từ 0). Có validate là không được nhỏ hơn 0.
+    \item size (int): Số lượng phần tử mỗi trang. Có validate là không được nhỏ hơn 1.
+    \item sortBy (String): Tên trường cần sắp xếp.
+    \item sortDirection (String): Hướng sắp xếp: "ASC" hoặc "DESC" (mặc định "DESC").
+\end{itemize}
+
+Việc chuẩn hóa cách thức backend nhận yêu cầu phân trang giúp tăng tính nhất quán giữa các API khác nhau, đảm bảo mọi dịch vụ đều xử lý yêu cầu phân trang theo cùng một quy tắc. Điều này cho phép tái sử dụng logic phân trang đã được định nghĩa trong hầu hết mọi service, từ đó tiết kiệm thời gian phát triển và giảm thiểu lỗi.
+
+\subsubsection{User Service}
+
+User Service chịu trách nhiệm quản lý thông tin người dùng, xác thực tài khoản và cung cấp token để frontend truy cập các chức năng khác trong hệ thống. Do số lượng API đầy đủ khá lớn, mục này chỉ trình bày các API đại diện cho nhóm chức năng Authentication \& Account Management – nhóm quan trọng nhất của User Service.
+
+\textbf{1. POST /api/auth/login/local}
+\begin{itemize}
+\item Chức năng: Xác thực người dùng bằng email/mật khẩu.
+\item Đầu vào: Thông tin đăng nhập (email, password).
+\item Xử lý:
+\begin{enumerate}
+\item Xác thực thông tin đăng nhập.
+\item Sinh access token và refresh token cho phiên làm việc.
+\item Ghi lại sự kiện \textit{UserLoggedIn} vào event store để phục vụ phân tích hành vi và đồng bộ với các service khác.
+\end{enumerate}
+\item Đầu ra: Token phiên làm việc và phản hồi đăng nhập thành công.
+\end{itemize}
+
+\textbf{2. GET /api/user/profile/me}
+\begin{itemize}
+\item Chức năng: Lấy thông tin hồ sơ của khách hàng đang đăng nhập.
+\item Đầu vào: Access token trong header yêu cầu.
+\item Xử lý:
+\begin{enumerate}
+\item Giải mã và kiểm tra access token.
+\item Truy vấn \textit{read model} được xây dựng từ các sự kiện của người dùng.
+\end{enumerate}
+\item Đầu ra: Hồ sơ người dùng hiện tại (được tổng hợp từ read model).
+\end{itemize}
+
+\textbf{3. POST /api/auth/register/local}
+\begin{itemize}
+\item Chức năng: Khởi tạo tài khoản mới bằng email và mật khẩu.
+\item Đầu vào: Email, password và thông tin người dùng.
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra tính hợp lệ và trùng lặp của email.
+\item Ghi sự kiện \textit{UserRegistered} vào event store.
+\item Để các service khác (gợi ý sản phẩm, loyalty, notification, \ldots) xử lý qua Kafka.
+\end{enumerate}
+\item Đầu ra: Xác nhận đăng ký thành công.
+(Trạng thái tài khoản sẽ được tạo trong read model sau khi sự kiện được xử lý).
+\end{itemize}
+
+\subsubsection{Order Service}
+
+Order Service chịu trách nhiệm quản lý đơn hàng, ghi nhận các sự kiện liên quan đến việc đặt hàng, thanh toán và cập nhật trạng thái đơn. Tương tự các service khác trong mô hình Event Sourcing, mỗi thao tác ghi (write API) chỉ sinh ra sự kiện và lưu vào event store; trạng thái đơn hàng trả về cho frontend được lấy từ read model đã được build bất đồng bộ từ luồng xử lý. Phần này giới thiệu các API tiêu biểu thuộc nhóm chức năng Order Placement \& Order Management.
+
+\textbf{1. POST /api/order/create}
+\begin{itemize}
+\item Chức năng: Tạo đơn hàng mới từ giỏ hàng hoặc từ yêu cầu mua ngay.
+\item Đầu vào: Thông tin sản phẩm, số lượng, địa chỉ giao hàng, phương thức thanh toán, \ldots.
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra tính hợp lệ của yêu cầu tạo đơn.
+\item Ghi sự kiện \textit{OrderCreated} vào event store.
+\item Phát sự kiện sang Kafka để Inventory Service, Payment Service hoặc Cart Service xử lý tiếp (tuỳ luồng nghiệp vụ).
+\end{enumerate}
+\item Đầu ra: Xác nhận tạo đơn thành công kèm mã đơn (orderId) được sinh ra từ event.
+\end{itemize}
+
+\textbf{2. GET /api/order/my-orders}
+\begin{itemize}
+\item Chức năng: Lấy danh sách đơn hàng của người dùng hiện đang đăng nhập.
+\item Đầu vào: Access token để xác định danh tính người dùng.
+\item Xử lý:
+\begin{enumerate}
+\item Giải mã token để lấy userId.
+\item Truy vấn read model (OrderView hoặc OrderProjection) được xây dựng từ các sự kiện trong event store.
+\end{enumerate}
+\item Đầu ra: Danh sách đơn hàng của người dùng với thông tin rút gọn (trạng thái, tổng tiền, ngày tạo, \ldots).
+\end{itemize}
+
+\textbf{3. GET /api/order/detail/{orderId}}
+\begin{itemize}
+\item Chức năng: Lấy thông tin chi tiết của một đơn hàng cụ thể.
+\item Đầu vào: \texttt{orderId} được truyền qua URL; access token để xác định quyền truy cập.
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra quyền xem đơn hàng (đảm bảo đơn thuộc về người dùng hoặc quyền admin).
+\item Truy vấn read model được xây dựng từ các sự kiện: \textit{OrderCreated}, \textit{OrderPaymentConfirmed}, \textit{OrderShipped}, \textit{OrderCompleted}, \ldots
+\item Tổng hợp thông tin gồm danh sách sản phẩm, số lượng, giá, địa chỉ giao hàng, trạng thái đơn, mã thanh toán, lịch sử trạng thái, \ldots
+\end{enumerate}
+\item Đầu ra: Thông tin chi tiết đơn hàng theo thời điểm hiện tại.
+\end{itemize}
+
+\subsubsection{Cart Service}
+
+Cart Service chịu trách nhiệm quản lý giỏ hàng của người dùng, bao gồm thêm sản phẩm, cập nhật số lượng và xoá khỏi giỏ. Với mô hình Event Sourcing, mọi thao tác ghi lên giỏ đều được lưu dưới dạng sự kiện (\textit{CartItemAdded}, \textit{CartItemUpdated}, \textit{CartItemRemoved}). Trạng thái giỏ được tổng hợp từ read model và phục vụ cho frontend.
+
+\textbf{1. POST /api/cart/add}
+
+\begin{itemize}
+\item Chức năng: Thêm một sản phẩm vào giỏ hàng của người dùng.
+\item Đầu vào: Thông tin sản phẩm (productId), số lượng, biến thể (nếu có), \ldots
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra tính hợp lệ của sản phẩm và số lượng.
+\item Ghi sự kiện \textit{CartItemAdded} vào event store.
+\item Phát sự kiện sang Kafka để Product Service cập nhật tồn kho dự kiến (reserve) hoặc kiểm tra tồn.
+\end{enumerate}
+\item Đầu ra: Xác nhận mục đã được thêm vào giỏ (theo kiểu event đã được ghi nhận).
+\end{itemize}
+
+\textbf{2. PUT /api/cart/increase/{productId}}
+
+\begin{itemize}
+\item Chức năng: Tăng số lượng sản phẩm trong giỏ.
+\item Đầu vào: productId; số lượng tăng (mặc định là 1 nếu không truyền).
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra sản phẩm có tồn tại trong giỏ hay không.
+\item Ghi sự kiện \textit{CartItemQuantityIncreased}.
+\item Phát sự kiện sang Kafka để xử lý cập nhật tồn kho dự kiến.
+\end{enumerate}
+\item Đầu ra: Xác nhận số lượng sản phẩm đã được tăng.
+\end{itemize}
+
+\textbf{3. DELETE /api/cart/remove/{productId}}
+
+\begin{itemize}
+\item Chức năng: Xóa một sản phẩm khỏi giỏ hàng.
+\item Đầu vào: productId trong đường dẫn.
+\item Xử lý:
+\begin{enumerate}
+\item Kiểm tra sản phẩm có trong giỏ hay không.
+\item Ghi sự kiện \textit{CartItemRemoved}.
+\item Phát sự kiện để Product Service hoàn trả tồn kho dự kiến (nếu có).
+\end{enumerate}
+\item Đầu ra: Xác nhận sản phẩm đã được xóa khỏi giỏ.
+\end{itemize}
+
+\subsubsection{Product Service}
+
+Product Service chịu trách nhiệm quản lý thông tin sản phẩm, bao gồm danh mục, tồn kho, biến thể và dữ liệu hiển thị trên frontend. Trong kiến trúc Event Sourcing, các sự kiện như \textit{ProductCreated}, \textit{ProductUpdated}, \textit{InventoryAdjusted}, \textit{ProductPriceChanged} được ghi vào event store để đảm bảo khả năng truy vết và tái dựng toàn bộ trạng thái sản phẩm. Frontend luôn truy vấn từ read model được build từ các sự kiện này.
+
+\textbf{1. GET /api/product/list}
+
+\begin{itemize}
+\item Chức năng: Lấy danh sách sản phẩm theo phân trang để hiển thị trên trang chủ hoặc trang danh mục.
+\item Đầu vào: Tham số phân trang (page, size) và tuỳ chọn sắp xếp.
+\item Xử lý:
+\begin{enumerate}
+\item Nhận request phân trang và chuyển thành Pageable.
+\item Truy vấn read model \textit{ProductView} gồm các field: tên, giá, tồn kho, danh mục, hình ảnh.
+\item Áp dụng filter/sort nếu có.
+\end{enumerate}
+\item Đầu ra: Danh sách sản phẩm theo trang, kèm tổng số trang và tổng số sản phẩm.
+\end{itemize}
+
+\textbf{2. GET /api/product/search}
+
+\begin{itemize}
+\item Chức năng: Tìm kiếm sản phẩm theo từ khóa, danh mục hoặc nhiều điều kiện lọc.
+\item Đầu vào: keyword, categoryId, priceRange, sortBy, page/size.
+\item Xử lý:
+\begin{enumerate}
+\item Áp dụng full-text search (nếu có) hoặc fuzzy matching theo keyword.
+\item Lọc theo danh mục, giá, tồn kho, trạng thái hoạt động.
+\item Truy vấn read model để lấy dữ liệu đã tối ưu hoá cho tìm kiếm.
+\end{enumerate}
+\item Đầu ra: Danh sách sản phẩm phù hợp cùng thông tin phân trang.
+\end{itemize}
+
+\textbf{3. GET /api/product/inventory/{productId}}
+
+\begin{itemize}
+\item Chức năng: Kiểm tra tồn kho của một sản phẩm, phục vụ cho cart hoặc checkout.
+\item Đầu vào: productId.
+\item Xử lý:
+\begin{enumerate}
+\item Truy vấn read model kho (\textit{InventoryView}).
+\item Tính toán số lượng khả dụng dựa trên tồn kho thực và các transaction pending (cart reservation).
+\end{enumerate}
+\item Đầu ra: Số lượng tồn kho hiện tại và trạng thái còn hàng/hết hàng.
+\end{itemize}
+
+\subsubsection{Admin Service}
+
+Admin Service chịu trách nhiệm cung cấp các chức năng phục vụ quản trị hệ thống, bao gồm truy xuất báo cáo, theo dõi hoạt động bán hàng và ghi nhận log thao tác của quản trị viên. Khác với các service hướng người dùng, Admin Service chủ yếu làm việc với dữ liệu tổng hợp và các sự kiện nghiệp vụ được phát sinh từ Product Service và các service liên quan.
+
+\textbf{1. POST /api/admin/report/product/generate}
+
+\begin{itemize}
+\item \textbf{Chức năng:} Tạo yêu cầu thống kê sản phẩm bán ra trong một khoảng thời gian.
+\item \textbf{Đầu vào:}
+\begin{itemize}
+\item \texttt{startDate, endDate} – khoảng thời gian cần thống kê.
+\item \texttt{productId} (tuỳ chọn) – nếu chỉ muốn thống kê 1 sản phẩm cụ thể.
+\item \texttt{format} – định dạng xuất báo cáo (json, csv).
+\end{itemize}
+\item \textbf{Xử lý:}
+\begin{enumerate}
+\item Validate tham số đầu vào.
+\item Lưu yêu cầu vào bảng \textit{ReportRequest} với trạng thái \textit{Pending}.
+\item Gửi sự kiện \texttt{ProductReportRequested} vào Kafka với thông tin:
+\begin{itemize}
+\item khoảng thời gian thống kê
+\item productId (nếu có)
+\item adminId
+\end{itemize}
+\item Worker tiêu thụ sự kiện sẽ:
+\begin{enumerate}
+\item Lấy danh sách đơn hàng từ Order Service theo khoảng ngày.
+\item Gom nhóm dữ liệu để thống kê:
+\begin{itemize}
+\item tổng số lượng bán ra
+\item tổng doanh thu
+\item top sản phẩm bán chạy nhất
+\item số đơn hàng có sản phẩm đó
+\end{itemize}
+\item Lưu kết quả vào \textit{ReportDB}.
+\item Cập nhật trạng thái báo cáo thành \textit{Completed}.
+\end{enumerate}
+\item Ghi log admin vào LogDB.
+\end{enumerate}
+\item \textbf{Đầu ra:} \texttt{reportId} và trạng thái \textit{Pending}.
+\end{itemize}
+
+\textbf{2. GET /api/admin/report/product/{reportId}}
+
+\begin{itemize}
+\item \textbf{Chức năng:} Lấy kết quả báo cáo sản phẩm đã được tạo.
+\item \textbf{Đầu vào:} \texttt{reportId}.
+\item \textbf{Xử lý:}
+\begin{enumerate}
+\item Lấy dữ liệu từ ReportDB.
+\item Nếu trạng thái \textit{Completed}, trả kết quả thống kê:
+\begin{itemize}
+\item tổng số lượng bán
+\item tổng doanh thu
+\item danh sách sản phẩm kèm số lượng và doanh thu
+\item phân trang kết quả (nếu dataset lớn)
+\end{itemize}
+\item Nếu báo cáo chưa hoàn tất, trả trạng thái hiện tại (Pending/Processing).
+\item Lưu log \textit{AdminViewedReport}.
+\end{enumerate}
+\item \textbf{Đầu ra:} Dữ liệu báo cáo hoặc trạng thái xử lý.
+\end{itemize}
+
+\subsubsection{AI Service}
+
+AI Service là thành phần duy nhất trong hệ thống được triển khai bằng Python và chịu trách nhiệm xử lý các tác vụ thông minh phục vụ trải nghiệm người dùng cũng như hỗ trợ vận hành. Dịch vụ này hoạt động độc lập với các microservice Java khác nhưng giao tiếp qua Kafka theo mô hình event-driven, cho phép nhận, phân tích và phản hồi các sự kiện quan trọng như đơn hàng mới, người dùng mới đăng ký hoặc người dùng tương tác với sản phẩm.
+
+Ở đây, API chỉ mô tả một số endpoint tiêu biểu phục vụ frontend (nếu có), đồng thời nhấn mạnh vai trò của AI Service trong việc xử lý các sự kiện nền và xây dựng các mô hình gợi ý. Đây là các điểm tích hợp quan trọng thể hiện cách dịch vụ AI hỗ trợ toàn bộ kiến trúc thương mại điện tử thông minh.
+
+\textbf{1. GET /api/ai/recommendation/user/{userId}}
+
+\begin{itemize}
+\item Chức năng: Gợi ý danh sách sản phẩm dựa trên hành vi mua sắm và sự kiện tương tác của người dùng.
+\item Đầu vào: \texttt{userId} được truyền qua URL; access token xác định người dùng hợp lệ.
+\item Xử lý:
+\begin{enumerate}
+\item Truy xuất dữ liệu đã được xây dựng từ các sự kiện như \textit{UserRegistered}, \textit{OrderCreated}, \textit{OrderCompleted}, \textit{ProductViewed}.
+\item Lấy embedding hoặc vector hành vi của user từ mô hình AI.
+\item Tính toán danh sách gợi ý dựa trên mô hình Collaborative Filtering hoặc Content-based Filtering.
+\item Chuẩn hóa kết quả trước khi trả về.
+\end{enumerate}
+\item Đầu ra: Danh sách sản phẩm được gợi ý theo độ phù hợp.
+\end{itemize}
+
+\textbf{2. POST /api/ai/chat/query}
+
+\begin{itemize}
+\item Chức năng: Cho phép khách hàng gửi câu hỏi và nhận phản hồi thông minh từ AI Agent (ví dụ: gợi ý sản phẩm, giải thích công dụng, tìm kiếm nhanh).
+\item Đầu vào: Nội dung câu hỏi (\texttt{query}) được gửi qua body.
+\item Xử lý:
+\begin{enumerate}
+\item Phân tích ngôn ngữ tự nhiên để xác định intent của người dùng.
+\item Nếu intent là tìm sản phẩm → truy vấn read model hoặc vector search.
+\item Nếu intent liên quan đơn hàng → gửi yêu cầu truy xuất dữ liệu qua Kafka hoặc call nội bộ tùy trường hợp.
+\item Sinh câu trả lời tự nhiên bằng mô hình AI.
+\end{enumerate}
+\item Đầu ra: Phản hồi chat của AI, có thể gồm gợi ý sản phẩm hoặc thông tin liên quan.
+\end{itemize}
