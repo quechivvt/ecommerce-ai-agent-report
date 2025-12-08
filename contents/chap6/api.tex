@@ -34,7 +34,7 @@ Nhờ cơ chế này, API chỉ cần xác nhận đã ghi nhận sự kiện th
 
 Để đảm bảo tính thống nhất giữa các microservice và giảm thiểu trùng lặp trong quá trình thiết kế API, hệ thống chuẩn hóa toàn bộ phản hồi và truy vấn phân trang thông qua ba lớp cơ sở: BaseResponse, BasePaginationResponse, và BasePaginationRequest. Các thành phần này đóng vai trò làm khuôn mẫu chung (template) được sử dụng xuyên suốt tất cả service nghiệp vụ (User, Product, Order, Cart, Admin, AI).
 
-\textbf{texttit{a/ BaseResponse<T> – Cấu trúc phản hồi chuẩn }}
+\textbf{textit{a/ BaseResponse<T> – Cấu trúc phản hồi chuẩn }}
 
 BaseResponse được sử dụng cho tất cả API không yêu cầu phân trang. Đây là cấu trúc phản hồi đơn giản nhưng thống nhất, giúp frontend xử lý kết quả và lỗi một cách dễ dàng.
 
@@ -48,7 +48,7 @@ Các trường thông tin:
 
 Việc áp dụng các nguyên tắc này có ý nghĩa quan trọng trong việc chuẩn hóa giao diện API giữa các service, đảm bảo tính đồng nhất và khả năng tích hợp dễ dàng. Sự chuẩn hóa này cũng trực tiếp hỗ trợ logging và tracking dễ dàng hơn, giúp hệ thống theo dõi và xử lý lỗi hiệu quả. Hơn nữa, nó còn giúp giảm thiểu số lượng schema response lặp lại, tối ưu hóa mã nguồn và đơn giản hóa việc phát triển cho các ứng dụng client.
 
-\textbf{texttit{BasePaginationResponse<T> – Cấu trúc phản hồi phân trang}}
+\textbf{textit{BasePaginationResponse<T> – Cấu trúc phản hồi phân trang}}
 
 BasePaginationResponse được sử dụng cho các API trả về danh sách có phân trang (ví dụ: danh sách sản phẩm, danh sách đơn hàng, danh sách người dùng admin).
 
@@ -68,7 +68,7 @@ Các trường thông tin:
 
 Việc thống nhất cơ chế phân trang mang lại ý nghĩa then chốt là chuẩn hóa mọi API phân trang trên các service, tạo ra một giao diện đồng nhất. Điều này không chỉ giúp frontend hiển thị giao diện phân trang (paginated UI) dễ dàng hơn nhờ vào cấu trúc response đã được định trước, mà còn hỗ trợ backend sử dụng các công cụ như Spring Data xây dựng phân trang hiệu quả và nhất quán xuyên suốt hệ thống.
 
-\textbf{texttit{BasePaginationRequest – Chuẩn hóa Request phân trang}}
+\textbf{textit{BasePaginationRequest – Chuẩn hóa Request phân trang}}
 
 BasePaginationRequest là lớp DTO dùng cho toàn bộ API cần phân trang. Lớp này hỗ trợ Spring Data trực tiếp thông qua hàm toPageable(), giúp code service gọn và tránh lặp lại logic phân trang.
 
