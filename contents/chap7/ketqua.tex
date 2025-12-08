@@ -4,22 +4,13 @@ So với mục tiêu ban đầu, nhóm đã hoàn thành như dự định giai 
 
 Trong giai đoạn thiết kế, nhóm đã đạt được các kết quả chính sau:
 
-Đầu tiên là hoàn thiện thiết kếkKiến trúc EDA và nền tảng Cloud-Native. Nhóm đã xây dựng mô hình kiến trúc, tập trung vào mô hình giao tiếp Hướng Sự kiện (EDA) cho toàn hệ thống. Thiết kế này bảo đảm các dịch vụ có thể vận hành độc lập, dễ mở rộng và thuận tiện cho việc triển khai thực tế trên nền tảng Cloud-Native ở các giai đoạn tiếp theo.
+Đầu tiên là hoàn thiện thiết kế Kiến trúc EDA và nền tảng Cloud-Native. Nhóm đã xây dựng mô hình kiến trúc, tập trung vào mô hình giao tiếp Hướng Sự kiện (EDA) cho toàn hệ thống. Thiết kế này bảo đảm các dịch vụ có thể vận hành độc lập, dễ mở rộng và thuận tiện cho việc triển khai thực tế trên nền tảng Cloud-Native ở các giai đoạn tiếp theo.
 
 Tiếp đó, nhóm đã thiết kế Event Sourcing và Data-Driven. Các nguyên tắc Event Sourcing và Data-Driven đã được phân tích và áp dụng cho các sự kiện quan trọng, cho phép hệ thống bảo đảm khả năng lưu vết, tái dựng trạng thái và duy trì tính nhất quán dữ liệu. Đây là nền tảng quan trọng giúp chuẩn bị cho quá trình triển khai thực tế trong tương lai.
-
-Sau đó, nhóm đã xây dựng kiến trúc cho trợ lý ảo AI Agent dựa trên LangGraph, bao gồm các thành phần lập luận và lập kế hoạch (reasoning \& planning). AI Agent được thiết kế để tương tác với hệ thống thông qua Tool Calling, cho phép tự động hoá nhiều quy trình trong quá trình phát triển sau này.
-
-Cuối cùng, nhóm cũng tiến hành thiết kế cấu trúc dữ liệu hỗ trợ AI:
-
-\begin{itemize}
-    \item Milvus (Vector Database): dùng để lưu trữ embedding của tài liệu sản phẩm và FAQ, tạo nền tảng cho việc áp dụng RAG (Retrieval-Augmented Generation) nhằm nâng cao độ chính xác phản hồi của AI Agent.
-    \item Neo4j (Graph Database): thiết kế đồ thị tri thức (Knowledge Graph) về sản phẩm và người dùng, hỗ trợ logic suy luận phức tạp cũng như các thuật toán gợi ý trong tương lai.
-\end{itemize}
 
 Tuy đã hoàn thiện giai đoạn thiết kế, nhóm nhận thấy hệ thống vẫn còn nhiều hướng có thể cải thiện trong tương lai, đặc biệt khi bước vào giai đoạn triển khai và mở rộng thực tế. Một số hướng phát triển quan trọng bao gồm:
 
 \begin{itemize}
-    \item Nâng cấp trợ lý ảo với RAG: Ở giai đoạn hiện tại, thiết kế Agent mới dừng ở mức phản hồi dựa trên logic từ khoá cơ bản. Trong tương lai, hệ thống có thể được nâng cấp bằng việc tích hợp pipeline RAG hoàn chỉnh kết hợp Milvus nhằm tăng cường khả năng hiểu ngữ cảnh, tra cứu thông tin và cải thiện độ chính xác của câu trả lời.
-    \item Phát triển Hệ thống Gợi ý (Recommendation System): Nền tảng dữ liệu đồ thị tri thức với Neo4j đã được thiết kế sẵn, nhưng các thuật toán gợi ý chuyên sâu như Collaborative Filtering hoặc Content-based Filtering vẫn chưa được hiện thực. Đây sẽ là hướng mở rộng quan trọng giúp khai thác hiệu quả cấu trúc dữ liệu và nâng cao trải nghiệm cá nhân hoá cho người dùng.
+    \item Nâng cấp trợ lý ảo với RAG: Trong tương lai, hệ thống có thể được nâng cấp bằng việc tích hợp pipeline RAG hoàn chỉnh kết hợp Milvus nhằm tăng cường khả năng hiểu ngữ cảnh, tra cứu thông tin và cải thiện độ chính xác của câu trả lời.
+    \item Phát triển Hệ thống Gợi ý (Recommendation System): Các thuật toán gợi ý chuyên sâu như Collaborative Filtering hoặc Content-based Filtering vẫn chưa được hiện thực. Đây sẽ là hướng mở rộng quan trọng giúp khai thác hiệu quả cấu trúc dữ liệu và nâng cao trải nghiệm cá nhân hoá cho người dùng.
 \end{itemize}
