@@ -145,12 +145,13 @@ Vì các lý do trên, nhóm lựa chọn Saga Orchestration làm mô hình đi�
 \subsubsection{Các tầng của hệ thống}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{images/chap6/Architecture diagram.drawio.png}
+    \includegraphics[width=\textwidth]{images/chap6/ArchitectureDiagram_v2.png}
     \vspace{0.5cm}
     \caption{Sơ đồ kiến trúc hệ thống}
+    \label{fig:whole_system_architecture}
 \end{figure}
 
-Hệ thống của nhóm được tổ chức bao gồm bốn tầng chính:
+Hình \ref{fig:whole_system_architecture} bên trên biểu diễn kiến trúc tổng thể của hệ thống của nhóm. Sơ đồ \ref{fig:whole_system_architecture} cho thấy hệ thống của nhóm được tổ chức bao gồm bốn tầng chính:
 \begin{itemize}
     \item Frontend
     \item API Gateway \& Event Broker
@@ -181,7 +182,7 @@ Song song với API Gateway, hệ thống còn sử dụng một Event Broker. E
 
 \textbf{Tầng Microservice}
 
-Tầng này bao gồm sáu dịch vụ độc lập theo chức năng, được thể hiện rõ trên sơ đồ:
+Tầng này bao gồm bảy dịch vụ độc lập theo chức năng, trong đó có một service điều phối điều phối Saga để duy trì tính nhất quán dữ liệu trong các giao dịch phân tán, năm service nghiệp vụ thương mại điện tử và một service chuyên biệt về AI được thể hiện rõ trên sơ đồ:
 \begin{itemize}
     \item User service: Quản lý thông tin người dùng và các thao tác liên quan đến tài khoản.
     \item Cart service: Xử lý toàn bộ hoạt động liên quan đến giỏ hàng của người dùng.
@@ -189,10 +190,29 @@ Tầng này bao gồm sáu dịch vụ độc lập theo chức năng, được 
     \item Product service: Lưu trữ và cung cấp thông tin về sản phẩm cho hệ thống.
     \item Admin service: Hỗ trợ các chức năng quản trị.
     \item AI agent service: Thực hiện các hoạt động của Trợ lý Ảo như tư vấn sản phẩm, kiểm tra thông tin, ...
+    \item Orchestrator Service: Thực hiện mô hình Saga Orchestration, chuyên trách điều phối các quy trình nghiệp vụ phức tạp bằng cách quản lý Trạng thái Saga, gửi Commands và xử lý Reply Events qua Event Broker. Dịch vụ này có Database riêng để lưu trữ Metadata Điều phối.
 \end{itemize}
 Các microservice không có bất kỳ liên kết trực tiếp nào với nhau trong sơ đồ, thay vào đó toàn bộ giao tiếp đều phải thông qua Event Broker. Điều này giúp cho mỗi service được vận hành tách biệt, giúp giảm thiểu tình trạng xung đột logic, tăng tính chủ động khi triển khai và bảo trì, và bên cạnh đó còn giúp hỗ trợ nhóm phân chia công việc dễ dàng hơn trong giai đoạn hiện thực hệ thống.
-\bigskip
 
+Ngoài ra, về mặt cấu trúc nội bộ, mỗi Microservice được nhỏm tổ chức theo mô hình phân tầng cơ bản (Controller → Service → Repository). 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{images/chap6/JavaBackend.png} 
+    \quad
+    \includegraphics[width=0.48\textwidth]{images/chap6/PythonBackend.png} 
+    \vspace{0.5cm}
+    \caption{Cấu trúc Nội bộ Microservice của các service Java (trái) và Python(phải)}
+    \label{fig:internal_service_architecture}
+\end{figure}
+
+Sơ đồ \ref{fig:internal_service_architecture} mô tả cấu trúc nội bộ của từng Microservice. Ở mức này, dịch vụ tuân theo mô hình phân tầng gồm controller → service → repository để tách biệt rõ ràng chức năng. Tầng service được chia thành hai luồng xử lý: read flow và write flow.
+
+Read flow truy vấn dữ liệu thông qua repository theo mô hình truyền thống. Ngược lại, write flow không thực hiện cập nhật trực tiếp mà ghi các thay đổi dưới dạng event vào event store (Kafka). Kafka đóng vai trò event store trong kiến trúc event sourcing, nơi toàn bộ sự kiện thay đổi trạng thái được lưu trữ tuần tự và có thể được sử dụng để xây dựng lại projection hoặc kích hoạt các xử lý bất đồng bộ thông qua các consumer.
+
+Đối với các service nghiệp vụ thương mại điện tử và orchestrator service, hệ thống còn sử dụng vert.x event bus để hỗ trợ giao tiếp bất đồng bộ nội bộ service, giúp dịch vụ xử lý các tác vụ bên trong theo kiểu non-blocking, nâng cao hiệu năng và khả năng mở rộng. Trong khi đó, AI service không dùng vert.x event bus vì được xây dựng bằng Python và sử dụng FastAPI/asyncio cho mô hình bất đồng bộ, vốn đáp ứng tốt nhu cầu xử lý I/O phức tạp của dịch vụ AI.
+
+\bigskip
 
 
 \textbf{Tầng Database}
@@ -205,6 +225,7 @@ Tầng Database chịu trách nhiệm lưu trữ dữ liệu cho từng microser
     \item Product service → Lưu trữ danh sách sản phẩm, thuộc tính và thông tin mô tả sản phẩm.
     \item Admin service → Lưu dữ liệu phục vụ thao tác quản trị và điều chỉnh thông tin hệ thống.
     \item AI agent service → Lưu trữ các vector embedding dùng cho xử lý truy vấn và gợi ý của Trợ lý Ảo. Bên cạnh đó, lưu các quan hệ dạng đồ thị giữa sản phẩm, hành vi và dữ liệu cần phân tích cho Trợ lý Ảo.
+    \item Orchestrator service → Lưu trữ metadata điều phối Saga, bao gồm trạng thái hiện tại của các Saga đang chạy, thông tin về các bước đã hoàn thành và các dữ liệu cần thiết để quản lý quy trình nghiệp vụ phân tán.
 \end{itemize}
 Các service chính như User, Cart, Order, Product và Admin đều sử dụng Cơ sở dữ liệu quan hệ (Relational Database), đảm bảo lưu trữ dữ liệu theo cấu trúc bảng truyền thống.
 

@@ -2,18 +2,23 @@
 
 \subsubsection{Mục tiêu của thiết kế API}
 
-API trong hệ thống thương mại điện tử được xây dựng nhằm cung cấp điểm truy cập thống nhất cho ứng dụng Frontend. API sử dụng chuẩn RESTful, được triển khai độc lập cho từng microservice. Các API chỉ phục vụ giao tiếp giữa người dùng (frontend) và hệ thống; mọi giao tiếp giữa các service backend đều được xử lý dưới dạng sự kiện bất đồng bộ (event-driven), không nằm trong phạm vi phần này.
+Mục tiêu chung của việc thiết kế API là cung cấp điểm truy cập thống nhất (RESTful) cho ứng dụng Frontend (External API) và đảm bảo tính nhất quán cho các giao dịch phân tán nội bộ.
 
-Việc thiết kế API tuân theo các tiêu chí:
+Hệ thống triển khai hai loại API chính dựa trên mục đích sử dụng:
+
+\begin{enumerate}
+    \item External API (Frontend-Facing): Là các API công khai, phục vụ giao tiếp trực tiếp với ứng dụng Frontend. Hầu hết các API này là điểm khởi đầu cho các luồng xử lý Command/Event Sourcing hoặc kích hoạt một Giao dịch Phân tán (Saga).
+    \item Internal API (Backend/Saga Orchestration): Là các API nội bộ, được gọi đồng bộ (Sync) bởi orchestrator service để thực hiện các bước tuần tự của một giao dịch phân tán phức tạp. Các API này đảm bảo tính nhất quán giữa nhiều Microservice theo mô hình Saga Orchestration.
+\end{enumerate}
+
+Việc thiết kế  API tuân theo các tiêu chí:
 
 \begin{itemize}
     \item Đơn giản – rõ ràng – tách biệt theo domain.
     \item Phản hồi thống nhất theo cấu trúc BaseResponse.
     \item Request/Response chuẩn hóa thông qua DTO, không lộ dữ liệu nội bộ của service.
-    \item Đảm bảo khả năng mở rộng, dễ thay đổi khi kiến trúc microservice tăng số lượng tài nguyên.
+    \item Đảm bảo khả năng mở rộng, dễ thay đổi khi kiến trúc Cloud-Native kết hợp với Event Driven Architecture tăng số lượng tài nguyên.
 \end{itemize}
-
-Do số lượng API lớn, nhóm chỉ tập trung mô tả các nhóm chức năng chính và một số endpoint tiêu biểu nhằm minh họa cách mỗi service cung cấp dữ liệu cho frontend và phối hợp với các service khác thông qua Kafka.
 
 Hầu hết các API trong hệ thống (trừ một số trường hợp đặc biệt như đăng nhập Google – nơi việc đăng ký được thực hiện tự động ngay trong lần đăng nhập đầu tiên) đều được thiết kế theo kiến trúc Event Sourcing. Thay vì cập nhật trực tiếp dữ liệu, mỗi thao tác của người dùng sẽ ghi nhận một sự kiện (event) vào event store. Các sự kiện này sau đó được xử lý bất đồng bộ để xây dựng read model và đồng bộ trạng thái với các service khác qua Kafka.
 
@@ -22,12 +27,24 @@ Nhờ cơ chế này, API chỉ cần xác nhận đã ghi nhận sự kiện th
 
 \subsubsection{Nguyên tắt thiết kế API}
 
-Để đảm bảo một hệ thống API đồng bộ, dễ hiểu, dễ mở rộng và an toàn, việc tuân thủ một bộ các nguyên tắc thiết kế thống nhất là điều tối quan trọng. Các nguyên tắc dưới đây tập trung vào việc áp dụng mô hình Resource-Oriented và chuẩn mực RESTful cùng với các biện pháp bảo mật và quản lý phiên bản hiệu quả:
+Để đảm bảo một hệ thống API đồng bộ, dễ hiểu, dễ mở rộng và an toàn, việc tuân thủ một bộ các nguyên tắc thiết kế thống nhất là điều tối quan trọng. Các nguyên tắc dưới đây tập trung vào việc áp dụng mô hình Resource-Oriented và chuẩn mực RESTful cùng với các biện pháp bảo mật và quản lý phiên bản hiệu quả đối với các External API.
 \begin{itemize}
     \item Theo mô hình Resource-Oriented (dựa trên tài nguyên: users, products, carts, orders…).
     \item RESTful: sử dụng GET/POST/PUT/DELETE.
     \item Áp dụng DTO cho mọi request/response, hạn chế lộ entity gốc.
     \item Sử dụng token-based authentication cho những API yêu cầu xác thực.
+\end{itemize}
+
+Internal API được thiết kế để đảm bảo độ tin cậy và khả năng hoàn tác (Compensation), khác biệt với External API.
+
+\begin{itemize}
+    \item Cấu trúc Endpoint: Mỗi service tham gia Saga phải cung cấp một cặp endpoint tương ứng với hành động Thực thi và Hoàn tác.
+    \begin{itemize}
+        \item Thực thi: $\text{POST}$ $\text{/api/internal/\{resource\}/execute}$
+        \item Hoàn tác: $\text{POST}$ $\text{/api/internal/\{resource\}/compensate}$
+    \end{itemize}
+    \item Phản hồi:Phản hồi tập trung vào Mã trạng thái HTTP ($200/\text{201}$ cho thành công, $400/500$ cho thất bại) và dữ liệu tối thiểu cần thiết cho Orchestrator.
+    \item Request Data: Luôn phải chứa $SagaID$ để theo dõi trạng thái.
 \end{itemize}
 
 \subsubsection{Cấu trúc mẫu của Request/Response trong API}
@@ -355,4 +372,30 @@ AI Service là thành phần duy nhất trong hệ thống được triển khai
 \item Sinh câu trả lời tự nhiên bằng mô hình AI.
 \end{enumerate}
 \item Đầu ra: Phản hồi chat của AI, có thể gồm gợi ý sản phẩm hoặc thông tin liên quan.
+\end{itemize}
+
+\subsubsection{Orchestrator Service}
+
+Orchestrator service là một microservice đặc biệt, đóng vai trò là "nhạc trưởng" trong các giao dịch phân tán phức tạp (Saga). Dịch vụ này không chịu trách nhiệm xử lý nghiệp vụ đơn lẻ mà tập trung vào việc điều phối chuỗi gọi internal API đồng bộ để đảm bảo tính nhất quán giữa nhiều microservice.
+
+\textbf{1. POST /api/order/place}
+
+API này là điểm tiếp nhận yêu cầu Đặt hàng từ Frontend. Nó kích hoạt luồng Saga Orchestration và đồng thời hoạt động như một command gateway ghi nhận lệnh nghiệp vụ.
+
+\begin{itemize}
+    \item Chức năng: Khởi tạo luồng giao dịch đặt hàng (order placement saga).
+    \item Đầu vào: Thông tin đơn hàng (item, quantity, shippingAddress, paymentMethod, \ldots).
+    \item Xử lý (orchestrator logic):
+    \begin{enumerate}
+        \item Validate dữ liệu đầu vào.
+        \item Ghi log $\text{SagaStarted}$ với trạng thái $\text{Pending}$ vào $\text{Saga Log}$.
+        \item Thực hiện chuỗi gọi internal API đồng bộ theo thứ tự (saga steps): 
+        \begin{itemize}
+            \item Bước 1 (Giữ hàng): Gọi $\text{Product Service}$ ($\text{POST}$ $\text{/api/internal/product/reserve}$) để giữ tồn kho.
+            \item Bước 2 (Thanh toán \& Tạo đơn): Nếu Bước 1 thành công, gọi $\text{Order Service}$ ($\text{POST}$ $\text{/api/internal/order/process-payment}$) để xử lý thanh toán và tạo đơn tạm thời.
+            \item Kết thúc Saga: Nếu tất cả các bước đồng bộ thành công, orchestrator sẽ ghi sự kiện $\text{OrderPlacementCompleted}$ (hoặc tương tự) vào Event Store/Kafka.
+            \item Hoàn tác (Compensation): Nếu bất kỳ bước nào thất bại (nhận mã HTTP $4xx$ hoặc $5xx$), orchestrator sẽ ngay lập tức kích hoạt chuỗi hoàn tác bằng cách gọi các $\text{Compensate API}$ tương ứng (ví dụ: $\text{/api/internal/product/compensate}$).
+        \end{itemize}
+    \end{enumerate}
+    \item Đầu ra: $\text{BaseResponse}$ đồng bộ xác nhận đã kích hoạt Saga thành công (chứa $orderId$ và trạng thái $\text{PROCESSING}$), hoặc lỗi tức thời nếu Saga thất bại ngay từ bước đầu (ví dụ: validation error).
 \end{itemize}

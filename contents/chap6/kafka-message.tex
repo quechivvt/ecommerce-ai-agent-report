@@ -8,13 +8,15 @@ Kafka đảm nhận ba chức năng chính:
 
 \textbf{1.1. Event Streaming Layer – Lớp luồng sự kiện}
 
-Các microservice không gọi trực tiếp sang nhau khi xử lý nghiệp vụ phức tạp. Thay vào đó:
+Các microservice không gọi trực tiếp sang nhau khi xử lý nghiệp vụ phức tạp trừ khi chúng nằm trong luồng giao dịch phân tán (Saga). Thay vào đó:
 
 \begin{itemize}
     \item Service phát ra event (Producer)
     \item Các service khác lắng nghe topic liên quan (Consumer)
     \item Mỗi service xử lý phần việc của mình mà không ảnh hưởng thời gian phản hồi API chính
 \end{itemize}
+
+Ngoại lệ là giao tiếp đồng bộ (Sync) qua Internal API được sử dụng khi cần orchestrator service điều phối một giao dịch phân tán (Saga) để đảm bảo tính nhất quán (ví dụ: quy trình đặt hàng).
 
 Điều này giúp frontend giao tiếp nhẹ nhàng, còn backend xử lý nội bộ qua Kafka.
 
@@ -53,6 +55,7 @@ Thay vì gọi trực tiếp (synchronous API call), các service giao tiếp b�
     \item \texttt{order.created}: Đơn hàng mới được tạo từ quá trình checkout.
     \item \texttt{order.status.updated}: Cập nhật trạng thái đơn hàng.
     \item \texttt{order.completed}: Đơn hàng hoàn tất; Product và Admin Service sử dụng để thống kê.
+    \item \texttt{order.saga.failed}: Ghi nhận khi một Saga Đặt hàng bị hủy do lỗi (compensation).
 \end{itemize}
 
 \textbf{d/ Product Topics}
@@ -122,15 +125,7 @@ Dưới đây là danh sách các topic và sự kiện tiêu biểu theo từng
     \item OrderCancelled
     \item OrderDelivered
     \item OrderFailed
-\end{itemize}
-
-\textbf{e/ Payment Service} \\
-\textbf{Topic:} \texttt{payment-events}
-\begin{itemize}
-    \item PaymentRequested
-    \item PaymentSucceeded
-    \item PaymentFailed
-    \item RefundIssued
+    \item OrderCompensationReverted
 \end{itemize}
 
 \textbf{f/ Admin Service} \\
