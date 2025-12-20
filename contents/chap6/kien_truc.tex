@@ -232,6 +232,6 @@ Tầng Database chịu trách nhiệm lưu trữ dữ liệu cho từng microser
     \item AI agent service → Lưu trữ các vector embedding dùng cho xử lý truy vấn và gợi ý của Trợ lý Ảo. Bên cạnh đó, lưu các quan hệ dạng đồ thị giữa sản phẩm, hành vi và dữ liệu cần phân tích cho Trợ lý Ảo.
     \item Orchestrator service → Lưu trữ metadata điều phối Saga, bao gồm trạng thái hiện tại của các Saga đang chạy, thông tin về các bước đã hoàn thành và các dữ liệu cần thiết để quản lý quy trình nghiệp vụ phân tán.
 \end{itemize}
-Các service chính như User, Cart, Order, Product và Admin đều sử dụng Cơ sở dữ liệu quan hệ (Relational Database), đảm bảo lưu trữ dữ liệu theo cấu trúc bảng truyền thống.
+Các service chính như User, Cart, Order, Product và Admin đều sử dụng cơ sở dữ liệu quan hệ, đảm bảo lưu trữ dữ liệu theo cấu trúc bảng truyền thống.
 
-Riêng AI agent service sở hữu hai cơ sở dữ liệu độc lập: Cơ sở dữ liệu Vector (Vector Database) và Cơ sở dữ liệu Graph (Graph Database), tương ứng với hai loại dữ liệu mà service này cần quản lý. Điều này cho phép dịch vụ Trợ lý Ảo vận hành trên những tập dữ liệu phù hợp với nhu cầu xử lý của nó.
+Riêng AI agent service sở hữu hai cơ sở dữ liệu độc lập: cơ sở dữ liệu Vector và cơ sở dữ liệu Graph, tương ứng với hai loại dữ liệu mà service này cần quản lý. Điều này cho phép dịch vụ Trợ lý Ảo vận hành trên những tập dữ liệu phù hợp với nhu cầu xử lý của nó.

@@ -1,16 +1,33 @@
 \subsection{Kết quả đạt được}
 
-So với mục tiêu ban đầu, nhóm đã hoàn thành như dự định giai đoạn thiết kế kiến trúc và mô hình hoá cho một hệ thống thương mại điện tử chuyên biệt, đáp ứng đầy đủ các yêu cầu về chức năng, khả năng mở rộng và tích hợp AI Agent.
-
-Trong giai đoạn thiết kế, nhóm đã đạt được các kết quả chính sau:
-
-Đầu tiên là hoàn thiện thiết kế Kiến trúc EDA và nền tảng Cloud-Native. Nhóm đã xây dựng mô hình kiến trúc, tập trung vào mô hình giao tiếp Hướng Sự kiện (EDA) cho toàn hệ thống. Thiết kế này bảo đảm các dịch vụ có thể vận hành độc lập, dễ mở rộng và thuận tiện cho việc triển khai thực tế trên nền tảng Cloud-Native ở các giai đoạn tiếp theo.
-
-Tiếp đó, nhóm đã thiết kế Event Sourcing và Data-Driven. Các nguyên tắc Event Sourcing và Data-Driven đã được phân tích và áp dụng cho các sự kiện quan trọng, cho phép hệ thống bảo đảm khả năng lưu vết, tái dựng trạng thái và duy trì tính nhất quán dữ liệu. Đây là nền tảng quan trọng giúp chuẩn bị cho quá trình triển khai thực tế trong tương lai.
-
-Tuy đã hoàn thiện giai đoạn thiết kế, nhóm nhận thấy hệ thống vẫn còn nhiều hướng có thể cải thiện trong tương lai, đặc biệt khi bước vào giai đoạn triển khai và mở rộng thực tế. Một số hướng phát triển quan trọng bao gồm:
+So với mục tiêu đề ra ban đầu, nhóm đã hoàn thành giai đoạn thiết kế kiến trúc và mô hình hoá cho hệ thống theo đúng định hướng, đạt được các kết quả cụ thể sau:
 
 \begin{itemize}
-    \item Nâng cấp trợ lý ảo với RAG: Trong tương lai, hệ thống có thể được nâng cấp bằng việc tích hợp pipeline RAG hoàn chỉnh kết hợp Milvus nhằm tăng cường khả năng hiểu ngữ cảnh, tra cứu thông tin và cải thiện độ chính xác của câu trả lời.
-    \item Phát triển Hệ thống Gợi ý (Recommendation System): Các thuật toán gợi ý chuyên sâu như Collaborative Filtering hoặc Content-based Filtering vẫn chưa được hiện thực. Đây sẽ là hướng mở rộng quan trọng giúp khai thác hiệu quả cấu trúc dữ liệu và nâng cao trải nghiệm cá nhân hoá cho người dùng.
+    \item Về nền tảng thương mại điện tử: Nhóm đã thiết kế thành công khung chức năng cho hệ thống bán lẻ công nghệ, bao gồm các quy trình từ tìm kiếm, quản lý giỏ hàng đến thanh toán. Kiến trúc Microservices và mô hình Cloud-Native đảm bảo hệ thống có khả năng vận hành ổn định và sẵn sàng cho việc mở rộng quy mô.
+    
+    \item Về phát triển trợ lý ảo AI agent: Đã xác định và mô hình hóa thành công cơ chế giao tiếp của AI agent thông qua kỹ thuật RAG. Thiết kế này đảm bảo trợ lý ảo có khả năng tư vấn sản phẩm chuyên sâu dựa trên cơ sở tri thức và phản hồi tự nhiên bằng tiếng Việt.
+    
+    \item Về khả năng tích hợp và tương tác: Thông qua nền tảng truyền tải sự kiện Kafka (EDA), nhóm đã thiết kế được luồng tương tác liền mạch giữa AI agent và các dịch vụ nghiệp vụ. Điều này cho phép AI thực hiện các hành động trực tiếp như kiểm tra giỏ hàng hay hủy đơn theo yêu cầu người dùng đúng như mục tiêu đề ra.
+    
+    \item Về hệ thống quản trị: Nhóm đã đặc tả chi tiết giao diện và chức năng quản trị, tập trung vào việc giám sát đơn hàng và quản lý kho sản phẩm. Kiến trúc thiết kế đã bao hàm khả năng giám sát hoạt động của AI agent, giúp quản trị viên dễ dàng bảo trì và cập nhật dữ liệu tri thức.
+\end{itemize}
+
+\subsection{Hạn chế của đề tài}
+
+Trong phạm vi của giai đoạn này, dù đã đạt được những mục tiêu cốt lõi về thiết kế, nhóm nhận thấy hệ thống vẫn tồn tại một số hạn chế và các mảng nội dung có thể được bổ sung để hoàn thiện hơn:
+
+\begin{itemize}
+    \item Về mặt thực nghiệm: Hệ thống hiện đang dừng lại ở các bản thiết kế mô hình và đặc tả kiến trúc. Do chưa tiến hành cài đặt và vận hành trên môi trường thực tế, nhóm chưa có các số liệu thực nghiệm về thời gian phản hồi của AI khi xử lý truy vấn phức tạp, cũng như chưa thực hiện đo lường tải thực tế trên cụm máy chủ để đánh giá tính ổn định của kiến trúc Microservices.
+    \item Về kỹ thuật AI agent: Trợ lý ảo hiện tại tập trung vào luồng giao tiếp và thực thi tác vụ cơ bản. Việc tích hợp một pipeline RAG chuyên sâu kết hợp với cơ sở dữ liệu vector Milvus để tối ưu hóa khả năng truy xuất ngữ cảnh chính xác tuyệt đối vẫn là một thách thức cần đầu tư thêm nguồn lực thực hiện trong tương lai.
+    \item Về tính năng cá nhân hóa: Hệ thống chưa tích hợp các thuật toán gợi ý chuyên sâu. Đây là một mảng nội dung quan trọng trong thương mại điện tử giúp khai thác hành vi người dùng mà hệ thống có thể bổ sung sau này để nâng cao trải nghiệm mua sắm.
+    \item Về tương tác người dùng: Do chưa có quá trình thử nghiệm thực tế với người dùng cuối, nhóm chưa thể đánh giá khách quan mức độ hài lòng cũng như tính tự nhiên của trợ lý ảo trong các tình huống hội thoại thực tế.
+\end{itemize}
+
+\subsection{Chỉ số đánh giá dự kiến trong tương lai}
+Để đảm bảo tính khoa học và khả năng kiểm chứng thực tế, trong giai đoạn triển khai, nhóm dự kiến sẽ thực hiện đo lường hệ thống dựa trên các chỉ số định lượng cụ thể:
+\begin{itemize}
+    \item Hiệu năng kỹ thuật: Sử dụng các công cụ giám sát để đo độ trễ trung bình của một lượt phản hồi từ AI agent và đánh giá khả năng xử lý đồng thời của hệ thống qua thông lượng sự kiện trên các Kafka topics.
+    \item Độ chính xác nghiệp vụ: Thực hiện kiểm thử trên bộ kịch bản mẫu để tính toán tỷ lệ hoàn thành tác vụ khi người dùng yêu cầu AI thực hiện các nghiệp vụ như tra cứu đơn hàng, đặt hàng hoặc hủy đơn.
+    \item Hiệu quả tương tác: Đánh giá độ phù hợp ngữ cảnh của câu trả lời thông qua các phương pháp đo lường chuyên biệt cho mô hình ngôn ngữ lớn (như tính toán độ tương đồng hoặc kiểm thử thủ công bởi người dùng).
+    \item Trải nghiệm thực tế: Thu thập phản hồi định lượng từ nhóm người dùng thử nghiệm về tính hữu ích và độ tin cậy của trợ lý ảo thông qua thang đo mức độ hài lòng (CSAT).
 \end{itemize}
