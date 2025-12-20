@@ -2,13 +2,13 @@
 
 \subsubsection{Mục tiêu của thiết kế API}
 
-Mục tiêu chung của việc thiết kế API là cung cấp điểm truy cập thống nhất (RESTful) cho ứng dụng Frontend (External API) và đảm bảo tính nhất quán cho các giao dịch phân tán nội bộ.
+Mục tiêu chung của việc thiết kế API là cung cấp điểm truy cập thống nhất cho ứng dụng frontend và đảm bảo tính nhất quán cho các giao dịch phân tán nội bộ.
 
 Hệ thống triển khai hai loại API chính dựa trên mục đích sử dụng:
 
 \begin{enumerate}
-    \item External API (Frontend-Facing): Là các API công khai, phục vụ giao tiếp trực tiếp với ứng dụng Frontend. Hầu hết các API này là điểm khởi đầu cho các luồng xử lý Command/Event Sourcing hoặc kích hoạt một Giao dịch Phân tán (Saga).
-    \item Internal API (Backend/Saga Orchestration): Là các API nội bộ, được gọi đồng bộ (Sync) bởi orchestrator service để thực hiện các bước tuần tự của một giao dịch phân tán phức tạp. Các API này đảm bảo tính nhất quán giữa nhiều Microservice theo mô hình Saga Orchestration.
+    \item External API (Frontend-Facing): Là các API công khai, phục vụ giao tiếp trực tiếp với ứng dụng frontend. Hầu hết các API này là điểm khởi đầu cho các luồng xử lý command hoặc kích hoạt một giao dịch phân tán.
+    \item Internal API (Backend/Saga Orchestration): Là các API nội bộ, được gọi đồng bộ bởi orchestrator service để thực hiện các bước tuần tự của một giao dịch phân tán phức tạp. Các API này đảm bảo tính nhất quán giữa nhiều microservice theo mô hình Saga Orchestration.
 \end{enumerate}
 
 Việc thiết kế  API tuân theo các tiêu chí:
