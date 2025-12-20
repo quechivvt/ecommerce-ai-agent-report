@@ -1,166 +1,73 @@
-\subsection{Thiết kế Kafka cho Event-Driven Architecture và Event Sourcing}
+\subsection{Thiết kế Kafka cho kiến trúc hướng sự kiện}
 
-Trong hệ thống thương mại điện tử này, Kafka được sử dụng như một xương sống giao tiếp bất đồng bộ giữa các microservice. Mô hình này giúp các service hoạt động độc lập, giảm phụ thuộc trực tiếp qua HTTP, đồng thời hỗ trợ khả năng mở rộng, tính chống chịu lỗi, và khả năng ghi nhận lịch sử sự kiện (event sourcing).
+Trong hệ thống thương mại điện tử này, Kafka đóng vai trò là xương sống giao tiếp bất đồng bộ giữa các dịch vụ thành viên. Mô hình này giúp các dịch vụ hoạt động độc lập, giảm sự phụ thuộc trực tiếp qua giao thức HTTP, đồng thời hỗ trợ khả năng mở rộng, tính chống chịu lỗi và đảm bảo nhất quán dữ liệu giữa luồng ghi và luồng đọc trong kiến trúc CQRS.
 
 \subsubsection{Vai trò của Kafka trong kiến trúc}
 
-Kafka đảm nhận ba chức năng chính:
+Kafka đảm nhận ba chức năng chính trong hệ thống:
 
-\textbf{1.1. Event Streaming Layer – Lớp luồng sự kiện}
+\textbf{a/ Lớp luồng sự kiện (Event Streaming Layer)}
 
-Các microservice không gọi trực tiếp sang nhau khi xử lý nghiệp vụ phức tạp. Thay vào đó:
-
+Các dịch vụ thành viên không gọi trực tiếp sang nhau khi xử lý các nghiệp vụ phức tạp, trừ trường hợp điều phối giao dịch. Quy trình vận hành như sau:
 \begin{itemize}
-    \item Service phát ra event (Producer)
-    \item Các service khác lắng nghe topic liên quan (Consumer)
-    \item Mỗi service xử lý phần việc của mình mà không ảnh hưởng thời gian phản hồi API chính
+    \item Dịch vụ nguồn phát ra sự kiện nghiệp vụ ngay sau khi cập nhật trạng thái thành công vào cơ sở dữ liệu chính.
+    \item Các dịch vụ liên quan lắng nghe các chủ đề tương ứng để tiếp nhận dữ liệu.
+    \item Mỗi dịch vụ xử lý phần việc nội bộ như gửi thông báo hoặc cập nhật kho dữ liệu AI mà không làm ảnh hưởng đến thời gian phản hồi của giao diện lập trình ứng dụng chính.
 \end{itemize}
 
-Điều này giúp frontend giao tiếp nhẹ nhàng, còn backend xử lý nội bộ qua Kafka.
+Ngoại lệ duy nhất là giao tiếp đồng bộ qua giao diện lập trình nội bộ được điều phối bởi Orchestrator trong các giao dịch phân tán Saga để đảm bảo tính nhất quán tức thời cho các bước quan trọng.
 
-\textbf{1.2. Event Sourcing – Lưu vết các sự kiện quan trọng}
-Một số sự kiện trong hệ thống được xem như "nguồn sự thật" (source of truth) cho các chức năng khác, ví dụ:
+\textbf{b/ Đồng bộ hóa dữ liệu giữa các dịch vụ}
 
-Các sự kiện này có vai trò nền tảng khi được tiêu thụ bởi nhiều service khác nhau để thực thi các logic nghiệp vụ tiếp theo, hoặc được dùng để tái dựng lại trạng thái dữ liệu và tạo các báo cáo tổng hợp.
+Trong mô hình CQRS, Kafka đóng vai trò then chốt trong việc lan truyền các thay đổi dữ liệu từ dịch vụ quản lý gốc sang các dịch vụ tiêu thụ khác. Ví dụ, khi người dùng cập nhật hồ sơ, dịch vụ AI Agent sẽ tiêu thụ sự kiện này để cập nhật lại thông tin trong cơ sở dữ liệu đồ thị Neo4j và cơ sở dữ liệu vector Milvus, đảm bảo dữ liệu phục vụ truy vấn luôn ở trạng thái mới nhất.
 
-Tuy nhiên, Event Sourcing không áp dụng cho các API đặc biệt như Google Login ngay từ ban đầu, do quá trình này không chủ động tạo tài khoản, thông tin người dùng được cung cấp từ bên thứ ba thường không đầy đủ, và quá trình đăng nhập diễn ra bên ngoài hệ thống. Mặc dù vậy, hệ thống vẫn sẽ phát sự kiện use\_registered sau lần đăng nhập Google đầu tiên khi tài khoản được tạo nội bộ.
+\textbf{c/ Lớp kết nối giữa các dịch vụ}
 
-\textbf{1.3. Integration Layer – Kết nối giữa các service qua Kafka}
+Thay vì tạo ra các kết nối chằng chịt giữa các thành phần, Kafka đóng vai trò là kênh sự kiện trung gian. Việc sử dụng mô hình công bố và đăng ký sự kiện giúp giảm thiểu sự phụ thuộc lẫn nhau, cho phép hệ thống dễ dàng tích hợp thêm các dịch vụ mới mà không cần thay đổi logic của các dịch vụ hiện có.
 
-Trong kiến trúc của hệ thống, các service được tích hợp với nhau thông qua Kafka, đóng vai trò là kênh sự kiện trung gian.
-Thay vì gọi trực tiếp (synchronous API call), các service giao tiếp bằng cách phát (publish) và lắng nghe (subscribe) các sự kiện nghiệp vụ. Điều này giúp giảm phụ thuộc giữa các service và hỗ trợ mở rộng theo hướng event-driven.
+\subsubsection{Các chủ đề Kafka tiêu biểu trong hệ thống}
 
-\subsubsection{Các topic Kafka tiêu biểu trong hệ thống}
+Để hỗ trợ kiến trúc hướng sự kiện, hệ thống sử dụng các nhóm chủ đề Kafka tiêu biểu nhằm truyền tải thay đổi trạng thái và dữ liệu nghiệp vụ:
 
-Để hỗ trợ kiến trúc microservice theo hướng sự kiện (event-driven), hệ thống sử dụng một số nhóm topic Kafka tiêu biểu. Các topic này giúp truyền tải thay đổi trạng thái và dữ liệu nghiệp vụ giữa các service mà không cần phụ thuộc trực tiếp vào nhau.
-
-\textbf{a/ User Topics}
+\textbf{a/ Nhóm sự kiện người dùng}
 \begin{itemize}
     \item \texttt{user.register.local}: Phát sinh khi người dùng tạo tài khoản mới.
     \item \texttt{user.login.local}: Ghi nhận sự kiện đăng nhập thành công.
-    \item \texttt{user.updated}: Cập nhật thông tin người dùng.
-    \item \texttt{user.behavior.tracked}: Lưu vết hành vi để phục vụ gợi ý sản phẩm/AI.
+    \item \texttt{user.updated}: Lan truyền thông tin cập nhật người dùng.
+    \item \texttt{user.behavior.tracked}: Lưu vết hành vi phục vụ các tính năng thông minh.
 \end{itemize}
 
-\textbf{b/ Cart Topics}
+\textbf{b/ Nhóm sự kiện giỏ hàng}
 \begin{itemize}
-    \item \texttt{cart.checked\_out}: Người dùng xác nhận thanh toán; Order Service sẽ lắng nghe để tạo đơn hàng.
-    \item \texttt{cart.updated}: Ghi nhận thay đổi giỏ hàng, phục vụ phân tích hành vi.
+    \item \texttt{cart.checked\_out}: Người dùng xác nhận thanh toán để Order Service tạo đơn hàng.
+    \item \texttt{cart.updated}: Ghi nhận thay đổi giỏ hàng phục vụ phân tích sở thích.
 \end{itemize}
 
-\textbf{c/ Order Topics}
+\textbf{c/ Nhóm sự kiện đơn hàng}
 \begin{itemize}
-    \item \texttt{order.created}: Đơn hàng mới được tạo từ quá trình checkout.
-    \item \texttt{order.status.updated}: Cập nhật trạng thái đơn hàng.
-    \item \texttt{order.completed}: Đơn hàng hoàn tất; Product và Admin Service sử dụng để thống kê.
+    \item \texttt{order.created}: Đơn hàng mới được tạo thành công.
+    \item \texttt{order.status.updated}: Cập nhật trạng thái xử lý đơn hàng.
+    \item \texttt{order.completed}: Đơn hàng hoàn tất để phục vụ thống kê báo cáo.
+    \item \texttt{order.saga.failed}: Ghi nhận khi một giao dịch Saga bị hủy để kích hoạt luồng hoàn tác.
 \end{itemize}
 
-\textbf{d/ Product Topics}
+\textbf{d/ Nhóm sự kiện sản phẩm}
 \begin{itemize}
     \item \texttt{product.created}: Sản phẩm mới được thêm vào hệ thống.
-    \item \texttt{product.updated}: Sản phẩm được chỉnh sửa bởi admin.
-    \item \texttt{product.sales.updated}: Ghi nhận dữ liệu bán hàng sau mỗi đơn thành công.
+    \item \texttt{product.updated}: Thông tin sản phẩm được chỉnh sửa.
+    \item \texttt{product.sales.updated}: Cập nhật dữ liệu bán hàng sau mỗi đơn hàng thành công.
 \end{itemize}
 
-\textbf{e/ Admin Topics}
+\textbf{e/ Nhóm sự kiện quản trị}
 \begin{itemize}
-    \item \texttt{admin.log.created}: Lưu lại hành động của quản trị viên.
-    \item \texttt{admin.report.requested}: Các yêu cầu tạo báo cáo thống kê.
-    \item \texttt{admin.report.generated}: Báo cáo hoàn thành và ghi vào database.
+    \item \texttt{admin.log.created}: Lưu lại nhật ký hành động của quản trị viên.
+    \item \texttt{admin.report.requested}: Tiếp nhận yêu cầu tạo báo cáo thống kê.
+    \item \texttt{admin.report.generated}: Thông báo báo cáo đã hoàn thành và sẵn sàng truy xuất.
 \end{itemize}
 
-\textbf{f/ AI Topics}
+\textbf{f/ Nhóm sự kiện trí tuệ nhân tạo}
 \begin{itemize}
-    \item \texttt{ai.recommendation.requested}: Yêu cầu tạo gợi ý sản phẩm dựa trên hồ sơ hoặc hành vi.
-    \item \texttt{ai.recommendation.generated}: Kết quả gợi ý sẵn sàng để trả về frontend.
-    \item \texttt{ai.user\_behavior.received}: AI nhận dữ liệu hành vi phục vụ huấn luyện mô hình.
+    \item \texttt{ai.recommendation.requested}: Yêu cầu tạo gợi ý sản phẩm theo hồ sơ người dùng.
+    \item \texttt{ai.recommendation.generated}: Kết quả gợi ý đã sẵn sàng trả về cho người dùng.
+    \item \texttt{ai.user\_behavior.received}: AI tiếp nhận dữ liệu hành vi để huấn luyện mô hình.
 \end{itemize}
-
-\subsubsection{Thiết kế sự kiện (Event-Sourcing)}
-
-Trong mô hình Event-Sourcing, mỗi service ghi lại các thay đổi trạng thái dưới dạng sự kiện (event) và xuất bản chúng lên Kafka. 
-Kafka đóng vai trò như một \textit{event store phân tán}, cho phép các service khác nhau tiêu thụ sự kiện để cập nhật trạng thái cục bộ hoặc kích hoạt luồng nghiệp vụ liên quan. 
-Dưới đây là danh sách các topic và sự kiện tiêu biểu theo từng service.
-
-\vspace{0.5em}
-
-\textbf{a/ User Service} \\
-\textbf{Topic:} \texttt{user-events}
-\begin{itemize}
-    \item UserRegistered
-    \item UserUpdatedProfile
-    \item UserLoggedIn
-    \item UserLoggedOut
-    \item UserDeleted
-\end{itemize}
-
-\textbf{b/ Product Service} \\
-\textbf{Topic:} \texttt{product-events}
-\begin{itemize}
-    \item ProductCreated
-    \item ProductUpdated
-    \item ProductPriceChanged
-    \item ProductInventoryAdjusted
-    \item ProductDisabled
-\end{itemize}
-
-\textbf{c/ Cart Service} \\
-\textbf{Topic:} \texttt{cart-events}
-\begin{itemize}
-    \item CartCreated
-    \item ItemAddedToCart
-    \item ItemRemovedFromCart
-    \item ItemQuantityChanged
-    \item CartCheckedOut
-\end{itemize}
-
-\textbf{d/ Order Service} \\
-\textbf{Topic:} \texttt{order-events}
-\begin{itemize}
-    \item OrderCreated
-    \item OrderPaid
-    \item OrderCancelled
-    \item OrderDelivered
-    \item OrderFailed
-\end{itemize}
-
-\textbf{e/ Payment Service} \\
-\textbf{Topic:} \texttt{payment-events}
-\begin{itemize}
-    \item PaymentRequested
-    \item PaymentSucceeded
-    \item PaymentFailed
-    \item RefundIssued
-\end{itemize}
-
-\textbf{f/ Admin Service} \\
-\textbf{Topic:} \texttt{admin-events}
-\begin{itemize}
-    \item AdminLoggedAction
-    \item ReportRequested
-    \item ReportGenerated
-\end{itemize}
-
-\textbf{g/ AI Service} \\
-\textbf{Topic:} \texttt{ai-events}
-\begin{itemize}
-    \item UserBehaviorTracked
-    \item ProductViewed
-    \item ModelTrainingTriggered
-    \item RecommendationGenerated
-\end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

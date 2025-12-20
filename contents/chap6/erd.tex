@@ -2,7 +2,7 @@
 
 Trong kiến trúc microservice, mỗi dịch vụ quản lý một cơ sở dữ liệu độc lập theo đúng ranh giới domain. Vì vậy, mô hình dữ liệu không sử dụng quá nhiều ràng buộc khóa ngoại như kiến trúc nguyên khối. Thay vào đó, các quan hệ giữa dữ liệu được thể hiện ở mức logic hoặc thông qua các cơ chế đồng bộ sự kiện giữa các dịch vụ.
 
-Như đã trình bày ở trên, hệ thống được xây dựng theo kiến trúc microservice trong đó có năm service dịch vụ được hiện thực bằng ngôn ngữ java cụ thể là user service, order service, product service, admin service và cart service. Mô hình ERD ban đầu được xây dựng dựa trên kiến trúc nguyên khối (monolithic) tổng thể, sau đó được phân tách và nhóm các thực thể cùng quan hệ tương ứng vào các CSDL riêng biệt dựa trên ranh giới của từng Microservice.
+Như đã trình bày ở trên, hệ thống được xây dựng theo kiến trúc microservice trong đó có năm service dịch vụ theo hướng nghiệp vụ được hiện thực bằng ngôn ngữ java cụ thể là user service, order service, product service, admin service và cart service. Mô hình ERD ban đầu được xây dựng dựa trên kiến trúc nguyên khối (monolithic) tổng thể, sau đó được phân tách và nhóm các thực thể cùng quan hệ tương ứng vào các CSDL riêng biệt dựa trên ranh giới của từng Microservice.
 
 Service AI Agent (Python) được triển khai với Vector Database (Milvus), thay vì sử dụng PostgreSQL. Sự lựa chọn này là chiến lược, bởi vì Service AI cần lưu trữ và truy vấn các vector embeddings đa chiều hiệu suất cao, do đó, không sử dụng các mô hình ERD quan hệ truyền thống.
 
@@ -18,17 +18,37 @@ Hình \ref{fig:erd_overview} chính là sơ đồ ERD mô tả các thực thể
 
 Sơ đồ ERD tổng quan mô tả các thực thể chính của từng domain trong hệ thống. Mỗi nhóm thực thể được tổ chức tách biệt theo chức năng. Các mối quan hệ giữa chúng chỉ mang tính chất tham chiếu logic nhằm mô tả dòng dữ liệu, không phải là ràng buộc vật lý trong cơ sở dữ liệu.
 
+Bên cạnh các dịch vụ nghiệp vụ chính, hệ thống còn có orchestrator service, chịu trách nhiệm điều phối các quy trình phân tán theo mô hình saga. Do vai trò đặc thù của nó, ERD của orchestrator service không mô tả các thực thể nghiệp vụ như các service thương mại điện tử khác, mà tập trung vào việc lưu vết trạng thái của từng saga, từng bước xử lý và các sự kiện cần gửi đi thông qua Kafka. Các thực thể như saga\_instance, saga\_step, outbox\_event và compensation\_action được tổ chức nhằm hỗ trợ điều phối, theo dõi và khôi phục giao dịch phân tán một cách tin cậy. Sơ đồ ERD của orchestrator service được trình bày bên dưới ở hình \ref{fig:erd_orches} nhằm làm rõ cách hệ thống triển khai Saga orchestration và cách các thành phần này phối hợp để đảm bảo tính nhất quán xuyên suốt nhiều microservice.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap6/erd/OrchesERD.drawio.png}
+    \vspace{0.5cm}
+    \caption{ERD của orchestrator service}
+    \label{fig:erd_orches}
+\end{figure}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{images/chap6/erd/erd_mapping.png}
     \vspace{0.5cm}
-    \caption{Sơ đồ ánh xạ ERD}
+    \caption{Sơ đồ ánh xạ ERD cho các service nghiệp vụ}
     \label{fig:erd_mapping}
 \end{figure}
 
 Hình \ref{fig:erd_mapping} biểu diễn sơ đồ ánh xạ ERD đã mô tả cách các thực thể được chuyển đổi sang mô hình lưu trữ trong từng microservice. Thay vì sử dụng khóa ngoại, mỗi bảng lưu trữ các định danh cần thiết để hỗ trợ giao tiếp giữa các dịch vụ hoặc đồng bộ dữ liệu. Cách tiếp cận này giúp hệ thống linh hoạt hơn, dễ mở rộng và phù hợp với các mô hình giao tiếp như event-driven và API orchestration.
 
-Để cụ thể hơn cho từng service, các phần dưới đây sẽ trình bày chi tiết về các thực thể và quan hệ nội bộ trong từng ranh giới domain của năm dịch vụ cốt lõi sử dụng CSDL quan hệ PostgreSQL.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap6/erd/Mapping-Orches.drawio.png}
+    \vspace{0.5cm}
+    \caption{Sơ đồ ánh xạ cho orchestrator service}
+    \label{fig:erd_mapping_orches}
+\end{figure}
+
+Tương tự, hình \ref{fig:erd_mapping_orches} chính là sơ đồ ánh xạ ERD hay sơ đồ mô tả mô hình lưu trữ của orchestrator service.
+
+Để cụ thể hơn cho từng service nghiệp vụ, các phần dưới đây sẽ trình bày chi tiết về các thực thể và quan hệ nội bộ trong từng ranh giới domain của năm dịch vụ cốt lõi sử dụng CSDL quan hệ PostgreSQL.
 
 \subsubsection{ERD chi tiết cho user service}
 
