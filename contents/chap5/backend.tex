@@ -7,7 +7,7 @@ Các công nghệ như Spring Boot 3.x, FastAPI, Eclipse Vert.x và Apache Kafka
 Tiếp đó, nhóm đã quyết định tận dụng mô hình đa ngôn ngữ bằng cách kết hợp Java 21 và Python 3.10+. Java được chọn cùng với Spring Boot cho các dịch vụ cốt lõi nhờ sự mạnh mẽ và ổn định trong việc xử lý nghiệp vụ backend và giao dịch, trong khi đó, Python được dành riêng cho dịch vụ AI Agent, tận dụng tối đa hệ sinh thái chuyên sâu về trí tuệ nhân tạo và học máy. Bên cạnh đó, các công nghệ hỗ trợ quan trọng khác như Eureka (Service Discovery) và các framework Reactive (aiokafka, Vert.x) đã được tích hợp để đảm bảo tính nhất quán của dữ liệu và hiệu suất xử lý I/O vượt trội trong môi trường phân tán.
 
 \subsubsection{Ngôn ngữ}
-Hệ thống của nhóm áp dụng chiến lược đa ngôn ngữ (Polyglot Programming) nhằm tối ưu hóa hiệu suất cho từng vai trò dịch vụ. Nhóm đã chọn sử dụng Java 21 cho các Microservice cốt lõi và Python 3.10+ cho Microservice AI Agent.
+Hệ thống của nhóm áp dụng chiến lược đa ngôn ngữ nhằm tối ưu hóa hiệu suất cho từng vai trò dịch vụ. Nhóm đã chọn sử dụng Java 21 cho các Microservice cốt lõi và Python 3.10+ cho Microservice AI Agent.
 
 \begin{itemize}
     \item \textbf{Java 21:} Là lựa chọn hàng đầu cho các dịch vụ cốt lõi, chẳng hạn như các nghiệp vụ quan trọng như quản lý người dùng và đơn hàng. Java, với ưu điểm về tính ổn định, khả năng mở rộng đã được chứng minh và hiệu suất cao trên máy ảo JVM, đảm bảo độ tin cậy cần thiết cho các tác vụ xử lý nghiệp vụ yêu cầu độ bền bỉ cao. 
@@ -16,7 +16,7 @@ Hệ thống của nhóm áp dụng chiến lược đa ngôn ngữ (Polyglot Pr
 
 Sự kết hợp chiến lược này cho phép hệ thống tận dụng sức mạnh xử lý ổn định của Java cho các nghiệp vụ lõi, đồng thời khai thác sự linh hoạt và thư viện chuyên biệt của Python cho các tác vụ tính toán thông minh, tạo nên một giải pháp cân bằng và hiệu quả toàn diện.
 
-\subsubsection{Các framework cơ bản và reactive (Core \& Reactive Frameworks)}
+\subsubsection{Các framework cơ bản và reactive}
 
 Để tối ưu hóa quy trình phát triển và hiệu năng thực thi của các dịch vụ, hệ thống đã lựa chọn các framework chính có tính năng bổ trợ cao cho Java và Python.
 
@@ -34,47 +34,44 @@ Bên cạnh các framework cốt lõi, việc tích hợp các khung xử lý ph
     \item \textbf{Aiokafka: }Thư viện này được sử dụng trong Python. Nó tận dụng khả năng bất đồng bộ gốc của Python, đảm bảo rằng tiến trình giao tiếp sự kiện với Apache Kafka diễn ra non-blocking, duy trì hiệu năng cao cho việc truyền tải sự kiện xuyên suốt hệ thống\cite{aiokafka_perf}. Nhờ hỗ trợ cơ chế async/await, thư viện cho phép xử lý nhiều tác vụ đồng thời như publish, subscribe và consumer polling mà không làm nghẽn luồng\cite{aiokafka_perf}. Điều này đặc biệt hữu ích trong các hệ thống event-driven hoặc microservices cần throughput lớn, độ trễ thấp và khả năng mở rộng linh hoạt.
 \end{itemize}
 
-\subsubsection{Truy cập cơ sở dữ liệu và ánh xạ đối tượng – quan hệ (Database Access \& ORM)}
+\subsubsection{Truy cập cơ sở dữ liệu}
 
-Để quản lý việc tương tác với cơ sở dữ liệu một cách hiệu quả và đảm bảo tính nhất quán của dữ liệu (data integrity), hệ thống áp dụng các công cụ ORM phù hợp với từng ngôn ngữ.
+Để quản lý việc tương tác với cơ sở dữ liệu một cách hiệu quả và đảm bảo tính nhất quán, hệ thống áp dụng các công cụ phù hợp với đặc thù của kiến trúc CQRS:
+
 \begin{itemize}
-    \item \textbf{Spring Data JPA (Sử dụng Hibernate):} Spring Data JPA được xác định là tiêu chuẩn trong việc truy cập dữ liệu cho các Microservice Java. Vai trò cốt lõi của framework này là giúp nhóm giảm thiểu đáng kể mã lặp lại (boilerplate code) bằng cách tự động hóa việc tạo ra các phương thức truy vấn dựa trên tên của chúng, nhờ đó làm tăng tốc độ phát triển và duy trì tính rõ ràng của mã. Bên cạnh đó, bằng cách sử dụng Hibernate làm nhà cung cấp JPA, các dịch vụ Java được hưởng lợi từ khả năng ánh xạ đối tượng-quan hệ (ORM) mạnh mẽ. Khả năng này giúp chuyển đổi dữ liệu phức tạp giữa đối tượng Java và bảng cơ sở dữ liệu một cách mượt mà và an toàn, đảm bảo tính bền vững của dữ liệu.
-    \item \textbf{Milvus (Python SDK: pymilvus):} Milvus được lựa chọn làm nền tảng Vector Database chuyên dụng cho dịch vụ AI Agent, thay thế cho các ORM truyền thống. Vai trò cốt lõi của Milvus là lưu trữ và truy vấn các vector embeddings đa chiều. Việc giao tiếp với Milvus được thực hiện thông qua thư viện pymilvus (Python SDK), một công cụ chuyên biệt cho các thao tác vector. Ưu điểm chính của Milvus là khả năng thực hiện truy vấn vector hiệu suất cao, cần thiết cho các tác vụ tìm kiếm ngữ nghĩa và gợi ý sản phẩm dựa trên độ tương đồng. Điều này đảm bảo rằng các phản hồi của trợ lý ảo AI Agent diễn ra nhanh chóng và chính xác, vượt trội so với cơ sở dữ liệu quan hệ trong việc xử lý dữ liệu đa chiều.
+    \item \textbf{Spring Data JPA và JdbcTemplate (Java):} Luồng ghi sử dụng Spring Data JPA với Hibernate để quản lý các thực thể nghiệp vụ phức tạp và đảm bảo tính toàn vẹn dữ liệu qua cơ chế giao dịch. Ngược lại, luồng truy vấn sử dụng Spring JdbcTemplate để thực hiện các câu lệnh SQL thuần, giúp loại bỏ độ trễ của các bộ thư viện ánh xạ thực thể và tối ưu hóa tốc độ phản hồi cho người dùng.
+    \item \textbf{Milvus và Neo4j (Python SDK):} AI Agent sử dụng PyMilvus để tương tác với cơ sở dữ liệu vector Milvus, phục vụ các truy vấn tìm kiếm tương đồng ngữ nghĩa. Đồng thời, hệ thống sử dụng Neo4j Driver để truy vấn cơ sở dữ liệu đồ thị, giúp AI Agent hiểu rõ các mối quan hệ phức tạp giữa các thực thể tri thức, từ đó đưa ra các phản hồi chính xác và giàu ngữ cảnh.
 \end{itemize}
 
-\subsubsection{Nền tảng truyền tải sự kiện (Event Messaging Platform)}
+\subsubsection{Nền tảng truyền tải sự kiện}
 
 Việc duy trì giao tiếp bất đồng bộ giữa các dịch vụ phân tán là yếu tố then chốt để đảm bảo tính sẵn sàng và khả năng mở rộng của hệ thống. Khi các dịch vụ có thể trao đổi dữ liệu mà không cần chờ đợi lẫn nhau, hệ thống sẽ giảm thiểu độ trễ, hạn chế nghẽn cổ chai và dễ dàng thích ứng với lưu lượng tăng cao. Xuất phát từ yêu cầu đó, nhóm đã lựa chọn một nền tảng chuyên biệt để xử lý luồng sự kiện giữa các thành phần trong hệ thống — một giải pháp tin cậy, ổn định và được ứng dụng rộng rãi trong kiến trúc hiện đại.
 
-\textbf{Apache Kafka} được lựa chọn làm trung tâm dữ liệu bất biến và nền tảng truyền tải sự kiện cốt lõi, phục vụ cho toàn bộ giao tiếp không đồng bộ giữa các microservice\cite{kafka_event_streaming}. Nhờ khả năng xử lý lượng dữ liệu lớn với hiệu năng cao và tính bền vững nhờ cơ chế ghi log, Kafka đóng vai trò là kênh trao đổi thông điệp chính trong hệ thống. Trước hết, Kafka đảm bảo sự tách biệt lỏng lẻo giữa bên gửi và bên nhận, giúp mở rộng hệ thống linh hoạt bằng cách bổ sung dịch vụ mới mà không cần can thiệp vào các thành phần sẵn có. Đồng thời, Kafka không chỉ hoạt động như một message broker mà còn như một event store bền vững, lưu giữ toàn bộ chuỗi sự kiện theo thời gian. Đây là nền tảng quan trọng để hiện thực hóa mô hình event sourcing, khi các dịch vụ có thể khôi phục trạng thái bằng cách đọc lại lịch sử sự kiện sau sự cố hoặc khi cần kiểm tra dữ liệu\cite{kafka_event_sourcing}. Cuối cùng, việc triển khai Kafka theo chế độ KRaft giúp loại bỏ sự phụ thuộc vào Zookeeper, đơn giản hóa kiến trúc, giảm chi phí vận hành và góp phần nâng cao tính ổn định của cụm Kafka.
+\textbf{Apache Kafka} được lựa chọn làm trung tâm dữ liệu bất biến và nền tảng truyền tải sự kiện cốt lõi, phục vụ cho toàn bộ giao tiếp không đồng bộ giữa các microservice. Thay vì đóng vai trò là một kho lưu trữ sự kiện để tái dựng trạng thái (Event Sourcing), Kafka trong hệ thống được sử dụng để lan truyền các sự kiện nghiệp vụ (Domain Events). Khi một dịch vụ cập nhật trạng thái thành công vào cơ sở dữ liệu chính, một sự kiện sẽ được phát đi để các dịch vụ khác cập nhật kho dữ liệu cục bộ hoặc thực hiện các tác vụ phụ trợ như gửi thông báo và phân tích hành vi. Cơ chế này đảm bảo sự tách biệt lỏng lẻo giữa các dịch vụ và hỗ trợ khả năng mở rộng linh hoạt mà không cần can thiệp vào các thành phần sẵn có. Việc triển khai Kafka theo chế độ KRaft giúp loại bỏ sự phụ thuộc vào Zookeeper, đơn giản hóa kiến trúc và nâng cao tính ổn định của cụm máy chủ.
 
-\subsubsection{Cơ chế khám phá dịch vụ (Service Discovery)}
+\subsubsection{Cơ chế khám phá dịch vụ}
 
 Trong kiến trúc microservice, nơi các dịch vụ liên tục được mở rộng, triển khai và thay đổi địa chỉ mạng, một cơ chế khám phá dịch vụ là yếu tố bắt buộc để các thành phần có thể tự động tìm thấy và giao tiếp với nhau. Trong nền tảng này, Eureka được sử dụng như máy chủ đăng ký dịch vụ cho các microservice Java cốt lõi. Đây là giải pháp service discovery của Netflix, được thiết kế dành riêng cho môi trường cloud.
 
 \textbf{Eureka} mang lại nhiều ưu điểm nổi bật. Trước hết, nó hỗ trợ cơ chế tự động đăng ký và phát hiện dịch vụ: khi một dịch vụ khởi động, nó sẽ tự động đăng ký địa chỉ mạng của mình và được tự động gỡ bỏ khi ngừng hoạt động, giúp loại bỏ việc cấu hình thủ công và đơn giản hóa đáng kể quá trình triển khai\cite{eureka_autoconfig}. Bên cạnh đó, Eureka có khả năng phục hồi tốt trước các lỗi mạng tạm thời. Ngay cả khi máy chủ Eureka không khả dụng, các dịch vụ vẫn có thể sử dụng dữ liệu lưu trong bộ nhớ đệm để truy cập thông tin về các dịch vụ khác, đảm bảo hệ thống tiếp tục vận hành mà không bị gián đoạn\cite{eureka_resilience}. 
 
-\subsubsection{Tóm tắt công nghệ}
+\subsubsection{Tóm tắt công nghệ Backend}
+
+Dưới đây là bảng tổng hợp các công nghệ then chốt được áp dụng tại tầng Backend nhằm hiện thực hóa hệ thống microservice phân tán:
+
 \begin{table}[H]
 \centering
 \caption{Tổng hợp các công nghệ sử dụng tại Backend}
 \label{tab:backend_tech}
-\begin{tabular}{|l|p{4.5cm}|p{5.5cm}|} 
+\begin{tabular}{|l|p{4.5cm}|p{6cm}|}
 \hline
-\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Ghi chú/Vai trò} \\ 
-\hline
-Ngôn ngữ & Java 21, Python 3.10+ & Java cho các microservice chính; Python cho microservice AI. \\ 
-\hline
-Framework chính & Spring Boot 3.x, FastAPI & Viết REST API và xử lý business logic. \\ 
-\hline
-Khung Xử lý Phản ứng & Eclipse Vert.x, aiokafka & Xử lý I/O bất đồng bộ và giao tiếp Kafka hiệu suất cao. \\ 
-\hline
-Event Messaging & Apache Kafka (Kraft) & Giao tiếp bất đồng bộ giữa các service. \\ 
-\hline
-Service Discovery & Eureka & Tự động phát hiện và định danh service trong kiến trúc phân tán. \\ 
-\hline
-Database Access \& ORM & Spring Data JPA (Hibernate), SQLAlchemy (Python) & Ánh xạ dữ liệu giữa đối tượng (object) và cơ sở dữ liệu (DB). \\ 
-\hline
+\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Vai trò cốt lõi} \\ \hline
+Ngôn ngữ & Java 21, Python 3.10+ & Java cho các dịch vụ nghiệp vụ chính và Python dành riêng cho AI Agent. \\ \hline
+Framework chính & Spring Boot 3.x, FastAPI, LangGraph & Xây dựng giao diện lập trình, xử lý nghiệp vụ và điều phối luồng suy luận của AI. \\ \hline
+Khung xử lý & Eclipse Vert.x, aiokafka & Xử lý vào/ra bất đồng bộ và giao tiếp Kafka hiệu suất cao. \\ \hline
+Truyền tải sự kiện & Apache Kafka (KRaft) & Lan truyền các sự kiện nghiệp vụ để đồng bộ hóa dữ liệu giữa các dịch vụ. \\ \hline
+Khám phá dịch vụ & Eureka & Tự động phát hiện và định danh các dịch vụ trong cụm phân tán. \\ \hline
+Truy cập dữ liệu & Spring Data JPA, JdbcTemplate, PyMilvus, Neo4j Driver & Quản lý truy cập dữ liệu quan hệ, dữ liệu vector và dữ liệu đồ thị chuyên biệt. \\ \hline
 \end{tabular}
 \end{table}
 
