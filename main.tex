@@ -36,6 +36,7 @@
 \usepackage{tikz}
 \usepackage{titlesec}
 \usepackage{url}
+\usepackage{needspace}
 
 \usetikzlibrary{arrows,snakes,backgrounds,calc}
 \usepackage[unicode]{hyperref}
@@ -461,6 +462,9 @@ Trong chương này, nhóm tổng kết những kết quả đã đạt được
 
 
 %%%%%%%%%%%%%%%%%OUTRO%%%%%%%%%%%%%%%%%%%
+\phantomsection 
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+\renewcommand{\refname}{Tài liệu tham khảo}
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 \clearpage
