@@ -1,46 +1,44 @@
- \subsection{Yêu cầu phi chức năng}
+\subsection{Yêu cầu phi chức năng}
 
-\subsubsection{Đối với khách hàng}
+Các yêu cầu phi chức năng được thiết lập dựa trên các tiêu chuẩn chất lượng phần mềm nhằm đảm bảo hệ thống không chỉ thực hiện đúng chức năng mà còn vận hành tối ưu, an toàn và dễ dàng mở rộng.
 
-\begin{itemize}
-
-\item \textbf{[NFR1] Hiệu năng của phản hồi chung} \hfill (\textit{Ưu tiên: Cao})\\
-    Thời gian phản hồi của hệ thống (cho các tác vụ không liên quan đến trợ lý ảo) không vượt quá 3 giây trong điều kiện tải bình thường.
-
-\item \textbf{[NFR2] Hiệu năng trợ lý ảo} \hfill (\textit{Ưu tiên: Cao})\\
-    Thời gian phản hồi của trợ lý ảo khi trả lời câu hỏi hoặc gợi ý sản phẩm không vượt quá 5 giây.
-
-\item \textbf{[NFR3] Đơn giản hóa giao diện} \hfill (\textit{Ưu tiên: Cao})\\
-    Giao diện người dùng phải thân thiện, cho phép khách hàng hoàn thành thao tác đặt hàng cơ bản trong tối đa 5 bước.
-
-\item \textbf{[NFR4] Khả năng dẫn dắt khách hàng} \hfill (\textit{Ưu tiên: Trung bình})\\
-    Trợ lý ảo có khả năng hướng dẫn khách hàng mới sử dụng hệ thống thành thạo trong tối đa 3 lần tương tác.
-
-\item \textbf{[NFR5] Dễ dàng học cách dùng} \hfill (\textit{Ưu tiên: Cao})\\
-    Người dùng có thể học cách sử dụng các chức năng chính như tìm kiếm, so sánh, giỏ hàng, thanh toán chỉ sau 2 lần thử nghiệm thực tế.
-
-\item \textbf{[NFR6] Chất lượng giao tiếp của trợ lý ảo} \hfill (\textit{Ưu tiên: Cao})\\
-    Trợ lý ảo cần sử dụng ngôn ngữ tự nhiên dễ hiểu, tránh thuật ngữ kỹ thuật, đảm bảo 80\% câu trả lời ở mức chấp nhận được theo đánh giá từ nhóm thử nghiệm nội bộ.
-
-\end{itemize}
-
-\subsubsection{Đối với quản trị viên và nhóm kỹ thuật}
+\subsubsection{Hiệu năng và khả năng sử dụng}
 
 \begin{itemize}
-    \item \textbf{[NFR7] Độ ổn định dịch vụ} \hfill (\textit{Ưu tiên: Trung bình})\\
-    Hệ thống cần duy trì hoạt động ổn định; tỷ lệ gián đoạn dịch vụ (downtime) không được vượt quá 1\% tổng thời gian hoạt động trong suốt giai đoạn thử nghiệm/demo.
+    \item \textbf{[NFR1] Hiệu năng phản hồi (Performance Efficiency)} \hfill (\textit{Ưu tiên: Cao})\\
+    Thời gian phản hồi của hệ thống cho các tác vụ nghiệp vụ thông thường không vượt quá 3 giây trong điều kiện tải bình thường.
 
-\item \textbf{[NFR8] Bảo mật dữ liệu người dùng} \hfill (\textit{Ưu tiên: Cao})\\
-    Hệ thống phải bảo vệ thông tin cá nhân của người dùng bằng cách mã hóa dữ liệu nhạy cảm và tuyệt đối không lưu trữ mật khẩu dưới dạng văn bản rõ ràng.
+    \item \textbf{[NFR2] Hiệu năng AI Agent (Performance Efficiency)} \hfill (\textit{Ưu tiên: Cao})\\
+    Thời gian phản hồi của trợ lý ảo khi thực hiện suy luận, trả lời câu hỏi hoặc gợi ý sản phẩm không vượt quá 5 giây.
 
-\item \textbf{[NFR9] Khả năng mở rộng} \hfill (\textit{Ưu tiên: Trung bình})\\
-    Thiết kế hệ thống phải linh hoạt, cho phép tích hợp thêm các tính năng mới như phương thức thanh toán hoặc dịch vụ giao hàng mà không cần thay đổi kiến trúc tổng thể của ứng dụng.
+    \item \textbf{[NFR3] Tính tinh gọn giao diện (Usability)} \hfill (\textit{Ưu tiên: Cao})\\
+    Giao diện phải được thiết kế thân thiện, tối ưu hóa quy trình trải nghiệm để khách hàng có thể hoàn thành đặt hàng cơ bản trong tối đa 5 bước.
 
-\item \textbf{[NFR10] Hiệu suất báo cáo admin} \hfill (\textit{Ưu tiên: Thấp})\\
-    Giao diện quản trị phải hiển thị các báo cáo tổng hợp (ví dụ: 1000 đơn hàng) trong vòng 5 giây để đảm bảo hiệu quả cho việc thử nghiệm và đánh giá hệ thống.
+    \item \textbf{[NFR4] Khả năng dẫn dắt (Learnability)} \hfill (\textit{Ưu tiên: Trung bình})\\
+    Trợ lý ảo có khả năng hướng dẫn và giúp khách hàng mới sử dụng thành thạo các tính năng hệ thống trong tối đa 3 lần tương tác đầu tiên.
 
-\item \textbf{[NFR11] Tính toàn vẹn} \hfill (\textit{Ưu tiên: Cao})\\
-    Hệ thống phải đảm bảo cơ chế đồng bộ hóa dữ liệu khi xử lý đặt hàng để ngăn chặn tình trạng số lượng sản phẩm bị âm. Cần có biện pháp kiểm soát tính nhất quán giữa dữ liệu cache và cơ sở dữ liệu gốc (nếu có).
+    \item \textbf{[NFR5] Tính dễ học (Learnability)} \hfill (\textit{Ưu tiên: Cao})\\
+    Người dùng có thể tự làm quen và sử dụng thành thạo các chức năng tìm kiếm, so sánh và thanh toán chỉ sau 2 lần thao tác thực tế.
 
+    \item \textbf{[NFR6] Chất lượng tương tác (Usability)} \hfill (\textit{Ưu tiên: Cao})\\
+    Trợ lý ảo sử dụng ngôn ngữ tự nhiên, không lạm dụng thuật ngữ kỹ thuật; đảm bảo ít nhất 80\% phản hồi đạt yêu cầu theo tiêu chuẩn trải nghiệm người dùng.
 \end{itemize}
 
+\subsubsection{Độ tin cậy, bảo mật và khả năng bảo trì}
+
+\begin{itemize}
+    \item \textbf{[NFR7] Độ ổn định dịch vụ (Reliability)} \hfill (\textit{Ưu tiên: Trung bình})\\
+    Hệ thống duy trì hoạt động ổn định với tỷ lệ gián đoạn dịch vụ (downtime) không vượt quá 1\% trong suốt giai đoạn thử nghiệm và vận hành thử.
+
+    \item \textbf{[NFR8] Bảo mật thông tin (Security)} \hfill (\textit{Ưu tiên: Cao})\\
+    Bảo vệ thông tin cá nhân bằng cơ chế mã hóa dữ liệu nhạy cảm và tuyệt đối không lưu trữ mật khẩu dưới dạng văn bản rõ ràng (plain text).
+
+    \item \textbf{[NFR9] Khả năng mở rộng (Maintainability)} \hfill (\textit{Ưu tiên: Trung bình})\\
+    Kiến trúc hệ thống linh hoạt, cho phép tích hợp thêm các module thanh toán hoặc vận chuyển mới mà không cần thay đổi cấu trúc nền tảng.
+
+    \item \textbf{[NFR10] Hiệu suất quản trị (Performance Efficiency)} \hfill (\textit{Ưu tiên: Thấp})\\
+    Giao diện quản trị đảm bảo tốc độ truy xuất và hiển thị các báo cáo tổng hợp dữ liệu lớn trong vòng tối đa 5 giây.
+
+    \item \textbf{[NFR11] Tính toàn vẹn dữ liệu (Functional Consistency)} \hfill (\textit{Ưu tiên: Cao})\\
+    Đảm bảo cơ chế đồng bộ hóa dữ liệu tuyệt đối giữa luồng ghi và luồng đọc (CQRS), ngăn chặn tình trạng sai lệch tồn kho hoặc dữ liệu không nhất quán giữa cache và database.
+\end{itemize}
