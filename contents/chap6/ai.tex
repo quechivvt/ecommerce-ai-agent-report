@@ -188,3 +188,83 @@ Thông tin cá nhân của người dùng được gom vào \texttt{user\_profil
     \item address
 \end{itemize}
 Đây là thành phần duy nhất của State mà AI Agent không được phép thay đổi. Thành phần đóng vai trò như một bộ nhớ đệm (cache) nhỏ, để lưu các thông tin sẽ được dùng nhiều trong quá trình truy xuất các cơ sở dữ liệu.
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Thiết kế Vector Database}
+Cơ sở dữ liệu vector (Vector Database) được sử dụng nhằm hỗ trợ \textbf{truy xuất tri thức theo ngữ nghĩa (semantic search)} và \textbf{Retrieval-Augmented Generation (RAG)}.
+Khác với các hệ quản trị cơ sở dữ liệu truyền thống chỉ cho phép truy vấn chính xác theo từ khóa, Vector Database cho phép hệ thống tìm kiếm các nội dung \textit{gần nghĩa} với câu hỏi của người dùng, từ đó nâng cao khả năng hiểu và phản hồi tự nhiên của Trợ lý Ảo.
+
+Vector Database đóng vai trò là \textbf{nguồn tri thức phi cấu trúc}, giúp AI Agent:
+\begin{itemize}
+    \item Trả lời các câu hỏi liên quan đến mô tả sản phẩm.
+    \item Cung cấp thông tin chính sách bán hàng, bảo hành.
+\end{itemize}
+
+
+Vector Database trong hệ thống sẽ lưu trữ các dữ liệu dạng văn bản, bao gồm:
+\begin{itemize}
+    \item Mô tả chi tiết sản phẩm điện thoại.
+    \item Thông số kỹ thuật được biểu diễn dưới dạng văn bản.
+    \item Chính sách bảo hành, đổi trả.
+    \item Câu hỏi thường gặp (FAQ).
+    \item Nội dung tư vấn và hướng dẫn mua hàng.
+\end{itemize}
+
+Mỗi bản ghi trong Vector Database sẽ bao gồm:
+\begin{itemize}
+    \item Vector embedding đại diện cho ngữ nghĩa của nội dung.
+    \item Nội dung văn bản gốc.
+    \item Metadata mô tả ngữ cảnh, cụ thể: intent liên quan, loại tài liệu.
+\end{itemize}
+
+
+
+\subsubsection{Thiết kế Graph Database}
+
+
+Graph Database được sử dụng để mô hình hóa \textbf{mối quan hệ giữa các thực thể trong nghiệp vụ bán lẻ điện thoại}, từ đó hỗ trợ Trợ lý Ảo thực hiện các tác vụ suy luận logic như:
+
+\begin{itemize}
+    \item Gợi ý sản phẩm phù hợp với nhu cầu.
+    \item So sánh các sản phẩm tương tự.
+\end{itemize}
+
+
+Các thực thể và mối quan hệ trong Graph Database sẽ được lưu trữ dưới dạng các nốt và các cạnh, cụ thể:
+
+\textbf{Các thực thể chính}
+
+\begin{itemize}
+    \item \textbf{Phone}: đại diện cho sản phẩm điện thoại.
+    \item \textbf{Brand}: thương hiệu sản xuất.
+    \item \textbf{UseCase}: nhóm nhu cầu sử dụng (sinh viên, game thủ, văn phòng,\dots).
+    \item \textbf{User}: người dùng (dự kiến mở rộng trong giai đoạn triển khai).
+\end{itemize}
+
+\textbf{Các mối quan hệ chính}
+
+\begin{itemize}
+    \item Điện thoại thuộc về một thương hiệu.
+    \item Điện thoại sở hữu các đặc tính cụ thể.
+    \item Điện thoại phù hợp với một hoặc nhiều nhóm nhu cầu sử dụng.
+    \item Các điện thoại có mối quan hệ tương tự hoặc thay thế nhau.
+    \item Chương trình khuyến mãi áp dụng cho sản phẩm hoặc nhóm nhu cầu.
+\end{itemize}
+
+
+
+Vector Database và Graph Database được sử dụng song song, bổ trợ cho nhau:
+\begin{itemize}
+    \item Vector Database cung cấp tri thức phi cấu trúc và hỗ trợ truy vấn theo ngữ nghĩa.
+    \item Graph Database cung cấp tri thức có cấu trúc, hỗ trợ suy luận logic và gợi ý có thể giải thích.
+    \item Trợ lý Ảo AI Agent đóng vai trò điều phối và tổng hợp kết quả từ hai nguồn dữ liệu.
+\end{itemize}

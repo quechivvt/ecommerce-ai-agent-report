@@ -304,39 +304,6 @@ Admin Service chịu trách nhiệm cung cấp các chức năng phục vụ qu�
     \item Đầu ra: Dữ liệu báo cáo chi tiết hoặc trạng thái xử lý hiện hành.
 \end{itemize}
 
-\subsubsection{AI Service}
-
-AI Service là thành phần duy nhất trong hệ thống được triển khai bằng Python và chịu trách nhiệm xử lý các tác vụ thông minh phục vụ trải nghiệm người dùng cũng như hỗ trợ vận hành. Dịch vụ này vận hành theo mô hình kiến trúc CQRS, sử dụng các kho lưu trữ chuyên biệt để phục vụ luồng truy vấn (Query) và tiếp nhận các sự kiện nghiệp vụ qua Kafka để cập nhật tri thức ở luồng ghi (Command).
-
-\textbf{1. GET /api/ai/recommendation/user/\{userId\}}
-\begin{itemize}
-    \item Chức năng: Gợi ý danh sách sản phẩm dựa trên hành vi mua sắm và sự kiện tương tác của người dùng.
-    \item Đầu vào: \texttt{userId} được truyền qua URL; access token xác định người dùng hợp lệ.
-    \item Xử lý (Query):
-    \begin{enumerate}
-        \item Truy xuất vector đặc trưng của người dùng từ cơ sở dữ liệu vector \texttt{Milvus}.
-        \item Sử dụng mô hình AI để tính toán độ tương đồng giữa hành vi người dùng và danh sách sản phẩm hiện có.
-        \item Kết hợp thông tin từ cơ sở dữ liệu đồ thị \texttt{Neo4j} để lọc các sản phẩm theo mối quan hệ logic (danh mục quan tâm, sản phẩm đã mua).
-        \item Chuẩn hóa kết quả và xếp hạng danh sách gợi ý trước khi trả về.
-    \end{enumerate}
-    \item Đầu ra: Danh sách sản phẩm được gợi ý theo độ phù hợp cá nhân hóa.
-\end{itemize}
-
-\textbf{2. POST /api/ai/chat/query}
-\begin{itemize}
-    \item Chức năng: Cho phép khách hàng gửi câu hỏi và nhận phản hồi thông minh từ AI Agent.
-    \item Đầu vào: Nội dung câu hỏi (\texttt{query}) được gửi qua phần thân (body) của yêu cầu.
-    \item Xử lý (Query/Agent Reasoning):
-    \begin{enumerate}
-        \item Phân tích ngôn ngữ tự nhiên để xác định ý định (intent) của người dùng thông qua LLM.
-        \item Nếu ý định là tìm kiếm sản phẩm: thực hiện tìm kiếm vector trên \texttt{Milvus}.
-        \item Nếu ý định cần thông tin quan hệ (ví dụ: tư vấn theo nhu cầu): truy vấn tri thức từ \texttt{Neo4j}.
-        \item Nếu ý định liên quan đến trạng thái đơn hàng: gửi yêu cầu truy xuất dữ liệu nghiệp vụ qua Kafka hoặc thực hiện gọi nội bộ.
-        \item Tổng hợp dữ liệu và sinh câu trả lời tự nhiên giàu ngữ cảnh.
-    \end{enumerate}
-    \item Đầu ra: Phản hồi hội thoại của AI Agent, có thể bao gồm gợi ý sản phẩm hoặc thông tin hỗ trợ trực tiếp.
-\end{itemize}
-
 \subsubsection{Orchestrator Service}
 
 Orchestrator service là một microservice đặc biệt, đóng vai trò là "nhạc trưởng" trong các giao dịch phân tán phức tạp (Saga). Dịch vụ này không chịu trách nhiệm xử lý nghiệp vụ đơn lẻ mà tập trung vào việc điều phối chuỗi gọi internal API đồng bộ để đảm bảo tính nhất quán dữ liệu giữa nhiều microservice.

@@ -43,6 +43,23 @@ Các mô hình điều phối phổ biến gồm:
 
 
 
+\subsubsection{ReAct}
+ReAct (Reasoning and Acting) là một phương pháp prompting cho mô hình ngôn ngữ lớn (LLMs), được đề xuất nhằm kết hợp lập luận bằng ngôn ngữ và hành động tương tác với môi trường trong cùng một tiến trình giải quyết nhiệm vụ\cite{yao2023reactsynergizingreasoningacting}.
+
+Trong ReAct, mô hình hoạt động như một agent tương tác theo chuỗi xen kẽ Thought – Action – Observation. Ở mỗi bước, mô hình sinh ra:
+\begin{itemize}
+    \item Thought: bước suy luận bằng ngôn ngữ tự nhiên để phân tích ngữ cảnh và lập kế hoạch\cite{yao2023reactsynergizingreasoningacting}.
+    \item Action: hành động cụ thể để tương tác với môi trường hoặc công cụ bên ngoài (ví dụ: truy vấn thông tin)\cite{yao2023reactsynergizingreasoningacting}.
+    \item Observation: kết quả quan sát được từ hành động vừa thực hiện, làm đầu vào cho bước tiếp theo\cite{yao2023reactsynergizingreasoningacting}.
+\end{itemize}
+Điểm đặc trưng của ReAct là các bước suy luận không trực tiếp tác động đến môi trường, nhưng được sử dụng để định hướng hành động, trong khi các hành động giúp thu thập thông tin mới nhằm hỗ trợ quá trình suy luận tiếp theo\cite{yao2023reactsynergizingreasoningacting}.
+
+ReAct thường được triển khai dưới dạng prompting với một vài ví dụ (few-shot prompting), không yêu cầu huấn luyện lại mô hình, và đã cho thấy hiệu quả trong các tác vụ như hỏi đáp nhiều bước, truy xuất tri thức và điều hướng môi trường văn bản\cite{yao2023reactsynergizingreasoningacting}.
+
+Nhờ khả năng kết hợp lập luận và hành động, ReAct giúp tăng tính minh bạch của quá trình suy luận và giảm hiện tượng sinh thông tin sai lệch so với các phương pháp chỉ dựa trên suy luận nội bộ\cite{yao2023reactsynergizingreasoningacting}.
+
+
+
 \subsubsection{LLMCompiler}
 LLMCompiler là một bộ khung trong thiết kế AI Agent được đề xuất nhằm hỗ trợ AI Agent thực hiện gọi hàm song song trong quá trình giải quyết các tác vụ phức tạp. Khác với các phương pháp truyền thống dựa trên suy luận và hành động tuần tự, LLMCompiler tiếp cận bài toán theo hướng lấy cảm hứng từ trình biên dịch, trong đó đầu vào ngôn ngữ tự nhiên được chuyển đổi thành các tác vụ có cấu trúc và mối quan hệ phụ thuộc rõ ràng.
 
