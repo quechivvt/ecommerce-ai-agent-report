@@ -1,0 +1,133 @@
+\subsection{Hệ thống backend nghiệp vụ}
+Trong giai đoạn nghiên cứu, nhóm đã đánh giá nhiều giải pháp công nghệ để xây dựng các dịch vụ nghiệp vụ cho hệ thống. Quyết định lựa chọn cuối cùng được đưa ra dựa trên sự cân bằng giữa ưu điểm kỹ thuật của từng công nghệ và mức độ phù hợp với thế mạnh chuyên môn của nhóm. Dưới đây là phần phân tích chi tiết.
+
+\subsubsection{Framework}
+
+Để xây dựng các API và xử lý logic nghiệp vụ cốt lõi, hệ thống yêu cầu một nền tảng framework mạnh mẽ, có khả năng mở rộng tốt và đảm bảo tính toàn vẹn dữ liệu. Nhóm đã cân nhắc ba hệ sinh thái phổ biến nhất hiện nay là Node.js, Python và Java. Mỗi nền tảng đều mang lại những giá trị kiến trúc riêng, nhưng cũng đi kèm với những hạn chế nhất định khi áp dụng vào bài toán thương mại điện tử đặc thù. Bảng \ref{tab:backend_frameworks} dưới đây tóm tắt các đánh giá và quyết định cuối cùng của nhóm.
+\setlength{\LTpre}{0pt}  % Khoảng cách phía trên bảng
+\setlength{\LTpost}{10pt}
+
+\begin{center}
+\begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+% --- Tiêu đề bảng và Header ở trang đầu tiên ---
+\caption{So sánh các framework phát triển Backend} \label{tab:backend_frameworks} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endfirsthead
+
+% --- Header cho các trang tiếp theo (có chữ tt) ---
+\caption[]{So sánh các framework phát triển Backend (tt)} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endhead
+
+% --- Nội dung bảng ---
+
+NestJS & 
+- Tận dụng cơ chế Non-blocking I/O của Node.js, tối ưu hóa tài nguyên khi xử lý lượng lớn yêu cầu đồng thời. \newline
+- Hỗ trợ sẵn gói Microservices chuyên dụng, giúp tích hợp Message Broker một cách nhất quán và dễ dàng quản lý luồng sự kiện. & 
+- Hiệu năng chịu giới hạn bởi cơ chế Single-threaded của Node.js khi xử lý các tác vụ tính toán logic nặng. \newline 
+- Việc quản lý các giao dịch phân tán vẫn phức tạp và chưa có giải pháp tích hợp sẵn mạnh mẽ như Spring Boot. & 
+Không lựa chọn do hạn chế trong việc xử lý song song các nghiệp vụ phức tạp và thiếu các bộ công cụ quản lý giao dịch chặt chẽ để đảm bảo an toàn dữ liệu. \\ \hline
+
+Python FastAPI & 
+- Hiệu suất thực thi cao vượt trội nhờ chuẩn ASGI và lập trình bất đồng bộ. \newline 
+- Tích hợp sẵn chuẩn OpenAPI, tự động hóa việc tạo tài liệu và kiểm thử trực tiếp trên Swagger UI. &
+- Cơ chế GIL gây hạn chế trong việc tận dụng tối đa sức mạnh đa nhân CPU cho các tác vụ xử lý song song. \newline 
+- Tiêu tốn nhiều tài nguyên hệ thống và gặp hạn chế về hiệu năng khi xử lý đồng thời lượng lớn giao dịch phức tạp. & 
+Không chọn vì bản chất thông dịch và cơ chế quản lý luồng chưa đáp ứng tốt yêu cầu xử lý các nghiệp vụ phức tạp và tính khắt khe trong kiểm soát tài nguyên. \\ \hline
+
+Java Spring Boot &
+- Hỗ trợ hoàn hảo cho mô hình CQRS nhờ sự kết hợp linh hoạt giữa JPA (ghi) và JDBC (đọc). \newline 
+- Quản lý giao dịch xuất sắc, đảm bảo an toàn dữ liệu tuyệt đối. \newline 
+- Hệ sinh thái Spring Cloud và Spring Security mạnh mẽ, tối ưu cho Microservices phức tạp. & 
+- Mức độ tiêu thụ tài nguyên bộ nhớ cao. \newline 
+- Cấu hình ban đầu phức tạp và thời gian khởi động chậm. & 
+Được chọn nhờ khả năng hỗ trợ kiến trúc CQRS ổn định, đảm bảo tính toàn vẹn dữ liệu và ưu thế OOP giúp mã nguồn dễ bảo trì, xử lý hiệu quả các nghiệp vụ lõi. \\ \hline
+
+\end{longtable}
+\end{center} 
+
+\vspace{-40pt}
+
+Spring Boot là một framework dựa trên ngôn ngữ Java giúp đơn giản hóa quá trình phát triển các ứng dụng cấp doanh nghiệp mạnh mẽ và sẵn sàng cho môi trường vận hành thực tế \cite{spring_boot}. Nền tảng này kế thừa sức mạnh từ hệ sinh thái Spring Framework với các tính năng cốt lõi như tiêm phụ thuộc và quản lý dịch vụ linh hoạt. Với triết lý cấu hình ưu tiên sự tiện lợi, Spring Boot giúp nhóm tập trung hoàn toàn vào việc hiện thực hóa các luồng logic nghiệp vụ. Đặc biệt, Spring Boot cung cấp bộ công cụ Spring Web mạnh mẽ giúp việc xây dựng các RESTful API trở nên nhanh chóng thông qua các cơ chế xử lý dữ liệu tự động và quản lý lỗi hệ thống một cách nhất quán.
+
+Hệ thống yêu cầu một giải pháp backend hoạt động ổn định và hỗ trợ kiến trúc Microservices hiệu quả. Trong khi NestJS và FastAPI bộc lộ những hạn chế về khả năng kiểm soát tài nguyên khi hệ thống mở rộng, Spring Boot khẳng định vị thế nhờ hệ sinh thái Spring Cloud mạnh mẽ giúp điều phối các dịch vụ phân tán dễ dàng. Khả năng tích hợp sẵn với các thư viện như Spring Data JPA giúp việc thao tác với cơ sở dữ liệu trở nên mạch lạc và an toàn hơn. Sự cân bằng giữa hiệu năng thực thi, khả năng bảo mật tích hợp sẵn và ưu thế của lập trình hướng đối tượng chính là lý do nhóm quyết định lựa chọn Java Spring Boot làm nền tảng cốt lõi cho backend nghiệp vụ của dự án.
+
+\subsubsection{Message Broker}
+
+Để hiện thực hóa kiến trúc Microservices kết hợp mô hình Event-driven, việc thiết lập một kênh giao tiếp bất đồng bộ là yêu cầu cốt lõi nhằm triệt tiêu sự phụ thuộc trực tiếp giữa các dịch vụ. Bảng \ref{tab:backend_message_broker} dưới đây là bản đánh giá quyết định cuối cùng của nhóm.
+
+\begin{center}
+\begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+% --- Tiêu đề bảng và Header ở trang đầu tiên ---
+\caption{So sánh các message broker} \label{tab:backend_message_broker} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endfirsthead
+
+% --- Header cho các trang tiếp theo (có chữ tt) ---
+\caption[]{So sánh các message broker (tt)} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endhead
+
+% --- Nội dung bảng ---
+
+Redis Pub/Sub & 
+- Hoạt động hoàn toàn trên bộ nhớ đệm, mang lại tốc độ truyền tin cực cao với độ trễ gần như bằng không. \newline 
+- Mô hình phát tán đơn giản, phù hợp cho các tính năng cần phản hồi tức thì như thông báo hoặc cập nhật trạng thái nhanh. & 
+- Không hỗ trợ lưu trữ sự kiện bền vững; dữ liệu sẽ bị mất vĩnh viễn nếu dịch vụ tiêu thụ đang ngoại tuyến tại thời điểm phát tin. \newline 
+- Thiếu cơ chế đảm bảo an toàn dữ liệu và quản lý luồng phức tạp cho Microservices quy mô lớn. & 
+Không chọn do tính chất "phát và quên" không đảm bảo tính toàn vẹn và an toàn dữ liệu cho các luồng nghiệp vụ quan trọng của hệ thống. \\ \hline
+
+RabbitMQ & 
+- Hỗ trợ các cơ chế định tuyến thông điệp phức tạp và đảm bảo độ tin cậy cao thông qua việc xác nhận nhận tin. \newline 
+- Phù hợp cho các tác vụ xử lý nền và các luồng công việc yêu cầu sự phân phối tin nhắn chính xác đến từng đích cụ thể. & 
+- Quản lý trạng thái tin nhắn tại Broker gây áp lực lên tài nguyên khi số lượng sự kiện lớn hoặc nhiều bên đăng ký nhận tin. \newline 
+- Không hỗ trợ lưu trữ sự kiện bền vững để đọc lại, gây khó khăn khi cần đồng bộ dữ liệu giữa các dịch vụ. & 
+Không lựa chọn vì hạn chế trong việc lưu trữ luồng sự kiện lâu dài và khả năng mở rộng kém linh hoạt hơn so với kiến trúc nhật ký phân tán của Kafka. \\ \hline
+
+Apache Kafka & 
+- Kiến trúc nhật ký phân tán giúp lưu trữ thông điệp bền vững, đảm bảo dữ liệu không bị mất ngay cả khi dịch vụ tiêu thụ gặp sự cố tạm thời. \newline 
+- Khả năng xử lý thông tải lớn và mở rộng linh hoạt, tối ưu cho việc điều phối dữ liệu giữa dịch vụ lõi và các dịch vụ bổ trợ. & 
+- Cấu hình hạ tầng và quy trình triển khai phức tạp hơn so với các giải pháp truyền tin truyền thống. \newline 
+- Độ trễ phản hồi có thể cao hơn các hệ thống thuần In-memory do phải thực hiện ghi dữ liệu xuống đĩa cứng để đảm bảo an toàn. & 
+Được chọn nhờ khả năng lưu trữ thông điệp tin cậy, giúp tách biệt hoàn toàn các dịch vụ và đảm bảo luồng dữ liệu nghiệp vụ luôn được truyền tải ổn định trong kiến trúc Microservices. \\ \hline
+
+\end{longtable}
+\end{center} 
+
+\vspace{-40pt}
+
+Apache Kafka là một nền tảng truyền thông điệp phân tán mạnh mẽ được thiết kế dựa trên kiến trúc nhật ký phân tán giúp lưu trữ dữ liệu bền vững và có khả năng chịu lỗi cao \cite{kafka}. Thay vì vận hành theo mô hình đẩy tin nhắn truyền thống, Kafka cho phép các dịch vụ tiêu thụ chủ động kéo dữ liệu theo năng lực xử lý riêng giúp hệ thống duy trì sự ổn định ngay cả khi luồng sự kiện tăng đột biến. Nền tảng này nổi bật với khả năng xử lý thông tải cực lớn và cơ chế sao chép dữ liệu trên các cụm máy chủ nhằm đảm bảo tính nhất quán và an toàn dữ liệu tuyệt đối cho toàn bộ hệ thống.
+
+Hệ thống yêu cầu một giải pháp truyền tin mạnh mẽ để đảm bảo sự tách biệt giữa các dịch vụ có tốc độ xử lý khác nhau. Trái với Redis và RabbitMQ bộc lộ những hạn chế về khả năng lưu trữ bền vững và quản lý trạng thái khi quy mô mở rộng, Apache Kafka mạnh mẽ nhờ khả năng lưu giữ thông điệp trên đĩa cứng giúp các dịch vụ bổ trợ tiêu thụ dữ liệu mà không gây áp lực lên dịch vụ nghiệp vụ chính. Việc tích hợp hoàn hảo với hệ sinh thái Spring Cloud cùng khả năng mở rộng ngang linh hoạt giúp nhóm dễ dàng điều phối các luồng dữ liệu phức tạp trong kiến trúc Microservices. Sự cân bằng giữa hiệu suất thực thi, tính bền vững của dữ liệu và khả năng chịu lỗi phân tán chính là lý do nhóm quyết định lựa chọn Apache Kafka làm trục xương sống cho toàn bộ cơ chế giao tiếp hướng sự kiện của dự án.
+
+\subsubsection{Reactive Framework}
+
+Reactive Framework đóng vai trò then chốt trong việc xây dựng các ứng dụng phân tán có khả năng phản hồi nhanh và chịu tải cao. Thay vì mô hình lập trình truyền thống, khung làm việc này ưu tiên cơ chế xử lý bất đồng bộ và không nghẽn luồng, giúp hệ thống tận dụng tối đa tài nguyên để xử lý hàng nghìn yêu cầu đồng thời.
+
+Bên cạnh Framework chính là Spring Boot, nhóm tích hợp thêm Eclipse Vert.x như một giải pháp để xử lý các tác vụ đòi hỏi hiệu suất cao bên trong từng dịch vụ. Vert.x hoạt động dựa trên mô hình hướng sự kiện và cơ chế vào ra dữ liệu không nghẽn luồng, giúp tối ưu hóa việc sử dụng tài nguyên hệ thống thông qua cơ chế vòng lặp sự kiện.
+
+Trong kiến trúc của dự án, Vert.x Event Bus được sử dụng như một trục giao tiếp nội bộ giữa các thành phần bên trong một microservice. Thay vì sử dụng các lời gọi hàm trực tiếp gây nghẽn luồng xử lý, các thành phần có thể gửi và nhận thông điệp một cách bất đồng bộ thông qua Event Bus. việc kết hợp này cho phép hệ thống tận dụng được khả năng quản lý nghiệp vụ mạnh mẽ của Spring Boot, đồng thời đạt được tốc độ xử lý phản ứng của Vert.x cho các tác vụ tính toán hoặc điều phối dữ liệu nội bộ một cách hiệu quả.
+
+\subsubsection{Tổng hợp các công nghệ sử dụng tại Backend}
+
+Bảng \ref{tab:backend_tech} dưới đây là bảng tổng hợp các công nghệ then chốt được áp dụng tại tầng Backend nhằm hiện thực hóa hệ thống microservice phân tán:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\caption{Tổng hợp các công nghệ sử dụng tại Backend}
+\label{tab:backend_tech}
+\begin{tabular}{|l|p{4.5cm}|p{6.5cm}|}
+\hline
+\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Vai trò cốt lõi} \\ \hline
+Ngôn ngữ chính & Java 21 & Nền tảng lập trình chính, hỗ trợ Virtual Threads giúp tối ưu hiệu năng xử lý. \\ \hline
+Framework chính & Spring Boot 3.x & Xây dựng, cấu hình và điều phối hoạt động các dịch vụ nghiệp vụ độc lập. \\ \hline
+Reactive Framework & Eclipse Vert.x & Xử lý bất đồng bộ và điều phối thông điệp nội bộ dịch vụ qua cơ chế Event Bus. \\ \hline
+Truyền tải sự kiện & Apache Kafka (KRaft) & Message Broker hỗ trợ giao tiếp hướng sự kiện và đồng bộ dữ liệu giữa các dịch vụ. \\ \hline
+Truy cập dữ liệu & Spring Data JPA, JdbcTemplate & Quản lý thực thể dữ liệu quan hệ và tối ưu hóa các truy vấn truy xuất cơ sở dữ liệu. \\ \hline
+\end{tabular}
+\end{table}
