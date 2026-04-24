@@ -107,6 +107,421 @@ Các bản thiết kế giao diện được xây dựng và quản lý trên n�
 
 \vspace{12pt}
 
+\subsection{Đặc tả chi tiết các trường hợp sử dụng} \label{sec:appx_usecase_detail}
+Phần này trình bày chi tiết các bảng đặc tả trường hợp sử dụng cho các chức năng quản trị và các nghiệp vụ hỗ trợ, bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{ss:usecase_detail} thông qua các bảng từ \ref{tab:uc-register} đến bảng \ref{tab:uc-admin-update-order-status}. 
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: Đăng ký tài khoản}
+\label{tab:uc-register} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC1] Đăng ký tài khoản \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng tạo tài khoản mới. Tài khoản quản trị viên được cấp riêng và không thể tự đăng ký. \\
+\hline
+\textbf{Tác nhân} & Khách hàng \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \\
+& 2. Cơ sở dữ liệu được kết nối với hệ thống. \\
+& 3. Kết nối với internet được đảm bảo. \\
+& 4. Khách hàng chưa có tài khoản trong hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn nút “Đăng ký” trên giao diện hệ thống. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị biểu mẫu đăng ký. \\
+& 2. Khách hàng nhập thông tin bắt buộc (email/số điện thoại, mật khẩu,...). \\
+& 3. Hệ thống kiểm tra tính hợp lệ của thông tin. \\
+& 4. Hệ thống lưu thông tin khách hàng vào cơ sở dữ liệu. \\
+& 5. Hệ thống xác nhận đăng ký thành công. \\
+& 6. Khách hàng có thể đăng nhập sau khi xác nhận. \\
+\hline
+\textbf{Hậu điều kiện} & Tài khoản mới được tạo thành công và khách hàng có thể đăng nhập. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & Ngoại lệ 1: Tại bước 3 \\
+& 3a. Nếu email đã tồn tại, hệ thống thông báo (\textit{yêu cầu nhập lại email khác}). \\
+& 3b. Nếu mật khẩu không đạt yêu cầu, hệ thống hiển thị thông báo lỗi và yêu cầu đổi mật khẩu khác. \\
+& 3c. Nếu các thông tin khác không hợp lệ hoặc chưa điền đủ các trường bắt buộc, hệ thống báo lỗi và yêu cầu nhập chính xác. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: Đăng nhập}
+\label{tab:uc-login} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC2] Đăng nhập \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép người dùng đăng nhập vào hệ thống bằng tài khoản đã đăng ký. \\
+\hline
+\textbf{Tác nhân} & Khách hàng, quản trị viên \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Người dùng đã có tài khoản trong hệ thống.\\
+\hline
+\textbf{Sự kiện kích hoạt} & Người dùng nhấn nút “Đăng nhập” trên giao diện hệ thống. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị màn hình đăng nhập. \newline
+2. Người dùng nhập thông tin đăng nhập. \newline
+3. Hệ thống xác thực thông tin đăng nhập. \newline
+4. Người dùng được chuyển đến trang chủ nếu đăng nhập thành công. \\
+\hline
+\textbf{Hậu điều kiện} & Người dùng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 2} \newline
+2a. Đối với người dùng là khách hàng, nếu quên mật khẩu, khách hàng nhấn chọn nút “Quên mật khẩu” để chuyển đến trang cấp lại mật khẩu. \newline
+2b. Đối với người dùng là khách hàng, nếu chọn phương thức đăng nhập bằng Google, hệ thống sẽ chuyển đến trang xác thực của Google\\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin đăng nhập không hợp lệ (sai tên tài khoản hoặc mật khẩu), hệ thống hiển thị thông báo lỗi và yêu cầu người dùng thử lại. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: [UC3] Quên mật khẩu}
+\label{tab:uc-forgot-password} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Quên mật khẩu \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng lấy lại mật khẩu đã quên. \\
+\hline
+\textbf{Tác nhân} & Khách hàng\\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Người dùng đã có tài khoản trong hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn nút “Quên mật khẩu”. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị màn hình quên mật khẩu. \newline
+2. Khách hàng nhập thông tin email hoặc số điện thoại đã đăng ký tài khoản. \newline
+3. Hệ thống xác thực thông tin. \newline
+4. Hệ thống gửi đường dẫn đến trang đổi mật khẩu đến email hoặc sms của khách hàng. \newline
+5. Khách hàng nhập mật khẩu mới. \newline
+6. Hệ thống kiểm tra và cập nhật mật khẩu mới. \\
+\hline
+\textbf{Hậu điều kiện} & Khách hàng thiết lập mật khẩu mới thành công. \\
+\hline
+\textbf{Luồng thay thế} & Không \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin email hoặc số điện thoại không tồn tại trong hệ thống. \newline
+\textbf{Ngoại lệ 2: Tại bước 6} \newline
+6a. Mật khẩu mới không hợp lệ hoặc không đúng định dạng yêu cầu. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Quản lý thông tin cá nhân}
+\label{tab:uc-profile-management} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC4] Quản lý thông tin cá nhân \\
+\hline
+\textbf{Tóm tắt mô tả} & Khách hàng xem và cập nhật thông tin cá nhân của mình trên hệ thống. \\
+\hline
+\textbf{Tác nhân} & Khách hàng. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Khách hàng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng truy cập vào mục “Thông tin cá nhân” trên giao diện. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị thông tin cá nhân hiện tại của khách hàng. \newline
+2. Khách hàng chọn chức năng chỉnh sửa thông tin. \newline
+3. Khách hàng nhập các thông tin mới cần thay đổi. \newline
+4. Hệ thống thực hiện kiểm tra, lưu thay đổi và cập nhật hồ sơ vào cơ sở dữ liệu. \\
+\hline
+\textbf{Hậu điều kiện} & Thông tin cá nhân mới được cập nhật thành công và hiển thị chính xác. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 2} \newline
+2a. Nếu khách hàng chỉ xem lại thông tin cá nhân mà không cần chỉnh sửa thì không chọn nút chỉnh sửa thông tin cá nhân. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin cập nhật không hợp lệ (sai định dạng hoặc thiếu trường bắt buộc), hệ thống thông báo lỗi. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Hủy đơn hàng}
+\label{tab:uc-cancel-order} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Hủy đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng hủy đơn hàng đã đặt trong một số điều kiện nhất định. \\
+\hline
+\textbf{Tác nhân} & Khách hàng. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Đơn hàng đang ở trạng thái cho phép hủy (ví dụ: Chờ xác nhận hoặc Chờ lấy hàng). \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn chọn chức năng hủy đơn hàng. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Khách hàng mở danh sách đơn hàng cá nhân và chọn đơn hàng muốn hủy. \newline
+2. Hệ thống hiển thị thông tin chi tiết của đơn hàng đó. \newline
+3. Khách hàng nhấn nút “Hủy đơn hàng”. \newline
+4. Hệ thống yêu cầu khách hàng xác nhận lại và chọn/nhập lý do hủy. \newline
+5. Hệ thống thực hiện kiểm tra các điều kiện ràng buộc để hủy đơn hàng. \newline
+6. Hệ thống cập nhật trạng thái đơn hàng thành “Đã hủy” và gửi thông báo xác nhận cho khách hàng. \\
+\hline
+\textbf{Hậu điều kiện} & Đơn hàng được chuyển sang trạng thái hủy thành công và hệ thống ngừng các quy trình xử lý tiếp theo. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 4} \newline
+4a. Khách hàng thay đổi ý định và từ chối xác nhận hủy, hệ thống đóng cửa sổ xác nhận và giữ nguyên trạng thái hiện tại của đơn hàng. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 5} \newline
+5a. Đơn hàng đã chuyển sang trạng thái không thể hủy (ví dụ: Đang giao hàng), hệ thống thông báo từ chối yêu cầu hủy đơn hàng. \newline
+5b. Lỗi kết nối cơ sở dữ liệu hoặc hệ thống không phản hồi, thông báo lỗi cho người dùng và không thay đổi trạng thái đơn hàng. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Xem trạng thái đơn hàng}
+\label{tab:uc-view-order-status} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Xem trạng thái đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng theo dõi tiến trình của các đơn hàng sau khi đặt (chờ xác nhận, đang giao, đã giao thành công hoặc đã hủy). \\
+\hline
+\textbf{Tác nhân} & Khách hàng \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Khách hàng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng chọn chức năng “Đơn hàng của tôi” hoặc “Xem đơn hàng” trên giao diện người dùng. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Khách hàng truy cập vào mục danh sách đơn hàng theo trạng thái cần xem. \newline
+2. Hệ thống truy xuất và hiển thị danh sách các đơn hàng gần nhất phù hợp với yêu cầu. \newline
+3. Khách hàng chọn một đơn hàng cụ thể để xem chi tiết. \newline
+4. Hệ thống hiển thị chi tiết trạng thái, lộ trình và tiến trình xử lý hiện tại của đơn hàng đó. \\
+\hline
+\textbf{Hậu điều kiện} & Khách hàng nắm bắt được thông tin chi tiết về trạng thái và tiến trình xử lý thực tế của đơn hàng. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 2} \newline
+2a. Nếu không có đơn hàng nào phù hợp với bộ lọc hoặc lịch sử, hệ thống hiển thị danh sách trống và thông báo cho người dùng. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Quản lý sản phẩm}
+\label{tab:uc-admin-product-management} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Quản lý sản phẩm \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép quản trị viên thêm mới, chỉnh sửa thông tin, hoặc xóa sản phẩm trong danh mục hệ thống. \\
+\hline
+\textbf{Tác nhân} & Quản trị viên. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Quản trị viên đã đăng nhập thành công vào hệ thống quản trị. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Quản trị viên nhấn chọn chức năng “Quản lý sản phẩm” trên giao diện quản trị điều hành. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Quản trị viên lựa chọn tác vụ cần thực hiện: thêm mới, chỉnh sửa hoặc xóa sản phẩm. \newline
+2. Hệ thống hiển thị biểu mẫu hoặc cửa sổ xác nhận tương ứng với tác vụ đã chọn. \newline
+3. Quản trị viên thực hiện nhập mới hoặc cập nhật các thông tin sản phẩm. \newline
+4. Hệ thống thực hiện kiểm tra tính hợp lệ của dữ liệu đầu vào. \newline
+5. Hệ thống thực hiện lưu thông tin sản phẩm vào cơ sở dữ liệu. \newline
+6. Hệ thống gửi thông báo xác nhận thao tác thành công cho quản trị viên. \\
+\hline
+\textbf{Hậu điều kiện} & Danh mục sản phẩm được cập nhật chính xác trong hệ thống và hiển thị lên giao diện người dùng. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 3} \newline
+3a. Quản trị viên nhấn nút hủy thao tác hoặc thoát màn hình trước khi nhấn lưu, hệ thống sẽ không thực hiện bất kỳ thay đổi nào đối với dữ liệu. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 4} \newline
+4a. Nếu dữ liệu nhập vào không hợp lệ (sai định dạng giá, thiếu thông tin bắt buộc...), hệ thống báo lỗi chi tiết và yêu cầu quản trị viên hiệu chỉnh lại. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Cập nhật trạng thái đơn hàng}
+\label{tab:uc-admin-update-order-status} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Cập nhật trạng thái đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép quản trị viên hoặc nhân viên vận hành thay đổi trạng thái đơn hàng (xác nhận, đang giao, đã giao, hủy) để khách hàng tiện theo dõi. \\
+\hline
+\textbf{Tác nhân} & Quản trị viên. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Quản trị viên đã đăng nhập thành công vào hệ thống quản trị. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Quản trị viên chọn một đơn hàng cụ thể từ danh sách đơn hàng để thực hiện cập nhật trạng thái. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Quản trị viên truy cập vào danh mục quản lý danh sách đơn hàng. \newline
+2. Hệ thống truy xuất và hiển thị thông tin chi tiết của đơn hàng được chọn. \newline
+3. Quản trị viên lựa chọn trạng thái mới phù hợp với tiến độ thực tế. \newline
+4. Hệ thống thực hiện cập nhật trạng thái đơn hàng vào cơ sở dữ liệu. \newline
+5. Hệ thống tự động gửi thông báo cập nhật cho khách hàng về trạng thái mới của đơn hàng. \\
+\hline
+\textbf{Hậu điều kiện} & Trạng thái đơn hàng được cập nhật thành công trong hệ thống và đồng bộ với giao diện của khách hàng. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Nếu đơn hàng đã bị khách hàng hủy ngay tại thời điểm quản trị viên đang thao tác cập nhật, hệ thống sẽ hiển thị thông báo lỗi và yêu cầu tải lại trang. \\
+\hline
+\end{longtable}
+
+\subsection{Sơ đồ hoạt động} \label{sec:appx_activity_diagram}
+Phần này mô tả chi tiết sơ đồ hoạt động cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:activity_diagram} thông qua các bảng từ bảng \ref{fig:act_register} đến bảng \ref{fig:act_change_status}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/register.png}
+   \vspace{0.5cm} 
+   \caption{Sơ đồ hoạt động chức năng Đăng ký tài khoản}
+    \label{fig:act_register}
+\end{figure}
+Hình \ref{fig:act_register} mô tả quy trình người dùng mới nhập thông tin cá nhân. Hệ thống kiểm tra tính hợp lệ của dữ liệu (email, mật khẩu), tạo tài khoản mới trong cơ sở dữ liệu và thông báo kết quả đăng ký.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/login.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động chức năng Đăng nhập}
+    \label{fig:act_login}
+\end{figure}
+Hình \ref{fig:act_login} mô tả quá trình người dùng nhập thông tin xác thực. Hệ thống đối chiếu với cơ sở dữ liệu, cấp quyền truy cập (token/session) nếu thông tin đúng hoặc báo lỗi nếu sai lệch.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/forgot_password.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động chức năng Quên mật khẩu}
+    \label{fig:act_forgot_pass}
+\end{figure}
+Hình \ref{fig:act_forgot_pass} mô tả quy trình khôi phục quyền truy cập khi người dùng quên mật khẩu, bao gồm các bước nhập email, xác thực mã OTP/Link và thiết lập mật khẩu mới.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/manage_personal_information.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Quản lý thông tin cá nhân}
+    \label{fig:act_manage_info}
+\end{figure}
+Hình \ref{fig:act_manage_info} mô tả luồng quản lí thông tin cá nhân. Tính năng này cho phép người dùng xem và chỉnh sửa thông tin hồ sơ cá nhân (tên, số điện thoại, địa chỉ), sau đó cập nhật lại vào hệ thống.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap3/activity_diagram/view_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Xem trạng thái đơn hàng}
+    \label{fig:act_view_order}
+\end{figure}
+Hình \ref{fig:act_view_order} cho thấy người dùng theo dõi tiến trình của đơn hàng đã đặt (Chờ xác nhận, Đang giao, Đã giao, v.v.) thông qua giao diện lịch sử mua hàng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/cancel_order.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Hủy đơn hàng (Phía người dùng)}
+    \label{fig:act_cancel_order}
+\end{figure}
+Quy trình cho phép người dùng yêu cầu hủy đơn hàng khi đơn chưa được chuyển sang trạng thái vận chuyển, hệ thống cập nhật trạng thái và hoàn tiền (nếu có) được mô tả ở hình \ref{fig:act_cancel_order}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/chap3/activity_diagram/manage_product.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Quản lý sản phẩm (Admin)}
+    \label{fig:act_manage_product}
+\end{figure}
+Hình \ref{fig:act_manage_product} mô tả luồng quản lí sản phẩm. Luồng này dành cho Quản trị viên: Thực hiện các chức năng Thêm mới, Cập nhật thông tin, hoặc Ẩn/Xóa sản phẩm khỏi hệ thống.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap3/activity_diagram/change_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Cập nhật trạng thái đơn hàng (Admin)}
+    \label{fig:act_change_status}
+\end{figure}
+Quy trình xử lý đơn hàng phía Admin: Xác nhận đơn, chuyển sang trạng thái đóng gói, giao hàng, hoặc hoàn tất đơn hàng được biểu diễn qua hình \ref{fig:act_change_status}.
+
+\subsection{Sơ đồ tuần tự} \label{sec:appx_sequence_diagram}
+
+Phần này mô tả chi tiết sơ đồ tuần tự cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:sequence_diagram} thông qua các bảng từ bảng \ref{fig:seq_register} đến bảng \ref{fig:seq_change_status}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/register.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Đăng ký tài khoản}
+    \label{fig:seq_register}
+\end{figure}
+Hình \ref{fig:seq_register} mô tả trình tự tương tác khi người dùng gửi yêu cầu đăng ký. Hệ thống kiểm tra sự tồn tại của email/tên đăng nhập trong cơ sở dữ liệu trước khi khởi tạo đối tượng tài khoản mới và phản hồi kết quả.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/login.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Đăng nhập}
+    \label{fig:seq_login}
+\end{figure}
+Hình \ref{fig:seq_login} thể hiện luồng xác thực: Người dùng nhập thông tin, hệ thống đối chiếu dữ liệu mã hóa trong Database. Nếu khớp, hệ thống khởi tạo phiên làm việc (Session/Token) và chuyển hướng người dùng vào trang chủ.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/forgot_password.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Quên mật khẩu}
+    \label{fig:seq_forgot_pass}
+\end{figure}
+Hình \ref{fig:seq_forgot_pass} mô tả quá trình tương tác để khôi phục tài khoản: Gửi yêu cầu xác thực qua email, kiểm tra mã xác nhận (OTP) và thực hiện cập nhật mật khẩu mới vào cơ sở dữ liệu.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/manage_personal_information.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Quản lý thông tin cá nhân}
+    \label{fig:seq_manage_info}
+\end{figure}
+Hình \ref{fig:seq_manage_info} mô tả luồng khi người dùng yêu cầu xem hoặc sửa đổi thông tin. Hệ thống truy xuất dữ liệu hiện tại để hiển thị, sau đó nhận dữ liệu mới, thực hiện validation và cập nhật lại vào hệ thống lưu trữ.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/view_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Xem trạng thái đơn hàng}
+    \label{fig:seq_view_order}
+\end{figure}
+Hình \ref{fig:seq_view_order} mô tả luồng khi người dùng gửi yêu cầu xem chi tiết đơn hàng. Hệ thống truy xuất thông tin từ bảng Order và OrderDetails, trả về trạng thái hiện tại (ví dụ: Đang giao, Đã hoàn thành) cho giao diện người dùng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/cancel_order.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Hủy đơn hàng (Người dùng)}
+    \label{fig:seq_cancel_order}
+\end{figure}
+Hình \ref{fig:seq_cancel_order} mô tả luồng hủy đơn hàng. Hệ thống kiểm tra điều kiện hủy (ví dụ: đơn chưa giao). Nếu hợp lệ, hệ thống cập nhật trạng thái đơn hàng thành "Cancelled", hoàn lại tồn kho (nếu cần) và thông báo thành công.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/chap3/sequence_diagram/manage_product.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Quản lý sản phẩm}
+    \label{fig:seq_manage_product}
+\end{figure}
+Admin gửi yêu cầu Thêm/Sửa/Xóa. Hệ thống thực hiện Validate dữ liệu đầu vào, sau đó thực hiện lệnh SQL tương ứng xuống Database và trả về kết quả cập nhật danh sách sản phẩm. Hình \ref{fig:seq_manage_product} là sơ đồ tuần tự cho luồng quản lí sản phẩm.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/change_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Cập nhật trạng thái đơn hàng}
+    \label{fig:seq_change_status}
+\end{figure}
+Hình \ref{fig:seq_change_status} biểu diễn luồng khi admin chọn đơn hàng và trạng thái mới (ví dụ: Xác nhận -> Đang giao). Hệ thống cập nhật bản ghi trong Database và có thể kích hoạt gửi email thông báo cho khách hàng.
+
 \subsection{Mô hình hệ thống và lưu đồ hoạt động}
 Các sơ đồ phân tích và thiết kế hệ thống:
 \begin{itemize}

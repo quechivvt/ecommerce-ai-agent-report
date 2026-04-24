@@ -19,6 +19,8 @@
 \usepackage[framemethod=tikz]{mdframed}% For highlighting paragraph backgrounds
 \usepackage{caption,subcaption}
 
+\usepackage{chngcntr}
+
 \usepackage{lastpage}
 \usepackage[lined,boxed,commentsnumbered]{algorithm2e}
 \usepackage{enumerate}
@@ -44,6 +46,10 @@
 \usepackage{listings}
 
 \usepackage[normalem]{ulem}
+
+% Đánh số hình theo chương 
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
 
 \newtheorem{theorem}{{\bf Định lý}}
 \newtheorem{property}{{\bf Tính chất}}
@@ -229,10 +235,6 @@ morekeywords={}
 
 \end{tabular}
 \end{center}
-\vspace{0.3cm}
-
-
-
 
 \begin{center}
 \begin{tabular}{ll}
@@ -352,9 +354,9 @@ Trong chương này, nhóm trình bày tổng quan về đề tài nghiên cứu
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap1/ly_do.tex}
-\input{contents/chap1/muc_tieu.tex}
-\input{contents/chap1/pham_vi.tex}
+%\input{contents/chap1/ly_do.tex}
+%\input{contents/chap1/muc_tieu.tex}
+%\input{contents/chap1/pham_vi.tex}
 \clearpage
 
 
@@ -371,10 +373,10 @@ Trong chương này, nhóm khảo sát, tìm hiểu và trải nghiệm các h�
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap2/cellphones.tex}
-\input{contents/chap2/fpt.tex}
-\input{contents/chap2/tgdd.tex}
-\input{contents/chap2/so_sanh.tex}
+%\input{contents/chap2/cellphones.tex}
+%\input{contents/chap2/fpt.tex}
+%\input{contents/chap2/tgdd.tex}
+%\input{contents/chap2/so_sanh.tex}
 \clearpage
 
 
@@ -389,12 +391,12 @@ Trong chương này, nhóm đã làm rõ các yêu cầu và luồng nghiệp v�
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap3/stakeholder.tex}
-\input{contents/chap3/functional_requirements.tex}
-\input{contents/chap3/non-functional_requirements.tex}
-\input{contents/chap3/use_case.tex}
-\input{contents/chap3/activity_diagram.tex}
-\input{contents/chap3/sequence_diagram.tex}
+%\input{contents/chap3/upd_stakeholder.tex}
+%\input{contents/chap3/upd_functional_requirement.tex}
+%\input{contents/chap3/upd_nonfuctional_requirement.tex}
+%\input{contents/chap3/upd_usecase.tex}
+%\input{contents/chap3/upd_activity_diagram.tex}
+%\input{contents/chap3/upd_sequence_diagram.tex}
 \clearpage
 
 
@@ -411,8 +413,8 @@ Chương này tập trung vào các cơ sở lý thuyết quan trọng về ki�
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap4/kien_truc.tex}
-\input{contents/chap4/ai.tex}
+%\input{contents/chap4/kien_truc.tex}
+%\input{contents/chap4/ai.tex}
 \clearpage
 
 \section{Công nghệ}
@@ -425,10 +427,10 @@ Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã 
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap5/frontend.tex}
-\input{contents/chap5/backend.tex}
-\input{contents/chap5/ai.tex}
-\input{contents/chap5/infrastructure.tex}
+%\input{contents/chap5/frontend.tex}
+%\input{contents/chap5/upd_backend.tex}
+%\input{contents/chap5/ai.tex}
+%\input{contents/chap5/upd_infrastructure.tex}
 \clearpage
 
 
@@ -446,11 +448,12 @@ Chương này thiết kế hệ thống dựa trên kiến trúc đã chọn. C�
 \end{minipage}
 \end{center}
 \input{contents/chap6/kien_truc.tex}
-\input{contents/chap6/erd.tex}
-\input{contents/chap6/api.tex}
-\input{contents/chap6/kafka-message.tex}
-\input{contents/chap6/ui_ux.tex}
-\input{contents/chap6/ai.tex}
+\input{contents/chap6/new_erd.tex}
+%\input{contents/chap6/erd.tex}
+%\input{contents/chap6/api.tex}
+%\input{contents/chap6/kafka-message.tex}
+%\input{contents/chap6/ui_ux.tex}
+%\input{contents/chap6/ai.tex}
 \clearpage
 
 
@@ -464,8 +467,8 @@ Trong chương này, nhóm tổng kết những kết quả đã đạt được
 \end{center}
 \end{minipage}
 \end{center}
-\input{contents/chap7/ketqua.tex}
-\input{contents/chap7/dinhhuong.tex}
+%\input{contents/chap7/ketqua.tex}
+%\input{contents/chap7/dinhhuong.tex}
 \clearpage
 
 
@@ -479,6 +482,6 @@ Trong chương này, nhóm tổng kết những kết quả đã đạt được
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 \clearpage
-\input{intro_outro/phu_luc.tex}
+%\input{intro_outro/phu_luc.tex}
 \clearpage
 \end{document}
