@@ -1,0 +1,56 @@
+\subsection{Thiết kế các topic Kafka cho hệ thống}
+
+Trong kiến trúc Microservices, việc đảm bảo tính nhất quán dữ liệu và phối hợp các giao dịch phân tán là một thách thức lớn. Hệ thống sử dụng Apache Kafka làm nền tảng trung gian để thực hiện các giao tiếp bất đồng bộ, giúp giảm thiểu sự phụ thuộc trực tiếp giữa các dịch vụ. Các Topic được thiết kế nhằm phục vụ hai mục đích chính: điều phối quy trình nghiệp vụ thông qua mô hình Saga và đồng bộ hóa dữ liệu bản sao giữa các dịch vụ.
+
+\subsubsection{Nhóm Topic đồng bộ hóa dữ liệu}
+
+Đối với danh mục sản phẩm và chương trình khuyến mãi, hệ thống sử dụng một topic duy nhất cho mỗi thực thể. Trong thông điệp gửi đi sẽ bao gồm trường UpdateType (nhận các giá trị: CREATE, UPDATE, DELETE) để dịch vụ tiêu thụ xác định hành động cần thực hiện.
+
+\begin{itemize}
+\item \texttt{discount.copy.command}: Cập nhật thông tin khuyến mãi sang các dịch vụ liên quan để tính toán giá.
+\item \texttt{product.detail.command}: Đồng bộ chi tiết sản phẩm khi có thay đổi về mô tả hoặc trạng thái.
+\end{itemize}
+
+Riêng với dữ liệu đánh giá và thao tác giải phóng sản phẩm, hệ thống tách nhỏ thành các topic riêng biệt dựa trên hành động của người dùng. Cách tiếp cận này giúp product service dễ dàng phân loại logic xử lý ngay từ tầng Listener mà không cần kiểm tra trường UpdateType bên trong code:
+
+\begin{itemize}
+    \item \texttt{create.feedback.events}: Kích hoạt khi người dùng tạo đánh giá mới.
+    \item \texttt{update.feedback.events}: Cập nhật số sao đánh giá trung bình và số lượng đánh giá ở sản phẩm.
+    \item \texttt{delete.feedback.events}: Gỡ bỏ đánh giá và cập nhật lại điểm trung bình.
+    \item \texttt{product.release.commands}: Giải phóng sản phẩm khi người dùng chọn hủy đơn hàng.
+\end{itemize}
+
+\subsubsection{Nhóm Topic điều phối giao dịch Saga}
+
+Hệ thống áp dụng mô hình Saga Orchestration để quản lý các giao dịch phân tán. Quy trình dựa trên việc gửi lệnh và nhận sự kiện giữa Orchestrator và các dịch vụ thành phần.
+
+\textbf{A. Luồng đặt hàng}
+\begin{itemize}
+    \item \texttt{order.commands}: Lệnh yêu cầu tạo hoặc cập nhật trạng thái đơn hàng gửi đến order service.
+    \item \texttt{order.events}: Phản hồi về kết quả xử lý bản ghi đơn hàng từ order service.
+    \item \texttt{product.commands}: Lệnh yêu cầu giữ chỗ hoặc giảm số lượng tồn kho gửi đến product service.
+    \item \texttt{product.events}: Phản hồi xác nhận đã trừ kho thành công hoặc thông báo hết hàng.
+    \item \texttt{cart.commands}: Lệnh yêu cầu xóa các item đã thanh toán khỏi giỏ hàng gửi đến cart service.
+    \item \texttt{cart.events}: Phản hồi xác nhận giỏ hàng đã được làm sạch thành công.
+\end{itemize}
+
+\textbf{B. Luồng thanh toán}
+\begin{itemize}
+    \item \texttt{payment.commands}: Lệnh khởi tạo giao dịch thanh toán gửi đến order service.
+    \item \texttt{payment.events}: Phản hồi khi giao dịch thanh toán được xử lý thành công.
+    \item \texttt{payment.failed.events}: Phản hồi khi giao dịch thanh toán thất bại.
+    \item \texttt{payment.confirm.commands}: Lệnh xác nhận hoàn tất giao dịch sau khi các dịch vụ khác đã sẵn sàng.
+    \item \texttt{payment.confirm.events}: Phản hồi xác nhận giao dịch đã được chốt thành công.
+    \item \texttt{payment.cancel.commands}: Lệnh hủy hoặc hoàn tác giao dịch thanh toán khi chuỗi Saga gặp lỗi.
+    \item \texttt{payment.cancel.events}: Phản hồi xác nhận việc hủy thanh toán đã hoàn tất.
+\end{itemize}
+
+\textbf{C. Luồng hủy đơn hàng}
+\begin{itemize}
+    \item \texttt{cancel.order.commands}: Lệnh hủy đơn hàng gửi đến order service.
+    \item \texttt{cancel.order.success.events}: Phản hồi khi cập nhật trạng thái hủy thành công.
+    \item \texttt{cancel.order.failed.events}: Phản hồi khi quy trình hủy gặp lỗi nghiệp vụ.
+    \item \texttt{refund.success.events}: Thông báo hoàn tiền thành công cho khách hàng.
+    \item \texttt{refund.failed.events}: Thông báo lỗi trong quá trình hoàn trả tiền.
+\end{itemize}
+

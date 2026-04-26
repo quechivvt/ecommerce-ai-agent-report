@@ -513,7 +513,6 @@ Hình \ref{fig:seq_cancel_order} mô tả luồng hủy đơn hàng. Hệ thốn
 \end{figure}
 Admin gửi yêu cầu Thêm/Sửa/Xóa. Hệ thống thực hiện Validate dữ liệu đầu vào, sau đó thực hiện lệnh SQL tương ứng xuống Database và trả về kết quả cập nhật danh sách sản phẩm. Hình \ref{fig:seq_manage_product} là sơ đồ tuần tự cho luồng quản lí sản phẩm.
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/change_order_status.png}
@@ -521,6 +520,186 @@ Admin gửi yêu cầu Thêm/Sửa/Xóa. Hệ thống thực hiện Validate d�
     \label{fig:seq_change_status}
 \end{figure}
 Hình \ref{fig:seq_change_status} biểu diễn luồng khi admin chọn đơn hàng và trạng thái mới (ví dụ: Xác nhận -> Đang giao). Hệ thống cập nhật bản ghi trong Database và có thể kích hoạt gửi email thông báo cho khách hàng.
+
+\subsection{ERD Mapping}
+
+Sau khi xác lập các thực thể và mối quan hệ tại mức khái niệm thông qua sơ đồ ERD ở chương \ref{sec:erd_section}, nhóm tiến hành ánh xạ các thành phần này sang lược đồ quan hệ logic. Bước này đóng vai trò quan trọng trong việc chuyển đổi các thực thể trừu tượng thành cấu trúc bảng cụ thể, xác định chính xác kiểu dữ liệu, khóa chính, khóa ngoại và các ràng buộc toàn vẹn.
+
+Do đặc thù của kiến trúc Microservices với cơ chế mỗi dịch vụ sở hữu một cơ sở dữ liệu riêng biệt, phần ánh xạ dữ liệu dưới đây được nhóm trình bày phân rã theo từng domain nghiệp vụ. Cách tiếp cận này không chỉ đảm bảo tính độc lập và khả năng mở rộng của từng dịch vụ mà còn làm rõ cách thức các khóa ngoại logic được sử dụng để duy trì mối liên kết dữ liệu giữa các thành phần trong hệ thống.
+
+Hình \ref{fig:mapping_erd_user_service} mô tả chi tiết quá trình chuyển đổi từ các thực thể trừu tượng sang cấu trúc dữ liệu logic cho dịch vụ người dùng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-user-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của user service.}
+    \label{fig:mapping_erd_user_service}
+\end{figure}
+
+Hình \ref{fig:mapping_erd_product_service} minh họa cách thức cấu trúc hóa các thực thể danh mục sản phẩm thành các bảng dữ liệu logic.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-product-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của product service.}
+    \label{fig:mapping_erd_product_service}
+\end{figure}
+
+Quá trình chuyển đổi từ ERD sang lược đồ quan hệ logic cho dịch vụ giỏ hàng được trình bày chi tiết tại Hình \ref{fig:mapping_erd_cart_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-cart-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của cart service.}
+    \label{fig:mapping_erd_cart_service}
+\end{figure}
+
+Đặc tả chi tiết các bảng dữ liệu cho quy trình giao dịch được thể hiện qua lược đồ logic tại Hình \ref{fig:mapping_erd_order_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-order-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của order service.}
+    \label{fig:mapping_erd_order_service}
+\end{figure}
+
+Hình \ref{fig:mapping_erd_admin_service} hiện thực hóa các yêu cầu về quản trị và báo cáo thành cấu trúc bảng cụ thể.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-admin-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của admin service.}
+    \label{fig:mapping_erd_admin_service}
+\end{figure}
+
+Đặc tả chi tiết các bảng dữ liệu cho quy trình điều phối được thể hiện qua lược đồ logic tại Hình \ref{fig:mapping_erd_orchestration_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-orchestration-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của orchestration service.}
+    \label{fig:mapping_erd_orchestration_service}
+\end{figure}
+
+\subsection{Danh mục các API chi tiết}
+
+\subsubsection{User Service}
+Bảng \ref{tab:full_user_api_appendix} dưới đây là danh sách đầy đủ các Endpoint của User Service được triển khai trong hệ thống.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - User Service}
+\label{tab:full_user_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{User Profile} & GET & \texttt{/api/users/profile/me} & Lấy thông tin cá nhân. \\ \cline{2-4} 
+ & PUT & \texttt{/api/users/profile/me} & Cập nhật thông tin cá nhân. \\ \cline{2-4} 
+ & PUT & \texttt{/api/users/change-avatar/me} & Thay đổi ảnh đại diện. \\ \hline
+Mật khẩu & PUT & \texttt{/api/users/change-password/me} & Thay đổi mật khẩu người dùng. \\ \hline
+\multirow{7}{*}{Payment Accounts} & GET & \texttt{/api/payment-accounts/\{id\}} & Lấy thông tin tài khoản cụ thể. \\ \cline{2-4} 
+ & GET & \texttt{/api/payment-accounts/paged} & Liệt kê danh sách phân trang. \\ \cline{2-4} 
+ & GET & \texttt{/api/payment-accounts/default} & Truy xuất tài khoản mặc định. \\ \cline{2-4} 
+ & POST & \texttt{/api/payment-accounts} & Tạo mới tài khoản thanh toán. \\ \cline{2-4} 
+ & PUT & \texttt{/api/payment-accounts/\{id\}} & Cập nhật thông tin tài khoản. \\ \cline{2-4} 
+ & DELETE & \texttt{/api/payment-accounts/\{id\}} & Xóa tài khoản thanh toán. \\ \cline{2-4} 
+ & PATCH & \texttt{/api/payment-accounts/set-default/\{id\}} & Thiết lập tài khoản mặc định. \\ \hline
+\multirow{7}{*}{Addresses} & GET & \texttt{/api/addresses/\{id\}} & Lấy thông tin địa chỉ cụ thể. \\ \cline{2-4} 
+ & GET & \texttt{/api/addresses/paged} & Liệt kê danh sách phân trang. \\ \cline{2-4} 
+ & GET & \texttt{/api/addresses/default} & Truy xuất địa chỉ mặc định. \\ \cline{2-4} 
+ & POST & \texttt{/api/addresses} & Tạo mới địa chỉ giao hàng. \\ \cline{2-4} 
+ & PUT & \texttt{/api/addresses/\{id\}} & Cập nhật thông tin địa chỉ. \\ \cline{2-4} 
+ & DELETE & \texttt{/api/addresses/\{id\}} & Xóa địa chỉ giao hàng. \\ \cline{2-4} 
+ & PATCH & \texttt{/api/addresses/set-default/\{id\}} & Thiết lập địa chỉ mặc định. \\ \hline
+\multirow{6}{*}{Authentication} & POST & \texttt{/api/auth/login/local} & Đăng nhập bằng tài khoản nội bộ. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/login/google} & Đăng nhập thông qua Google SSO. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/refresh-token} & Cấp mới Access Token. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/logout} & Đăng xuất và hủy phiên làm việc. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/forget-password} & Yêu cầu khôi phục mật khẩu. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/reset-password} & Đặt lại mật khẩu mới. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Product Service}
+
+Nhằm phục vụ công tác tra cứu toàn diện, phần này liệt kê danh mục đầy đủ các điểm cuối của Product Service, bao gồm các thao tác quản lý danh mục và các cấu hình chi tiết cho biến thể sản phẩm. Danh sách được trình bày tại Bảng \ref{tab:full_product_api_appendix}.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Product Service}
+\label{tab:full_product_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Sản phẩm (User)} & GET & \texttt{/api/products/{id}} & Xem chi tiết sản phẩm. \\ \cline{2-4}
+& GET & \texttt{/api/products/paged} & Lấy danh sách phân trang. \\ \cline{2-4}
+& GET & \texttt{/api/products/search-filter} & Tìm kiếm và lọc sản phẩm. \\ \hline
+\multirow{6}{*}{Sản phẩm (Admin)} & POST & \texttt{/api/products/admin} & Thêm sản phẩm mới. \\ \cline{2-4}
+& PUT & \texttt{/api/products/admin/{id}} & Cập nhật thông tin sản phẩm. \\ \cline{2-4}
+& DELETE & \texttt{/api/products/admin/{id}} & Xóa sản phẩm khỏi hệ thống. \\ \cline{2-4}
+& POST & \texttt{/api/products/admin/{id}/variant} & Thêm biến thể mới. \\ \cline{2-4}
+& PUT & \texttt{/api/products/admin/{id}/variant/{vId}} & Cập nhật biến thể. \\ \cline{2-4}
+& DELETE & \texttt{/api/products/admin/{id}/variant/{vId}} & Xóa biến thể sản phẩm. \\ \hline
+\multirow{4}{*}{Khuyến mãi} & GET & \texttt{/api/discounts/paged} & Liệt kê các mã giảm giá. \\ \cline{2-4}
+& POST & \texttt{/api/discounts/admin} & Tạo mới mã giảm giá. \\ \cline{2-4}
+& PUT & \texttt{/api/discounts/admin/{id}} & Chỉnh sửa chương trình ưu đãi. \\ \cline{2-4}
+& PUT & \texttt{/api/discounts/admin/{id}/apply-products} & Áp dụng mã cho sản phẩm. \\ \hline
+\multirow{3}{*}{Danh mục / Nhãn hàng} & POST & \texttt{/api/categories/admin} & Tạo mới danh mục. \\ \cline{2-4}
+& PATCH & \texttt{/api/categories/admin/{id}} & Cập nhật danh mục. \\ \cline{2-4}
+& POST & \texttt{/api/brands/admin} & Thêm mới thương hiệu. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Orchestration Service}
+
+Phần này cung cấp danh mục đầy đủ các điểm cuối thuộc dịch vụ điều phối, bao gồm các công cụ giả lập thanh toán phục vụ kiểm thử và các API truy vấn báo cáo tổng hợp từ nhiều nguồn dữ liệu.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Orchestration Service}
+\label{tab:full_orchestration_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Thanh toán} & POST & \texttt{/api/payments} & Thực hiện giao dịch thanh toán. \\ \cline{2-4}
+& POST & \texttt{/api/payments/simulate} & Giả lập thành công giao dịch. \\ \cline{2-4}
+& POST & \texttt{/api/payments/simulate/cancel} & Giả lập lỗi/hủy giao dịch. \\ \hline
+\multirow{3}{*}{Quy trình Checkout} & POST & \texttt{/api/checkout/preview/init} & Xem trước thông tin đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/checkout/recalculate} & Tính toán lại giá trị khi đổi mã giảm. \\ \cline{2-4}
+& POST & \texttt{/api/checkout/confirm} & Hoàn tất quy trình đặt hàng. \\ \hline
+\multirow{3}{*}{Quản lý Saga} & GET & \texttt{/api/sagas/{id}} & Lấy thông tin chi tiết một Saga. \\ \cline{2-4}
+& GET & \texttt{/api/sagas/get-order/{id}} & Truy xuất đơn hàng từ Saga ID. \\ \cline{2-4}
+& POST & \texttt{/api/sagas/cancel-order} & Yêu cầu hủy giao dịch phân tán. \\ \hline
+\multirow{2}{*}{Báo cáo (Admin)} & GET & \texttt{/api/orchestration/admin/.../top-selling} & Thống kê sản phẩm bán chạy. \\ \cline{2-4}
+& GET & \texttt{/api/orchestration/admin/.../monthly-revenue} & Thống kê doanh thu theo tháng. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Order Service}
+
+Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê đầy đủ các điểm cuối liên quan đến việc cập nhật trạng thái thanh toán qua mã QR, quản lý nhật ký vận chuyển và các thao tác quản trị dành cho nhân viên vận hành hệ thống.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Order Service}
+\label{tab:full_order_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Đơn hàng (User)} & GET & \texttt{/api/orders} & Danh sách đơn hàng đã mua. \\ \cline{2-4}
+& GET & \texttt{/api/orders/{id}} & Chi tiết đơn hàng cụ thể. \\ \cline{2-4}
+& GET & \texttt{/api/payments/{id}/qr} & Lấy mã QR thanh toán đơn hàng. \\ \hline
+\multirow{3}{*}{Quản trị (Admin)} & GET & \texttt{/api/orders/admin} & Danh sách đơn hàng toàn hệ thống. \\ \cline{2-4}
+& PATCH & \texttt{/api/orders/admin/{id}/status} & Cập nhật trạng thái đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/orders/admin/{id}/...} & Tạo mới nhật ký giao hàng. \\ \hline
+\multirow{3}{*}{Nhật ký giao hàng} & GET & \texttt{/api/delivery-logs/order/{id}} & Lấy toàn bộ lịch sử giao hàng. \\ \cline{2-4}
+& PUT & \texttt{/api/orders/admin/{id}/...} & Chỉnh sửa nhật ký giao hàng. \\ \cline{2-4}
+& DELETE & \texttt{/api/orders/admin/{id}/...} & Xóa nhật ký giao hàng. \\ \hline
+\multirow{3}{*}{Phản hồi} & POST & \texttt{/api/orders/feedback} & Đánh giá sản phẩm đã mua. \\ \cline{2-4}
+& PUT & \texttt{/api/orders/feedback/{id}} & Chỉnh sửa nội dung đánh giá. \\ \cline{2-4}
+& GET & \texttt{/api/orders/feedback/{id}} & Xem feedback theo đơn hàng. \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Mô hình hệ thống và lưu đồ hoạt động}
 Các sơ đồ phân tích và thiết kế hệ thống:
