@@ -7,7 +7,7 @@ Sơ đồ trường hợp sử dụng (use case diagram) cung cấp cái nhìn t
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/chap3/use_case_diagram/whole_system.png}
-    % \vspace{0.5cm}
+    \vspace{0.5cm}
     \caption{Use case diagram tổng thể của hệ thống}
     \label{fig:use-case-diagram}
 \end{figure}
@@ -184,5 +184,72 @@ Nhằm tối ưu hóa dung lượng của báo cáo và tập trung vào các đ
 \textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 4} \newline
 4a. Không có dữ liệu trong khoảng thời gian được chọn, hệ thống hiển thị thông báo “Không có dữ liệu phù hợp”. \newline
 4b. Nếu xảy ra lỗi truy xuất dữ liệu từ máy chủ, hệ thống hiển thị thông báo lỗi kỹ thuật. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Gợi ý sản phẩm}
+\label{tab:uc-product-suggestion} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Gợi ý sản phẩm \\
+\hline
+\textbf{Tóm tắt mô tả} & Hệ thống AI ChatBot phân tích hành vi, lịch sử mua sắm và từ khóa tìm kiếm để đưa ra gợi ý sản phẩm cá nhân hóa. Đây là trường hợp sử dụng mở rộng từ “Tìm kiếm sản phẩm”. \\
+\hline
+\textbf{Tác nhân} & AI ChatBot. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Trường hợp sử dụng “Tìm kiếm sản phẩm” đã được khởi động. \newline
+5. Dữ liệu hành vi và lịch sử khách hàng được lưu trữ. \newline
+6. AI ChatBot hoạt động và có quyền truy cập dữ liệu sản phẩm. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng tương tác với ChatBot. \\
+\hline
+\textbf{Các bước thực hiện} & 1. AI ChatBot phân tích từ khóa, lịch sử mua sắm, và hành vi duyệt web của người dùng. \newline
+2. Hệ thống hiển thị câu trả lời chứa gợi ý sản phẩm phù hợp ngay trong hộp thoại chat. \\
+\hline
+\textbf{Hậu điều kiện} & Danh sách gợi ý sản phẩm cá nhân hóa được hiển thị thành công cho khách hàng. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 1} \newline
+1a. Nếu xảy ra lỗi kết nối cơ sở dữ liệu hoặc dịch vụ AI, hệ thống thông báo lỗi và yêu cầu người dùng thử lại. \newline
+\textbf{Ngoại lệ 2: Tại bước 2} \newline
+2a. Nếu không tìm thấy sản phẩm nào phù hợp với sở thích hoặc lịch sử của người dùng, hệ thống hiển thị thông báo mặc định hoặc gợi ý các sản phẩm phổ biến nhất. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Hỗ trợ trong và sau mua hàng}
+\label{tab:uc-post-purchase-support} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Hỗ trợ trong và sau mua hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & AI ChatBot cung cấp thông tin, tư vấn và giải đáp thắc mắc liên quan đến đơn hàng trong quá trình xử lý hoặc sau khi đã hoàn tất. Đây là trường hợp sử dụng mở rộng từ “Xem trạng thái đơn hàng”. \\
+\hline
+\textbf{Tác nhân} & AI ChatBot. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Trường hợp sử dụng “Xem trạng thái đơn hàng” đã được khởi động. \newline
+5. AI ChatBot ở trạng thái sẵn sàng phục vụ. \newline
+6. Dữ liệu đơn hàng và lịch sử tương tác được lưu trữ đầy đủ trong hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng yêu cầu Chatbot hỗ trợ khi đang xem thông tin chi tiết của một đơn hàng. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Khách hàng nhấn chọn nút “Trợ giúp” hoặc gửi tin nhắn trực tiếp trong giao diện ChatBot. \newline
+2. AI ChatBot phân tích nội dung yêu cầu và đưa ra phản hồi tư vấn tự động dựa trên dữ liệu đơn hàng. \\
+\hline
+\textbf{Hậu điều kiện} & Khách hàng nhận được thông tin hỗ trợ hoặc giải pháp phù hợp cho các vấn đề liên quan đến đơn hàng. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 2} \newline
+2a. Nếu khách hàng cần tham khảo các câu hỏi thường gặp (FAQ), AI ChatBot cung cấp liên kết trực tiếp đến trang hướng dẫn hoặc chính sách tương ứng. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 2} \newline
+2a. Nếu ChatBot không sẵn dụng hoặc xảy ra lỗi kết nối dịch vụ AI, hệ thống thông báo lỗi và cung cấp phương thức gửi yêu cầu hỗ trợ qua email cho khách hàng. \\
 \hline
 \end{longtable}

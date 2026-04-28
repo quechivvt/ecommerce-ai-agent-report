@@ -26,23 +26,6 @@ Một AI Agent điển hình bao gồm:
 
 
 
-\subsubsection{Multi-Agent}
-Hệ đa tác tử (Multi-Agent Systems -- MAS) là một tập hợp các AI Agent chuyên biệt cùng hoạt động để giải quyết một bài toán phức tạp nhằm đạt được một mục tiêu chung. Trong hệ thống này, mỗi agent đảm nhiệm một vai trò cụ thể và thực hiện các nhiệm vụ khác nhau, đóng góp vào kết quả tổng thể của hệ thống. Khác với các hệ thống AI đơn tác tử (Single AI Agent), hệ đa tác tử được thiết kế nhằm xử lý các nhiệm vụ có nhiều thành phần phụ thuộc lẫn nhau. Việc phân chia chức năng cho nhiều agent cho phép hệ thống hoạt động hiệu quả hơn trong các bài toán phức tạp và quy mô lớn.
-
-Mỗi agent trong hệ có mức độ tự chủ nhất định, sở hữu năng lực chuyên biệt và chỉ nắm giữ một phần thông tin cục bộ của hệ thống. Thông qua việc giao tiếp và chia sẻ thông tin, các agent phối hợp với nhau để đạt được mục tiêu chung.
-
-Điều phối tác tử (Agent Orchestration) là cơ chế cho phép nhiều agent hoặc công cụ vốn hoạt động độc lập phối hợp với nhau trong cùng một hệ thống nhằm hoàn thành một mục tiêu chung\cite{c4-multi_agent}. Điều phối đóng vai trò là khung kiểm soát giúp hệ đa tác tử đạt được khả năng mở rộng, hiệu quả và thích ứng.
-
-Các mô hình điều phối phổ biến gồm:
-\begin{itemize}
-    \item Điều phối tập trung (Centralized Orchestration), trong đó một agent giám sát chịu trách nhiệm điều phối nhiệm vụ, luồng dữ liệu và quyết định\cite{c4-multi_agent}.
-    \item Điều phối phân tán (Decentralized Orchestration), trong đó các agent hoạt động độc lập và chia sẻ thông tin với nhau\cite{c4-multi_agent}.
-    \item Điều phối liên kết (Federated Orchestration), cho phép nhiều hệ đa tác tử thuộc các tổ chức khác nhau phối hợp thông qua các giao thức chung\cite{c4-multi_agent}.
-    \item Điều phối phân cấp (Hierarchical Orchestration), trong đó các agent được tổ chức theo cấu trúc nhiều tầng với sự giám sát từ các agent cấp cao\cite{c4-multi_agent}.
-\end{itemize}
-
-
-
 \subsubsection{ReAct}
 ReAct (Reasoning and Acting) là một phương pháp prompting cho mô hình ngôn ngữ lớn (LLMs), được đề xuất nhằm kết hợp lập luận bằng ngôn ngữ và hành động tương tác với môi trường trong cùng một tiến trình giải quyết nhiệm vụ\cite{yao2023reactsynergizingreasoningacting}.
 
@@ -57,21 +40,6 @@ Trong ReAct, mô hình hoạt động như một agent tương tác theo chuỗi
 ReAct thường được triển khai dưới dạng prompting với một vài ví dụ (few-shot prompting), không yêu cầu huấn luyện lại mô hình, và đã cho thấy hiệu quả trong các tác vụ như hỏi đáp nhiều bước, truy xuất tri thức và điều hướng môi trường văn bản\cite{yao2023reactsynergizingreasoningacting}.
 
 Nhờ khả năng kết hợp lập luận và hành động, ReAct giúp tăng tính minh bạch của quá trình suy luận và giảm hiện tượng sinh thông tin sai lệch so với các phương pháp chỉ dựa trên suy luận nội bộ\cite{yao2023reactsynergizingreasoningacting}.
-
-
-
-\subsubsection{LLMCompiler}
-LLMCompiler là một bộ khung trong thiết kế AI Agent được đề xuất nhằm hỗ trợ AI Agent thực hiện gọi hàm song song trong quá trình giải quyết các tác vụ phức tạp. Khác với các phương pháp truyền thống dựa trên suy luận và hành động tuần tự, LLMCompiler tiếp cận bài toán theo hướng lấy cảm hứng từ trình biên dịch, trong đó đầu vào ngôn ngữ tự nhiên được chuyển đổi thành các tác vụ có cấu trúc và mối quan hệ phụ thuộc rõ ràng.
-
-Cốt lõi của LLMCompiler là việc phân rã yêu cầu của người dùng thành một tập các tác vụ nhỏ, được biểu diễn dưới dạng đồ thị phụ thuộc có hướng không chu trình (Directed Acyclic Graph – DAG). Các tác vụ độc lập trong đồ thị có thể được thực thi đồng thời, từ đó giảm độ trễ và tăng hiệu quả thực thi so với cách tiếp cận tuần tự\cite{kim2024llmcompilerparallelfunction}.
-
-Một hệ thống LLMCompiler điển hình bao gồm:
-\begin{itemize}
-    \item Bộ lập kế hoạch gọi hàm (Function Calling Planner) để phân tích đầu vào và tạo đồ thị biểu diễn tác vụ\cite{kim2024llmcompilerparallelfunction}.
-    \item Bộ phân phối tác vụ (Task Fetching Unit) để theo dõi trạng thái phụ thuộc và kích hoạt các tác vụ sẵn sàng thực thi\cite{kim2024llmcompilerparallelfunction}.
-    \item Bộ thực thi (Executor) để thực hiện song song các tác vụ thông qua các công cụ hoặc hàm được cung cấp\cite{kim2024llmcompilerparallelfunction}.
-\end{itemize}
-Ngoài ra, LLMCompiler còn hỗ trợ lập kế hoạch động, cho phép điều chỉnh lại đồ thị tác vụ trong quá trình thực thi dựa trên các kết quả trung gian, phù hợp với các bài toán có cấu trúc phụ thuộc phức tạp và thay đổi theo thời gian.
 
 
 

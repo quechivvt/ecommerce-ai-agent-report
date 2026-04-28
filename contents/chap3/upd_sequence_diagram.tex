@@ -43,3 +43,19 @@ Hình \ref{fig:seq_feedback} cho thấy sau khi hoàn tất đơn hàng, ngườ
     \label{fig:seq_report}
 \end{figure}
 Hình \ref{fig:seq_report} biểu diễn luồng khi admin chọn loại báo cáo và khoảng thời gian. Hệ thống tổng hợp dữ liệu từ các bảng Order, Product, Payment,... tính toán các chỉ số và hiển thị biểu đồ hoặc bảng số liệu.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/shopping_consulting.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Tư vấn mua sắm}
+    \label{fig:seq_consulting}
+\end{figure}
+Mô tả luồng tin nhắn giữa Khách hàng và Nhân viên hỗ trợ/Hệ thống Chatbot để giải đáp thắc mắc về sản phẩm trước khi mua.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/shopping_support.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Hỗ trợ sau mua hàng}
+    \label{fig:seq_shopping_support}
+\end{figure}
+Quy trình xử lý các khiếu nại hoặc yêu cầu bảo hành. Nhân viên kiểm tra thông tin đơn hàng trên hệ thống và ghi nhận kết quả xử lý hỗ trợ.
