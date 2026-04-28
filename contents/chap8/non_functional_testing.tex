@@ -1,0 +1,63 @@
+\subsection{Kiểm thử yêu cầu phi chức năng}
+
+Việc kiểm thử các yêu cầu phi chức năng đóng vai trò then chốt trong việc đánh giá chất lượng vận hành của hệ thống, vượt ra ngoài các tính năng nghiệp vụ thông thường. Đối với một hệ thống dựa trên kiến trúc Microservices tích hợp AI Agent, các thử nghiệm tập trung vào việc xác minh tính ổn định, độ trễ của phản hồi AI, khả năng chịu tải và tính nhất quán dữ liệu giữa các dịch vụ phân tán. Các kịch bản kiểm thử dưới đây được thực hiện bằng phương pháp Kiểm thử hộp đen và kiểm thử tích hợp, sử dụng các công cụ hỗ trợ như k6, JUnit và Postman.
+
+\subsubsection{Kiểm thử tính khả dụng và trải nghiệm người dùng}
+
+Chi tiết các kịch bản và kết quả đánh giá về trải nghiệm người dùng cũng như tính dễ tiếp cận của hệ thống được tổng hợp cụ thể trong Bảng \ref{tab:usability_expanded}.
+
+\begin{table}[htpb]
+\centering
+\caption{Kết quả kiểm thử Usability và Learnability}
+\label{tab:usability_expanded}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Các bước thực hiện} & \textbf{Dữ liệu đầu vào} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+NFR-TC-001 & Tính nhất quán UI & Chuyển đổi qua lại giữa Home, Product, Cart. & Thao tác điều hướng. & Layout, màu sắc, font chữ đồng bộ 100\%. & Passed \\ \hline
+NFR-TC-002 & Tốc độ điều hướng & Click vào chi tiết sản phẩm từ trang chủ. & ID sản phẩm bất kỳ. & Trang chi tiết hiển thị trong < 1.5s. & Passed \\ \hline
+NFR-TC-003 & Thông báo lỗi UI & Nhập sai định dạng email khi đăng ký tài khoản. & "abc@xyz" (thiếu .com). & Hiển thị cảnh báo đỏ ngay tại trường nhập liệu. & Passed \\ \hline
+NFR-TC-004 & Hiển thị phản hồi hệ thống & Thực hiện thêm sản phẩm vào giỏ hàng hoặc gửi đơn hàng. & Click nút "Thêm vào giỏ" hoặc "Thanh toán". & Hệ thống hiển thị thông báo xác nhận thành công ngay lập tức, không để người dùng phải chờ đợi hoặc phân vân. & Passed \\ \hline
+NFR-TC-005 & Tính dễ học & Nhờ người mới thực hiện luồng đặt hàng. & Không có hướng dẫn. & Người dùng hoàn thành đơn hàng trong thời gian ít hơn 5 phút. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Kiểm thử hiệu năng hệ thống và AI Agent}
+
+Bảng \ref{tab:performance} tổng hợp kết quả đánh giá khả năng vận hành của hệ thống dưới tải trọng giả lập và độ chính xác trong việc xử lý ngôn ngữ tự nhiên của trợ lý ảo AI.
+
+\begin{table}[htpb]
+\centering
+\caption{Kết quả kiểm thử hiệu năng và độ nhạy AI}
+\label{tab:performance}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Các bước thực hiện} & \textbf{Dữ liệu đầu vào} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+P-01 & Tốc độ AI & Nhập câu hỏi tư vấn cấu hình máy. & "Máy nào chơi game tốt?" & Phản hồi hiển thị trong < 3 giây. & Passed \\ \hline
+P-02 & Ngữ cảnh AI & Hỏi câu tiếp theo về sản phẩm vừa hỏi. & "Nó giá bao nhiêu?" & AI hiểu "Nó" là sản phẩm ở câu trước. & Passed \\ \hline
+P-03 & Chịu tải & Giả lập nhiều người dùng cùng lúc. & 50 Virtual Users (k6). & Hệ thống không crash, CPU < 80\%. & Passed \\ \hline
+P-04 & Tính độc lập & Tắt Service AI, thử truy cập Web. & Request trang chủ. & Web vẫn chạy, chỉ phần AI báo bảo trì. & Passed \\ \hline
+P-05 & Độ chính xác AI & Hỏi về giá hoặc cấu hình của một sản phẩm cụ thể. & "iPhone 15 bản 128GB giá bao nhiêu?" & AI trả về đúng giá tiền và dung lượng lưu trong Database. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Kiểm thử bảo mật và toàn vẹn dữ liệu phân tán}
+
+Bảng \ref{tab:security} trình bày kết quả thực nghiệm về các cơ chế phòng vệ tầng dữ liệu và xác thực quyền truy cập trên kiến trúc hệ thống.
+
+\begin{table}[htpb]
+\centering
+\caption{Kết quả kiểm thử bảo mật và đồng bộ dữ liệu}
+\label{tab:security}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Các bước thực hiện} & \textbf{Dữ liệu đầu vào} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+S-01 & Hash mật khẩu & Đăng ký và check Database. & Pass: "hash.password". & Lưu dạng mã hóa BCrypt, không lộ text. & Passed \\ \hline
+S-02 & Xác thực JWT & Gọi API bảo mật không mang theo Token. & Request không Header. & Trả về mã lỗi 401 Unauthorized. & Passed \\ \hline
+S-03 & Nhất quán kho & Đặt hàng và check số lượng sản phẩm trong product service. & Đặt 01 iPhone 15. & Kho hàng giảm đúng 01 đơn vị. & Passed \\ \hline
+S-04 & Message Broker & Gửi message khi service nhận đang tắt. & Event: "order\_created". & Service bật lại nhận và xử lý đủ tin. & Passed \\ \hline
+S-05 & Chặn SQL Injection & Nhập code SQL vào ô tìm kiếm. & "' OR 1=1 --" & Hệ thống lọc bỏ hoặc báo không tìm thấy. & Passed \\ \hline
+\end{tabularx}
+\end{table}
