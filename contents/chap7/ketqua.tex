@@ -3,13 +3,15 @@
 So với mục tiêu đề ra ban đầu, nhóm đã hoàn thành giai đoạn thiết kế kiến trúc và mô hình hoá cho hệ thống theo đúng định hướng, đạt được các kết quả cụ thể sau:
 
 \begin{itemize}
-    \item Về nền tảng thương mại điện tử: Nhóm đã thiết kế thành công khung chức năng cho hệ thống bán lẻ điện thoại và các đồ dùng công nghệ, bao gồm các quy trình từ tìm kiếm, quản lý giỏ hàng đến thanh toán. Kiến trúc EDA + Cloud-Native đảm bảo hệ thống có khả năng vận hành ổn định và sẵn sàng cho việc mở rộng quy mô.
+    \item Về nền tảng thương mại điện tử: Nhóm đã thiết kế thành công khung chức năng và hiện thực hóa mã nguồn Frontend dựa trên Next.js 16 và kiến trúc Feature-Sliced Design (FSD). Hệ thống đã hoàn tất các quy trình nghiệp vụ từ tìm kiếm, lọc sản phẩm thông minh, quản lý giỏ hàng đến thanh toán và theo dõi đơn hàng. Kiến trúc EDA + Cloud-Native đảm bảo hệ thống có khả năng vận hành ổn định và sẵn sàng cho việc mở rộng quy mô.
     
-    \item Về phát triển trợ lý ảo AI agent: Đã xác định và mô hình hóa kiến trúc tổng thể của AI agent. Thiết kế này đảm bảo trợ lý ảo có khả năng tư vấn sản phẩm chuyên sâu dựa trên cơ sở tri thức và phản hồi tự nhiên bằng tiếng Việt.
+    \item Về phát triển trợ lý ảo AI agent: Đã xác định, mô hình hóa kiến trúc và triển khai thực tế giao diện Chatbot với cơ chế phản hồi theo thời gian thực (Streaming) sử dụng Vercel AI SDK. Thiết kế này đảm bảo trợ lý ảo có khả năng tư vấn sản phẩm chuyên sâu dựa trên cơ sở tri thức và phản hồi tự nhiên bằng tiếng Việt.
     
-    \item Về khả năng tích hợp và tương tác: Thông qua nền tảng truyền tải sự kiện Kafka (EDA), nhóm đã thiết kế được luồng tương tác liền mạch giữa AI agent và các dịch vụ nghiệp vụ. Điều này cho phép AI thực hiện các hành động trực tiếp như kiểm tra giỏ hàng hay hủy đơn theo yêu cầu người dùng đúng như mục tiêu đề ra.
+    \item Về khả năng tích hợp và tương tác: Thông qua nền tảng truyền tải sự kiện Kafka (EDA) và lớp trung gian BFF (Backend for Frontend), nhóm đã thiết kế được luồng tương tác liền mạch giữa AI agent và các dịch vụ nghiệp vụ. Điều này cho phép AI thực hiện các hành động trực tiếp như kiểm tra giỏ hàng hay hủy đơn theo yêu cầu người dùng đúng như mục tiêu đề ra.
     
-    \item Về hệ thống quản trị: Nhóm đã đặc tả chi tiết giao diện và chức năng quản trị, tập trung vào việc giám sát đơn hàng và quản lý kho sản phẩm. Kiến trúc thiết kế đã bao hàm khả năng giám sát hoạt động của AI agent, giúp quản trị viên dễ dàng bảo trì và cập nhật dữ liệu tri thức.
+    \item Về hệ thống quản trị: Nhóm đã hiện thực hóa bảng điều khiển quản trị tập trung, hỗ trợ đầy đủ các chức năng CRUD cho sản phẩm, biến thể, danh mục và theo dõi báo cáo doanh thu. Kiến trúc thiết kế đã bao hàm khả năng giám sát hoạt động của AI agent, giúp quản trị viên dễ dàng bảo trì và cập nhật dữ liệu tri thức.
+
+    \item Về chất lượng kỹ thuật và tối ưu hóa: Hệ thống đạt các chỉ số đo lường ấn tượng với điểm số Lighthouse (Accessibility > 95, SEO 100) và xây dựng được bộ 286 kịch bản kiểm thử tự động (Vitest), đảm bảo tính ổn định cho các luồng nghiệp vụ cốt lõi.
 \end{itemize}
 
 \subsection{Hạn chế của đề tài}
@@ -18,9 +20,9 @@ Trong phạm vi của giai đoạn này, dù đã đạt được những mục 
 
 \begin{itemize}
     \item Về mặt thực nghiệm: Hệ thống hiện đang dừng lại ở các bản thiết kế mô hình và đặc tả kiến trúc. Do chưa tiến hành cài đặt và vận hành trên môi trường thực tế, nhóm chưa có các số liệu thực nghiệm về thời gian phản hồi của AI khi xử lý truy vấn phức tạp, cũng như chưa thực hiện đo lường tải thực tế trên cụm máy chủ để đánh giá tính ổn định của kiến trúc hệ thống.
-    \item Về kỹ thuật AI agent: Việc tích hợp một pipeline RAG chuyên sâu kết hợp với cơ sở dữ liệu vector Milvus để tối ưu hóa khả năng truy xuất ngữ cảnh chính xác tuyệt đối vẫn là một thách thức cần đầu tư thêm nguồn lực thực hiện trong tương lai.
+    \item Về kỹ thuật AI agent: Việc tích hợp một pipeline RAG chuyên sâu kết hợp với cơ sở dữ liệu vector Milvus để tối ưu hóa khả năng truy xuất ngữ cảnh chính xác tuyệt đối vẫn là một thách thức cần đầu tư thêm nguồn lực thực hiện trong tương lai. Cơ chế kiểm soát dữ liệu đầu vào từ câu lệnh prompt cũng cần được tăng cường thêm các lớp validate để đảm bảo độ chính xác của dữ liệu.
     \item Về tính năng cá nhân hóa: Hệ thống chưa tích hợp các thuật toán gợi ý chuyên sâu. Đây là một mảng nội dung quan trọng trong thương mại điện tử giúp khai thác hành vi người dùng mà hệ thống có thể bổ sung sau này để nâng cao trải nghiệm mua sắm.
-    \item Về tương tác người dùng: Do chưa có quá trình thử nghiệm thực tế với người dùng cuối, nhóm chưa thể đánh giá khách quan mức độ hài lòng cũng như tính tự nhiên của trợ lý ảo trong các tình huống hội thoại thực tế.
+    \item Về tương tác người dùng và kiểm thử: Do chưa có quá trình thử nghiệm rộng rãi với người dùng cuối, nhóm chưa thể đánh giá khách quan mức độ hài lòng thực tế. Đồng thời, tỷ lệ bao phủ kiểm thử (65\%) cần tiếp tục được nâng cao lên mục tiêu 80\% để đảm bảo tính an toàn tuyệt đối cho toàn bộ hệ thống.
 \end{itemize}
 
 \subsection{Chỉ số đánh giá dự kiến trong tương lai}

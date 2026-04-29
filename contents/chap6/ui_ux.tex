@@ -120,3 +120,22 @@ Giao diện quản lý sản phẩm cho phép quản trị viên thực hiện c
     \label{fig:ui_admin_orders}
 \end{figure}
 Trang quản lý đơn hàng hỗ trợ quản trị viên theo dõi và xử lý toàn bộ đơn hàng trên hệ thống, cho phép lọc theo trạng thái để phục vụ các nghiệp vụ vận hành như duyệt đơn, đóng gói và giao hàng.
+
+\subsubsection{Giao diện Trợ lý ảo AI Agent}
+
+Đây là giao diện đặc trưng được bổ sung, đóng vai trò là một người bạn đồng hành hỗ trợ khách hàng trong suốt quá trình mua sắm thiết bị điện tử.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{images/chap6/ui/ui_ai_chat.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Chatbot Trợ lý ảo AI}
+    \label{fig:ui_ai_chat}
+\end{figure}
+
+Giao diện Chatbot được thiết kế dưới dạng một cửa sổ nổi (floating window) hoặc tích hợp trực tiếp vào trang chi tiết sản phẩm. Các đặc điểm chính bao gồm:
+\begin{itemize}
+    \item \textbf{Phản hồi dạng Streaming:} Chữ được hiển thị mượt mà theo từng từ (token-by-token) nhờ cơ chế Server-Sent Events, tạo cảm giác như đang trò chuyện thực tế.
+    \item \textbf{Gợi ý thông minh:} AI Agent có khả năng so sánh cấu hình các thiết bị điện tử, tư vấn lựa chọn dựa trên nhu cầu của người dùng và kiểm tra tình trạng đơn hàng trực tiếp trong cửa sổ chat.
+    \item \textbf{Tương tác đa phương thức:} Hỗ trợ hiển thị các card sản phẩm trực quan ngay trong đoạn chat, cho phép người dùng nhấn "Thêm vào giỏ hàng" mà không cần chuyển trang.
+\end{itemize}

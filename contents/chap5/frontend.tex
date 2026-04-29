@@ -6,97 +6,121 @@ Từ yêu cầu đó, nhóm tiếp cận thiết kế frontend theo hướng ưu
 
 \subsubsection{Ngôn ngữ và nền tảng}
 
-\textbf{Lựa chọn framework frontend}
+Để xây dựng một giao diện hiện đại, mượt mà và tối ưu SEO cho hệ thống thương mại điện tử, nhóm đã đánh giá các framework frontend phổ biến nhất hiện nay. Bảng \ref{tab:frontend_frameworks} dưới đây tóm tắt các đánh giá và quyết định cuối cùng của nhóm.
 
-Ở tầng framework, ba hệ sinh thái phổ biến hiện nay là React, Angular và Vue. Angular cung cấp kiến trúc đầy đủ và chặt chẽ, phù hợp với các hệ thống enterprise có quy trình nghiêm ngặt, nhưng đổi lại là độ phức tạp cao và chi phí học tập lớn. Vue có cú pháp đơn giản và dễ tiếp cận, tuy nhiên hệ sinh thái cho các bài toán lớn như SSR, phân tách server--client và tối ưu SEO chưa đồng đều giữa các giải pháp.
+\begin{center}
+\begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+\caption{So sánh các framework phát triển Frontend} \label{tab:frontend_frameworks} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endfirsthead
 
-React được lựa chọn nhờ tính linh hoạt cao và hệ sinh thái phong phú, cho phép xây dựng kiến trúc theo hướng tối ưu dần theo quy mô hệ thống. Đặc biệt, React không áp đặt cấu trúc cứng nhắc, phù hợp với các hệ thống cần mở rộng và thay đổi nhanh như thương mại điện tử.
+\caption[]{So sánh các framework phát triển Frontend (tt)} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endhead
 
-\textbf{Next.js trên nền React}
+Angular & 
+- Kiến trúc chặt chẽ, tích hợp sẵn nhiều bộ công cụ mạnh mẽ (DI, Routing, Forms). \newline
+- Phù hợp cho các dự án enterprise quy mô lớn. & 
+- Độ phức tạp cao, chi phí học tập lớn. \newline
+- Bundle size thường lớn, ảnh hưởng đến tốc độ tải trang ban đầu. & 
+Không chọn do độ phức tạp cao không cần thiết và khả năng tùy biến UI linh hoạt kém hơn so với React. \\ \hline
 
-Thay vì sử dụng React thuần với mô hình client-side rendering, nhóm lựa chọn Next.js để giải quyết các hạn chế về hiệu năng và SEO. Next.js hỗ trợ sẵn server-side rendering, static generation và incremental regeneration, giúp nội dung quan trọng được render sớm trên server thay vì chờ tải JavaScript phía client. So với các giải pháp tự cấu hình SSR, Next.js giảm đáng kể chi phí triển khai và rủi ro vận hành.
+Vue.js & 
+- Cú pháp đơn giản, dễ tiếp cận và phát triển nhanh. \newline
+- Hiệu năng tốt với Virtual DOM cải tiến. & 
+- Hệ sinh thái cho các bài toán phức tạp như SSR chưa mạnh mẽ bằng React. \newline
+- Cộng đồng và tài liệu hỗ trợ ở quy mô lớn còn hạn chế. & 
+Không chọn vì hệ sinh thái SSR và các thư viện hỗ trợ chuyên sâu cho E-commerce chưa thực sự toàn diện. \\ \hline
 
-Việc sử dụng App Router và React Server Components cho phép phân tách rõ các thành phần chỉ cần hiển thị nội dung với các thành phần cần tương tác, từ đó giảm lượng JavaScript gửi xuống trình duyệt và cải thiện thời gian tải trang.
+Next.js (React) & 
+- Hỗ trợ hoàn hảo cho Server-Side Rendering (SSR) và App Router giúp tối ưu SEO tuyệt đối. \newline
+- React Server Components giúp giảm tải JS phía client, tăng tốc độ phản hồi. \newline
+- Hệ sinh thái thư viện phong phú, cộng đồng hỗ trợ cực lớn. & 
+- Yêu cầu kiến thức về cả client-side và server-side logic. \newline
+- Cấu hình và quản lý cache có thể trở nên phức tạp trong các dự án lớn. & 
+Được chọn nhờ khả năng tối ưu SEO, hiệu năng vượt trội với SSR và sự linh hoạt trong việc xây dựng các UI phức tạp. \\ \hline
+\end{longtable}
+\end{center}
 
-\textbf{Ngôn ngữ TypeScript}
+\vspace{-20pt}
 
-Ở tầng ngôn ngữ, TypeScript được lựa chọn thay cho JavaScript thuần. Với hệ thống có nhiều luồng dữ liệu phức tạp như sản phẩm, đơn hàng và thanh toán, việc thiếu kiểm soát kiểu dữ liệu dễ dẫn đến lỗi logic khó phát hiện. TypeScript bổ sung định kiểu tĩnh, giúp phát hiện lỗi sớm, hỗ trợ refactor an toàn và tăng khả năng phối hợp giữa frontend và backend thông qua các hợp đồng dữ liệu rõ ràng.
+Nhóm quyết định sử dụng \textbf{Next.js 16} trên nền tảng \textbf{React 19}. Việc sử dụng App Router và React Server Components cho phép phân tách rõ các thành phần chỉ cần hiển thị nội dung với các thành phần cần tương tác, từ đó giảm lượng JavaScript gửi xuống trình duyệt và cải thiện thời gian tải trang. Bên cạnh đó, \textbf{TypeScript} được lựa chọn làm ngôn ngữ phát triển chính để đảm bảo an toàn kiểu dữ liệu, giảm thiểu lỗi runtime và hỗ trợ bảo trì mã nguồn tốt hơn trong dài hạn.
 
 \subsubsection{Giao diện và trải nghiệm người dùng}
 
-\textbf{Chiến lược styling}
+Chiến lược styling đóng vai trò quan trọng trong việc duy trì tính nhất quán của giao diện và tối ưu hóa tốc độ render. Bảng \ref{tab:frontend_styling} so sánh các phương án styling mà nhóm đã cân nhắc.
 
-Các phương án phổ biến cho styling gồm CSS truyền thống, CSS-in-JS và utility-first CSS. CSS truyền thống dễ tiếp cận nhưng khó kiểm soát khi quy mô lớn. CSS-in-JS như styled-components giúp gắn style với component, nhưng tạo thêm chi phí runtime và phức tạp trong quá trình build.
+\begin{center}
+\begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+\caption{So sánh các công nghệ Styling} \label{tab:frontend_styling} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endfirsthead
 
-Tailwind CSS được lựa chọn theo hướng utility-first nhằm kiểm soát trực tiếp style tại component, giảm CSS dư thừa và tránh xung đột class. Cách tiếp cận này giúp bundle CSS gọn nhẹ hơn và phù hợp với yêu cầu tối ưu hiệu năng của hệ thống thương mại điện tử.
+\caption[]{So sánh các công nghệ Styling (tt)} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endhead
 
-\textbf{Thư viện giao diện}
+Styled Components & 
+- Quản lý style trực tiếp trong component JS/TS. \newline
+- Hỗ trợ dynamic styling mạnh mẽ dựa trên props. & 
+- Gây chi phí runtime (runtime CSS injection). \newline
+- Khó kiểm soát bundle size khi dự án mở rộng. & 
+Không chọn do ảnh hưởng đến hiệu năng runtime và tốc độ render trang. \\ \hline
 
-Các thư viện UI đóng gói sẵn như Material UI hay Ant Design cung cấp nhiều component hoàn chỉnh, nhưng thường áp đặt style và hành vi mặc định, gây khó khăn khi tùy biến sâu. Nhóm lựa chọn shadcn/ui kết hợp Radix UI theo hướng headless, chỉ cung cấp hành vi và khả năng truy cập, không ràng buộc thiết kế.
+Tailwind CSS 4 & 
+- Utility-first giúp xây dựng UI nhanh chóng mà không cần rời khỏi file HTML/TSX. \newline
+- Tối ưu hóa bundle CSS cực tốt (chỉ bao gồm các class thực sự sử dụng). \newline
+- Phiên bản 4 tích hợp sâu với engine mới, tăng tốc độ build. & 
+- File HTML có thể trở nên rối mắt với quá nhiều class. \newline
+- Cần thời gian để làm quen với hệ thống utility class. & 
+Được chọn nhờ hiệu năng tối ưu, bundle CSS gọn nhẹ và khả năng tùy biến cao thông qua các biến CSS. \\ \hline
+\end{longtable}
+\end{center}
 
-Trade-off của cách tiếp cận này là cần đầu tư nhiều hơn vào xây dựng UI, nhưng đổi lại là khả năng kiểm soát hoàn toàn giao diện, đảm bảo tính nhất quán và tuân thủ chuẩn accessibility trong dài hạn.
+\vspace{-20pt}
+
+Để đẩy nhanh quá trình phát triển mà vẫn giữ được sự linh hoạt, nhóm lựa chọn \textbf{shadcn/ui} kết hợp với \textbf{Radix UI}. Đây là giải pháp headless UI, cung cấp các thành phần giao diện chuẩn accessibility nhưng không ràng buộc thiết kế, cho phép nhóm tự do tùy chỉnh giao diện theo nhận diện thương hiệu riêng của hệ thống thương mại điện tử.
 
 \subsubsection{Quản lý trạng thái và dữ liệu}
 
-\textbf{Server state}
+Hệ thống yêu cầu cơ chế quản lý dữ liệu hiệu quả để xử lý các luồng thông tin phức tạp từ sản phẩm đến đơn hàng.
 
-Đối với dữ liệu lấy từ backend, các lựa chọn phổ biến gồm fetch thủ công, SWR và TanStack Query. Fetch thủ công đơn giản nhưng nhanh chóng trở nên phức tạp khi cần cache, retry và đồng bộ dữ liệu. SWR phù hợp cho các use case đơn giản, nhưng thiếu một số cơ chế kiểm soát nâng cao.
+\begin{itemize}
+    \item \textbf{Server State (TanStack Query):} Được sử dụng để quản lý việc gọi API, caching, và đồng bộ dữ liệu với Backend. TanStack Query giúp giảm thiểu các yêu cầu dư thừa và tự động cập nhật dữ liệu ở nền (background refetching).
+    \item \textbf{Client State (Zustand):} Lựa chọn cho các trạng thái cục bộ như Giỏ hàng, thông tin phiên đăng nhập hoặc trạng thái đóng mở của các modal. Zustand có API gọn nhẹ, hiệu năng tốt và không gây re-render diện rộng như Context API.
+    \item \textbf{Form \& Validation:} Nhóm sử dụng \textbf{React Hook Form} để xử lý form theo cơ chế uncontrolled components, giúp tối ưu hiệu năng nhập liệu. Việc kiểm tra dữ liệu (validation) được thực hiện qua \textbf{Zod}, giúp đồng bộ schema giữa frontend và backend.
+\end{itemize}
 
-TanStack Query được lựa chọn nhờ cung cấp đầy đủ cache, deduplication, background refetch và quản lý vòng đời dữ liệu. Việc tách server state ra khỏi client state giúp frontend tập trung vào hiển thị, đồng thời giảm logic lặp lại trong code.
+\subsubsection{Tích hợp Trợ lý ảo AI Agent}
 
-\textbf{Client state}
+Đây là thành phần trọng tâm của Đồ án tốt nghiệp. Để hiện thực hóa giao diện trò chuyện mượt mà, nhóm áp dụng các công nghệ sau:
+\begin{itemize}
+    \item \textbf{Vercel AI SDK:} Hỗ trợ quản lý luồng hội thoại và tích hợp sẵn các hook như \texttt{useChat} để xử lý tương tác giữa UI và AI model.
+    \item \textbf{Server-Sent Events (SSE):} Sử dụng cơ chế streaming dữ liệu để phản hồi từ AI Agent được hiển thị tức thời theo từng từ (token), mang lại trải nghiệm giống như các hệ thống AI hiện đại.
+\end{itemize}
 
-Đối với trạng thái cục bộ như giỏ hàng hoặc trạng thái giao diện, Redux, Context API và Zustand là các lựa chọn phổ biến. Redux mạnh nhưng nhiều boilerplate, Context API dễ dùng nhưng dễ gây re-render diện rộng.
+\subsubsection{Tóm tắt công nghệ Frontend}
 
-Zustand được lựa chọn vì API gọn nhẹ, hiệu năng tốt và đủ đáp ứng nhu cầu của các state cục bộ mà không làm phức tạp kiến trúc tổng thể.
-
-\subsubsection{Xử lý form và kiểm tra dữ liệu}
-
-Formik và các form controlled truyền thống dễ triển khai nhưng phát sinh nhiều re-render khi form phức tạp. React Hook Form được lựa chọn nhờ tận dụng uncontrolled components, giúp cải thiện hiệu năng nhập liệu và đơn giản hóa code.
-
-Đối với validation, Zod được chọn thay vì Yup hoặc Joi do khả năng tích hợp chặt chẽ với TypeScript. Việc định nghĩa schema duy nhất cho cả validation và typing giúp giảm sai lệch dữ liệu giữa frontend và backend.
-
-\subsubsection{Build, DevOps và triển khai}
-
-\textbf{Quản lý mã nguồn}
-
-Kiến trúc monorepo được lựa chọn thay cho multi-repo nhằm thuận tiện trong việc chia sẻ code và đồng bộ dependency. Turborepo được ưu tiên nhờ cấu hình đơn giản và khả năng cache hiệu quả. pnpm được sử dụng để giảm trùng lặp dependency và tăng tốc cài đặt.
-
-\textbf{Bundler}
-
-Turbopack được sử dụng thay cho Webpack nhằm cải thiện tốc độ build và khởi động môi trường phát triển. Việc đánh đổi ở đây là hệ sinh thái plugin còn mới, nhưng lợi ích về tốc độ và khả năng tích hợp với Next.js phù hợp với định hướng dài hạn của dự án.
-
-\textbf{Triển khai}
-
-Hệ thống được triển khai trên Vercel thay vì tự quản lý hạ tầng truyền thống. Quyết định này giảm đáng kể chi phí vận hành và cấu hình, đồng thời tận dụng sẵn các tối ưu cho SSR, edge function và mạng CDN toàn cầu, phù hợp với đặc thù của frontend Next.js.
-
-\subsubsection{Tóm tắt công nghệ}
+Bảng \ref{tab:frontend_tech_summary} tổng hợp các công nghệ then chốt được áp dụng tại tầng Frontend:
 
 \begin{table}[H]
 \centering
-\caption{Tổng hợp các công nghệ frontend}
-\label{tab:frontend_tech}
-\begin{tabular}{|l|p{3.3cm}|p{6.5cm}|}
+\renewcommand{\arraystretch}{1.4}
+\caption{Tổng hợp các công nghệ sử dụng tại Frontend}
+\label{tab:frontend_tech_summary}
+\begin{tabular}{|l|p{4.5cm}|p{6.5cm}|}
 \hline
-Thành phần & Công nghệ & Vai trò chính \\ 
-\hline
-Framework & React, Next.js & Kiến trúc linh hoạt, tối ưu hiệu năng và SEO \\ 
-\hline
-Ngôn ngữ & TypeScript & An toàn kiểu dữ liệu, dễ bảo trì \\ 
-\hline
-Styling & Tailwind CSS & Kiểm soát style, tối ưu bundle \\ 
-\hline
-UI & shadcn/ui, Radix UI & Headless, tùy biến cao, đảm bảo accessibility \\ 
-\hline
-Server state & TanStack Query & Cache và đồng bộ dữ liệu backend \\ 
-\hline
-Client state & Zustand & Quản lý state cục bộ gọn nhẹ \\ 
-\hline
-Form & React Hook Form, Zod & Hiệu năng cao, dữ liệu nhất quán \\ 
-\hline
-Build & Turbopack, Turborepo & Tối ưu tốc độ phát triển \\ 
-\hline
-Triển khai & Vercel & SSR và CDN tích hợp sẵn \\ 
-\hline
+\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Vai trò cốt lõi} \\ \hline
+Framework & Next.js 16 (React 19) & Nền tảng xây dựng ứng dụng SSR, tối ưu SEO và hiệu năng. \\ \hline
+Ngôn ngữ & TypeScript & Đảm bảo an toàn kiểu dữ liệu và tăng khả năng bảo trì. \\ \hline
+Styling & Tailwind CSS 4 & Xây dựng giao diện nhanh, tối ưu dung lượng CSS. \\ \hline
+UI Library & shadcn/ui (Radix UI) & Cung cấp các component UI chất lượng cao và dễ tùy biến. \\ \hline
+State & TanStack Query, Zustand & Quản lý dữ liệu server và trạng thái ứng dụng hiệu quả. \\ \hline
+AI Integration & Vercel AI SDK, SSE & Xây dựng giao diện chat với AI Agent theo luồng streaming. \\ \hline
+Kiểm thử & Vitest, RTL & Đảm bảo chất lượng mã nguồn thông qua unit và component test. \\ \hline
 \end{tabular}
 \end{table}
