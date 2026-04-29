@@ -5,50 +5,118 @@ Trong giai đoạn hiện thực hệ thống, mỗi thành viên tham gia hiệ
 \begin{itemize}
     \item Nguyễn Ngọc Quế Chi (BE): Chủ yếu hiện thực các Microservices và thiết lập luồng Event-Driven Architecture sử dụng Kafka topics. Đồng thời quản lý các thành phần cơ sở dữ liệu và triển khai hệ thống backend cho các của dịch vụ nghiệp vụ.
     \item Trần Nguyễn Anh Khoa (FE): Chịu trách nhiệm thiết kế giao diện người dùng bằng Next.js 16 và Tailwind CSS v4. Hiện thực hóa các thành phần tương tác (UI Components), tích hợp API từ Backend và xây dựng luồng phản hồi streaming cho Trợ lý ảo AI.
-    \item Phạm Quốc Toàn (AI/ML Engineer): 
+    \item Phạm Quốc Toàn (AI/ML Engineer): Chịu trách nhiệm thiết kế và hiện thực hệ thống AI Agent, bao gồm xây dựng pipeline thu thập và xử lý dữ liệu, thiết kế kiến trúc đa cơ sở dữ liệu (PostgreSQL, Neo4j, ChromaDB) và triển khai cơ chế truy xuất dữ liệu. Đồng thời phát triển AI Agent dựa trên LangGraph, tích hợp với các nguồn dữ liệu để xử lý hội thoại nhiều bước. Ngoài ra, xây dựng và triển khai hệ thống API bằng FastAPI, tổ chức session hội thoại và triển khai hệ thống trên Railway kết hợp với các dịch vụ Supabase và AuraDB.
 \end{itemize}
 
 Nhóm thực hiện đồ án theo mô hình Agile, chia công việc thành các sprint 2 tuần. Mỗi sprint bao gồm các hoạt động: lập kế hoạch, phân công nhiệm vụ, thực hiện, kiểm thử và đánh giá tiến độ. Các nhiệm vụ cụ thể và quá trình thực hiện chi tiết của từng thành viên sẽ được trình bày đầy đủ trong bảng \ref{tab:task-assigment} dưới đây.
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
-        \hline
-        \textbf{STT} & \textbf{Sprint}         & \textbf{Công việc}                                                                                                 & \textbf{Workload từng người}                                                                                                                                                                                                                                                                                       \\ \hline
-        1            & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu.                                                      &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
-        Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân...                                                                                                                                                                                                                           \\ \hline
-        2            & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
-        Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng.                                                                                                                                                                                     \\ \hline
-                     & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026                                                                                           &                                                                                                                                                                                                                                                                                    \\ \hline
-        3            & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng.                                                                &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
-        Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka.                                                                                                                                                                    \\ \hline
-        4            & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng.                                                                &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
-        Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng.                                                                                                                                                                                                                \\ \hline
-        5            & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá.                                             &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
-        Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng.                                                                                                                                                                       \\ \hline
-        6            & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin.                                                                                 &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
-        Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. Các hoạt động của admin đều được lưu lại trong bảng adminActionLog sau khi nhận thông điệp từ Kafka.                                                                \\ \hline
-        7            & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo.                         &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
-        Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin. Vẽ sơ đồ các test scenrio cho các tính năng chính trong hệ thống và viết testcase. Viết báo cáo. Sửa các lỗi xảy ra trong quá trình kiểm thử.                                                                                                                                                  \\ \hline
-        8            & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống.                                                                                      &
-        Phạm Quốc Toàn:  \newline
-        Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra tính nhất quán của giao diện cuối cùng. \newline
-        Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo.                                                                                                                                                                                                                                                                                                          \\ \hline
-    \end{tabular}
-    \caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
-    \label{tab:task-assigment}
-\end{table}
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+%         \hline
+%         \textbf{STT} & \textbf{Sprint}         & \textbf{Công việc}                                                                                                 & \textbf{Workload từng người}                                                                                                                                                                                                                                                                                       \\ \hline
+%         1            & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu.                                                      &
+%         Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân...                                                                                                                                                                                                                           \\ \hline
+%         2            & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+%         Phạm Quốc Toàn: Xây dựng Vector Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng.                                                                                                                                                                                     \\ \hline
+%                      & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026                                                                                           &                                                                                                                                                                                                                                                                                    \\ \hline
+%         3            & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Graph Database\newline
+%         Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka.                                                                                                                                                                    \\ \hline
+%         4            & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Relational Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+%         Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng.                                                                                                                                                                                                                \\ \hline
+%         5            & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá.                                             &
+%         Phạm Quốc Toàn: Hiện thực AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng.                                                                                                                                                                       \\ \hline
+%         6            & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin.                                                                                 &
+%         Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. Các hoạt động của admin đều được lưu lại trong bảng adminActionLog sau khi nhận thông điệp từ Kafka.                                                                \\ \hline
+%         7            & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo.                         &
+%         Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+%         Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin. Vẽ sơ đồ các test scenrio cho các tính năng chính trong hệ thống và viết testcase. Viết báo cáo. Sửa các lỗi xảy ra trong quá trình kiểm thử.                                                                                                                                                  \\ \hline
+%         8            & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống.                                                                                      &
+%         Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+%         Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra tính nhất quán của giao diện cuối cùng. \newline
+%         Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo.                                                                                                                                                                                                                                                                                                          \\ \hline
+%     \end{tabular}
+%     \caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+%     \label{tab:task-assigment}
+% \end{table}
+
+
+
+
+
+\begin{longtable}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+\caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+\label{tab:task-assigment} \\
+
+\hline
+\textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu. &
+Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân... \\ \hline
+
+2 & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+Phạm Quốc Toàn: Xây dựng Vector Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng. \\ \hline
+
+ & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026 & \\ \hline
+
+3 & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng. &
+Phạm Quốc Toàn: Xây dựng Graph Database\newline
+Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka. \\ \hline
+
+4 & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng. &
+Phạm Quốc Toàn: Xây dựng Relational Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng. \\ \hline
+
+5 & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá. &
+Phạm Quốc Toàn: Hiện thực AI Agent\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng. \\ \hline
+
+6 & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin. &
+Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. \\ \hline
+
+7 & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo. &
+Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin, viết testcase và báo cáo. \\ \hline
+
+8 & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống. &
+Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra giao diện. \newline
+Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo. \\ \hline
+
+\end{longtable}
