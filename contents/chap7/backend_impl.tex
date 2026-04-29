@@ -1,6 +1,6 @@
-\subsection{Hiện thực hóa và triển khai backend}
+\subsection{Backend}
 
-\subsubsection{Hiện thực hóa các mã nguồn backend}
+\subsubsection{Hiện thực Backend}
 
 \textbf{Kiến trúc phân lớp và điều phối luồng dữ liệu}
 
@@ -36,7 +36,7 @@ Tương ứng với mô hình CQRS, tầng Repository được chia làm hai lo�
 
 Module common được xây dựng như một thư viện dùng chung cho toàn bộ các microservices. Module này chứa các thành phần cốt lõi như cấu hình JWT Security, Global Exception Handling và các DTO dùng chung cho việc giao tiếp qua Kafka. Module này được đóng gói thành một dependency và được thêm vào file cấu hình Maven của từng dịch vụ, giúp đảm bảo tính đồng nhất về xử lý lỗi và cấu trúc dữ liệu trên toàn hệ thống.
 
-\subsubsection{Triển khai hệ thống trên Microsoft Azure}
+\subsubsection{Triển khai Backend}
 
 Toàn bộ hệ thống được triển khai trên nền tảng điện toán đám mây Microsoft Azure, sử dụng máy ảo để vận hành các dịch vụ Backend và hạ tầng.
 

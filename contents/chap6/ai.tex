@@ -1,270 +1,240 @@
 \subsection{Thiết kế AI Agent}
-\subsubsection{Lựa chọn kiến trúc cho AI Agent}
-Trợ lý Ảo trong dự án không chỉ thực hiện chức năng hội thoại tư vấn mà còn trực tiếp tham gia vào các nghiệp vụ khác như đặt hàng và hủy đơn. Do đó, kiến trúc AI Agent cần được thiết kế theo hướng hiện đại, linh hoạt và có khả năng mở rộng, đáp ứng đồng thời các yêu cầu kỹ thuật và nghiệp vụ sau:
+\subsubsection{Thiết kế cơ sở dữ liệu}
+
+Hệ thống sử dụng kiến trúc đa cơ sở dữ liệu (polyglot persistence) nhằm đáp ứng các yêu cầu khác nhau của bài toán tư vấn hội thoại. Thay vì cố gắng giải quyết mọi nhu cầu bằng một loại cơ sở dữ liệu duy nhất, mỗi loại dữ liệu được lưu trữ trong một hệ quản trị phù hợp với đặc trưng của nó.
+
+Cụ thể, hệ thống bao gồm ba thành phần chính:
+
 \begin{itemize}
-    \item Hỗ trợ \textbf{nhiều loại tác vụ khác nhau}, bao gồm cả tác vụ không có side-effect (tư vấn, hỏi đáp) và tác vụ có side-effect (đặt hàng, hủy đơn).
-    \item Đảm bảo \textbf{phản hồi theo thời gian thực (real-time)} để mang lại trải nghiệm hội thoại tự nhiên và liền mạch cho người dùng.
-    \item Hỗ trợ \textbf{hội thoại không tuyến tính}, cho phép người dùng thay đổi ý định, chen ngang câu hỏi hoặc quay lại tác vụ trước đó trong cùng một phiên làm việc.
-    \item Đảm bảo \textbf{an toàn nghiệp vụ}, tránh việc mô hình ngôn ngữ tự ý thực hiện các hành động nhạy cảm ảnh hưởng đến trạng thái hệ thống.
-    \item Cho phép \textbf{mở rộng và bảo trì độc lập}, có thể bổ sung luồng nghiệp vụ hoặc agent mới mà không ảnh hưởng đến toàn bộ hệ thống.
-    \item Dễ dàng \textbf{kiểm soát, theo dõi và giải thích luồng xử lý}, phục vụ cho việc debug.
+\item Cơ sở dữ liệu quan hệ (PostgreSQL) cho dữ liệu có cấu trúc
+\item Cơ sở dữ liệu đồ thị (Neo4j) cho dữ liệu quan hệ phức tạp và hành vi người dùng
+\item Cơ sở dữ liệu vector (ChromaDB) cho tìm kiếm ngữ nghĩa
 \end{itemize}
 
-Từ các yêu cầu trên có thể thấy, kiến trúc AI Agent cần có khả năng điều phối linh hoạt, mức độ kiểm soát cao và không phù hợp với các mô hình agent đơn giản hoặc xử lý tập trung. Sau khi nghiên cứu và so sánh các kiến trúc cho Agent theo hướng Single-Agent và Multi-Agent, nhóm lựa chọn kiến trúc \textbf{Multi-Agent kiểu Hierarchical Supervisor} cho hệ thống Trợ lý Ảo AI vì các lý do sau:
+\textbf{Thiết kế cơ sở dữ liệu quan hệ PostgreSQL}
+
+PostgreSQL được sử dụng để lưu trữ dữ liệu sản phẩm dưới dạng có cấu trúc, phục vụ các truy vấn lọc theo điều kiện như danh mục, giá và thông số kỹ thuật. Mô hình dữ liệu được tổ chức thành ba bảng chính:
+
 \begin{itemize}
-    \item Phù hợp với hệ thống có \textbf{nhiều luồng nghiệp vụ khác nhau}, mỗi luồng có mức độ rủi ro và yêu cầu kiểm soát riêng.
-    \item Cho phép \textbf{phân tách trách nhiệm rõ ràng} giữa các agent chuyên môn, giúp giảm độ phức tạp của từng agent.
-    \item \textbf{Supervisor Agent đóng vai trò điều phối trung tâm}, giúp kiểm soát luồng hội thoại, tránh xung đột khi nhiều intent xuất hiện đồng thời.
-    \item Dễ dàng \textbf{kiểm soát và giải thích luồng xử lý}, đặc biệt quan trọng trong các nghiệp vụ thương mại điện tử có quy trình tuần tự và điều kiện rõ ràng.
-    \item Tăng \textbf{độ an toàn của hệ thống}, đặc biệt đối với các tác vụ có side-effect như đặt hàng và hủy đơn.
-    \item Hỗ trợ \textbf{mở rộng linh hoạt}, cho phép thay đổi hoặc nâng cấp kiến trúc bên trong từng agent mà không ảnh hưởng đến toàn bộ hệ thống.
+\item Bảng product lưu thông tin chung của sản phẩm như tên, danh mục, thương hiệu, dòng sản phẩm và đánh giá.
+\item Bảng variant biểu diễn các biến thể của sản phẩm (màu sắc, giá, hình ảnh)
+\item Bảng product\_spec lưu thông số kỹ thuật theo mô hình EAV (Entity--Attribute--Value).
 \end{itemize}
 
-Với những ưu điểm trên, kiến trúc Multi-Agent kiểu Hierarchical Supervisor đáp ứng tốt các yêu cầu về an toàn, khả năng mở rộng và kiểm soát nghiệp vụ của hệ thống.
+Việc lựa chọn mô hình EAV thay vì schema cố định xuất phát từ đặc thù dữ liệu: mỗi danh mục sản phẩm có tập thông số khác nhau (ví dụ laptop có RAM, trong khi máy in có tốc độ in). Nếu sử dụng schema cố định, số lượng cột sẽ rất lớn và phần lớn giá trị bị bỏ trống. EAV cho phép lưu trữ linh hoạt các thuộc tính mà không cần thay đổi schema.
+
+Tuy nhiên, mô hình này cũng có nhược điểm là làm tăng độ phức tạp truy vấn. Để truy vấn theo thông số kỹ thuật, hệ thống phải sử dụng các điều kiện EXISTS hoặc JOIN nhiều lần, dẫn đến chi phí tính toán cao hơn so với schema cố định.
+
+Để giảm thiểu vấn đề này, hệ thống áp dụng các chiến lược tối ưu:
+
+\begin{itemize}
+\item Tạo index tổng hợp trên (category, brand) để tăng tốc lọc cơ bản
+\item Tạo index riêng cho các trường thường truy vấn như price và color
+\item Tạo index trên (spec\_key, value\_num) để hỗ trợ lọc theo thông số kỹ thuật
+\end{itemize}
+
+Ngoài ra, extension pg\_trgm được sử dụng để hỗ trợ tìm kiếm mờ theo tên sản phẩm. Điều này cho phép hệ thống xử lý các truy vấn không chính xác hoàn toàn, đặc biệt hữu ích trong bước định danh sản phẩm từ ngôn ngữ tự nhiên.
+
+
+
+\textbf{Thiết kế cơ sở dữ liệu đồ thị Neo4j}
+
+Neo4j được sử dụng để lưu trữ các mối quan hệ giữa các thực thể, đặc biệt là quan hệ phân cấp sản phẩm và hành vi mua hàng của người dùng. Khác với mô hình quan hệ, cơ sở dữ liệu đồ thị cho phép biểu diễn trực tiếp các liên kết giữa các nút, giúp việc truy vấn các quan hệ phức tạp trở nên tự nhiên hơn.
+
+Trong hệ thống, các nút chính bao gồm:
+
+\begin{itemize}
+    \item Product
+    \item Variant
+    \item Brand
+    \item Series
+    \item Category
+    \item Customer
+\end{itemize}
+
+Các quan hệ như HAS\_VARIANT, OF\_BRAND, IN\_SERIES và IN\_CATEGORY mô tả cấu trúc phân cấp của sản phẩm, trong khi quan hệ BOUGHT biểu diễn hành vi mua hàng của người dùng.
+
+Việc sử dụng Neo4j mang lại lợi thế rõ rệt trong các truy vấn liên quan đến hành vi, chẳng hạn như xác định thương hiệu hoặc màu sắc được người dùng mua nhiều nhất. Nếu thực hiện truy vấn tương tự trong cơ sở dữ liệu quan hệ, hệ thống sẽ cần nhiều phép JOIN phức tạp, trong khi Neo4j cho phép biểu diễn trực tiếp bằng pattern matching.
+
+Tuy nhiên, Neo4j không được sử dụng cho các truy vấn lọc lớn theo điều kiện (ví dụ tìm tất cả sản phẩm RAM $\geq 8\text{GB}$), vì các truy vấn dạng này phù hợp hơn với cơ sở dữ liệu quan hệ. Do đó, Neo4j được giới hạn trong vai trò xử lý quan hệ và hành vi, thay vì thay thế hoàn toàn PostgreSQL.
+
+
+
+\textbf{Thiết kế cơ sở dữ liệu vector ChromaDB}
+
+ChromaDB được sử dụng để hỗ trợ tìm kiếm ngữ nghĩa trên dữ liệu văn bản, bao gồm mô tả sản phẩm, câu hỏi thường gặp (FAQ) và các chính sách của cửa hàng. Khác với truy vấn SQL truyền thống, tìm kiếm ngữ nghĩa cho phép hệ thống xử lý các câu hỏi tự nhiên như ``máy này có pin dùng được lâu không'' mà không cần khớp từ khóa chính xác.
+
+Dữ liệu được lưu trữ dưới dạng các đoạn văn bản (chunks), trong đó mỗi đoạn được ánh xạ thành một vector embedding. Hai collection chính được sử dụng:
+
+\begin{itemize}
+\item Collection products: chứa mô tả và các cặp FAQ của sản phẩm
+\item Collection policies: chứa các đoạn văn bản chính sách
+\end{itemize}
+
+Việc tách riêng hai collection giúp kiểm soát phạm vi tìm kiếm và cải thiện độ chính xác của kết quả. Ví dụ, các câu hỏi về bảo hành sẽ chỉ truy vấn trong collection policies thay vì toàn bộ dữ liệu.
+
+Hệ thống sử dụng mô hình embedding tiếng Việt để đảm bảo chất lượng biểu diễn ngữ nghĩa. Các vector được chuẩn hóa để đảm bảo tính nhất quán khi so sánh khoảng cách.
+
+Tuy nhiên, tìm kiếm vector có chi phí tính toán cao hơn so với truy vấn SQL, và kết quả mang tính xấp xỉ. Do đó, ChromaDB chỉ được sử dụng cho các câu hỏi mang tính ngữ nghĩa, không thay thế cho các truy vấn chính xác.
+
+Do hệ thống sử dụng nhiều cơ sở dữ liệu, việc đảm bảo tính nhất quán dữ liệu là một vấn đề quan trọng. Trong quá trình xây dựng dữ liệu, mỗi sản phẩm được gán một định danh duy nhất (UUID) và được sử dụng xuyên suốt trong PostgreSQL và Neo4j. Quá trình ghi dữ liệu được thực hiện theo thứ tự ưu tiên: trước hết ghi vào PostgreSQL, sau đó mới ghi vào Neo4j. Nếu bước ghi vào PostgreSQL thất bại, toàn bộ giao dịch bị rollback và không tiếp tục ghi sang các hệ thống khác. Cách tiếp cận này đảm bảo rằng dữ liệu quan hệ luôn là nguồn chính xác.
+
+Việc sử dụng kiến trúc đa cơ sở dữ liệu giúp hệ thống tận dụng được thế mạnh của từng công nghệ, nhưng đồng thời làm tăng độ phức tạp tổng thể. Thay vì một hệ thống đơn giản, hệ thống cần quản lý ba loại database với các mô hình dữ liệu khác nhau.
+
+PostgreSQL đảm bảo tính nhất quán và hỗ trợ truy vấn chính xác, nhưng kém linh hoạt với dữ liệu quan hệ phức tạp. Neo4j xử lý tốt các quan hệ và hành vi, nhưng không phù hợp cho truy vấn lọc lớn. ChromaDB hỗ trợ tìm kiếm ngữ nghĩa, nhưng kết quả mang tính xấp xỉ và phụ thuộc vào chất lượng embedding.
 
 
 
 
 
-\subsubsection{Tổng quan kiến trúc AI Agent}
+
+
+
+
+
+\subsubsection{Thiết kế AI Agent}
+
+AI Agent được xây dựng nhằm thực hiện tư vấn sản phẩm theo ngữ cảnh hội thoại, với khả năng hiểu ý định người dùng, duy trì trạng thái qua nhiều lượt trao đổi và truy xuất dữ liệu từ nhiều nguồn khác nhau. Bài toán này có đặc trưng là luồng xử lý không tuyến tính: người dùng có thể liên tục thay đổi yêu cầu hoặc chuyển ngữ cảnh giữa các lượt hội thoại. Do đó, hệ thống không được thiết kế theo pipeline tuần tự mà sử dụng mô hình đồ thị xử lý (graph-based execution).
+
+Luồng xử lý tổng quát của agent như sau:
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{images/chap6/AI Agent architecture.drawio.png}
+    \includegraphics[width=0.5\textwidth]{images/chap6/AI Agent architecture.drawio.png}
     \vspace{0.5cm}
     \caption{Sơ đồ kiến trúc AI Agent}
     \label{fig:ai_agent_architecture}
 \end{figure}
 
-Dựa trên kiến trúc đã lựa chọn, hệ thống Trợ lý Ảo AI được thiết kế như hình \ref{fig:ai_agent_architecture}, bao gồm:
+Trong đó, Parse thực hiện trích xuất thông tin có cấu trúc, Resolve định danh sản phẩm, Reason đóng vai trò điều phối quyết định và Tools đảm nhiệm truy xuất dữ liệu. Thiết kế này cho phép tách biệt rõ ba lớp: hiểu ngôn ngữ (LLM), điều phối logic (graph execution) và truy xuất dữ liệu (database), từ đó giảm sự phụ thuộc chéo và giúp hệ thống dễ mở rộng.
+
+\textbf{Thiết kế trạng thái hội thoại}
+
+Trạng thái hội thoại (State) là thành phần trung tâm, đóng vai trò như bộ nhớ làm việc của agent. Có thể xem trạng thái này như một ``incremental query builder'', trong đó mỗi lượt hội thoại bổ sung thêm ràng buộc cho truy vấn cuối cùng.
+
+Trạng thái bao gồm các nhóm thông tin chính:
+
 \begin{itemize}
-    \item Một \textbf{Supervisor Agent} đóng vai trò điều phối cấp cao.
-    \item Bốn \textbf{Agent chuyên môn}, tương ứng với bốn luồng nghiệp vụ chính:
-    \begin{itemize}
-        \item Tư vấn sản phẩm
-        \item Đặt hàng
-        \item Hủy đơn
-        \item Hỏi đáp (Q\&A)
-    \end{itemize}
+\item Thông tin định danh của khách hàng (nếu có)
+\item Lịch sử hội thoại gần nhất
+\item Các bộ lọc tìm kiếm: danh mục, thương hiệu, dòng sản phẩm, màu sắc
+\item Khoảng giá
+\item Thông số kỹ thuật dưới dạng bộ lọc số
+\item Danh sách sản phẩm được đề cập và danh sách đã định danh
 \end{itemize}
 
-Supervisor Agent tiếp nhận yêu cầu từ người dùng, phân tích intent và quyết định agent chuyên môn phù hợp để xử lý. Các agent chuyên môn hoạt động độc lập, tập trung vào nghiệp vụ của mình, nhưng luôn chịu sự giám sát và điều phối của Supervisor.
+Các thông số kỹ thuật được chuẩn hóa thành dạng $(\text{value}, \text{operator})$, ví dụ ``RAM $\geq 8\text{GB}$'' được biểu diễn dưới dạng một cấu trúc có thể ánh xạ trực tiếp sang điều kiện SQL. Thiết kế này giúp giảm đáng kể độ phức tạp ở bước sinh truy vấn và đảm bảo tính nhất quán giữa các thành phần của hệ thống.
 
-Cách tổ chức này giúp hệ thống vừa đảm bảo tính linh hoạt của hội thoại tự nhiên, vừa duy trì được mức độ kiểm soát cần thiết đối với các nghiệp vụ quan trọng của thương mại điện tử.
+\textbf{node Parse}
 
-\textbf{Supervisor Agent}
+Node Parse chịu trách nhiệm chuyển đổi ngôn ngữ tự nhiên thành dữ liệu có cấu trúc. Thay vì sử dụng các phương pháp thủ công, hệ thống sử dụng mô hình ngôn ngữ với cơ chế structured output để đảm bảo đầu ra tuân theo một schema cố định.
 
-Supervisor Agent là thành phần trung tâm của kiến trúc, chịu trách nhiệm:
+Các thông tin được trích xuất bao gồm danh mục sản phẩm, các bộ lọc cơ bản, khoảng giá, thông số kỹ thuật và tên sản phẩm cụ thể nếu có. Prompt được thiết kế với các ràng buộc rõ ràng nhằm tránh suy đoán, chỉ tạo bộ lọc khi có giá trị cụ thể và chuẩn hóa các đơn vị đo lường.
+
+Sau bước trích xuất, node thực hiện hợp nhất với trạng thái hiện tại. Việc hợp nhất không đơn thuần là ghi đè mà được thực hiện theo nguyên tắc cập nhật tối thiểu: chỉ những trường có giá trị mới mới được thay đổi, trong khi các thông tin khác được giữ nguyên. Ở đây có điểm quan trọng đó là cơ chế reset có điều kiện: khi danh mục sản phẩm thay đổi, toàn bộ các bộ lọc liên quan được đưa về trạng thái mặc định nhằm tránh sai lệch ngữ cảnh. Danh sách sản phẩm được đề cập được gộp và loại bỏ trùng lặp để phục vụ bước định danh.
+
+\textbf{node Resolve}
+
+Node Resolve thực hiện ánh xạ các tên sản phẩm tự nhiên sang định danh trong cơ sở dữ liệu. Cách tiếp cận được sử dụng là fuzzy matching dựa trên pg\_trgm của PostgreSQL.
+
+Với mỗi tên sản phẩm, hệ thống tính toán độ tương đồng với các tên trong cơ sở dữ liệu và chọn kết quả tốt nhất nếu vượt qua ngưỡng tối thiểu. Các trường hợp tên quá ngắn hoặc mang tính chung chung được loại bỏ trước khi truy vấn nhằm giảm nhiễu.
+
+Kết quả định danh được gắn kèm một mức độ tin cậy. Giá trị này không chỉ dùng để đánh giá độ chính xác mà còn được đưa vào bước suy luận tiếp theo. Cụ thể, các kết quả có độ tin cậy thấp sẽ kích hoạt cơ chế xác nhận lại với người dùng trước khi tiếp tục tư vấn.
+
+\textbf{node Reason}
+
+Node Reason là thành phần điều phối trung tâm của hệ thống, có thể được xem như một ``policy layer'' nằm giữa mô hình ngôn ngữ và các công cụ truy xuất dữ liệu. Nhiệm vụ của node này là đánh giá trạng thái hiện tại và quyết định hành động tiếp theo.
+
+Quy trình ra quyết định được tổ chức theo thứ tự ưu tiên. Trước hết, node kiểm tra các sản phẩm có độ tin cậy thấp để xác định xem có cần xác nhận lại với người dùng hay không. Tiếp theo, node đánh giá mức độ đầy đủ của thông tin; nếu thiếu các điều kiện quan trọng như danh mục hoặc bộ lọc, agent sẽ đặt câu hỏi bổ sung. Khi đã có đủ thông tin, node lựa chọn công cụ phù hợp để truy vấn dữ liệu. Cuối cùng, khi đã có kết quả từ công cụ, mô hình tổng hợp thông tin và sinh phản hồi.
+
+Để đảm bảo tính ổn định, node Reason được thiết kế với cơ chế retry có kiểm soát. Trong trường hợp mô hình không sinh ra phản hồi hợp lệ hoặc không gọi công cụ khi cần thiết, hệ thống sẽ bổ sung tín hiệu điều chỉnh và thực hiện lại bước suy luận mà không làm thay đổi trạng thái chính. Cách làm này giúp giảm ảnh hưởng của các lỗi ngẫu nhiên từ mô hình.
+
+\textbf{Thiết kế cơ chế gọi công cụ}
+
+Hệ thống sử dụng ba nhóm công cụ chính, tương ứng với ba loại nhu cầu truy vấn khác nhau: tìm kiếm sản phẩm theo điều kiện, truy vấn sản phẩm cụ thể và tìm kiếm ngữ nghĩa.
+
+Các truy vấn SQL được xây dựng động từ trạng thái hội thoại. Đối với các điều kiện liên quan đến biến thể và thông số kỹ thuật, hệ thống sử dụng mệnh đề EXISTS thay vì JOIN trực tiếp nhằm tránh việc nhân bản bản ghi khi một sản phẩm có nhiều biến thể hoặc nhiều thông số. Điều này giúp giữ cho kết quả truy vấn gọn và chính xác.
+
+Kết quả được giới hạn ở một số lượng nhỏ (ví dụ top $5$ sản phẩm) để giảm tải cho bước sinh phản hồi của mô hình, đồng thời đảm bảo tính dễ đọc cho người dùng. Việc giới hạn này cũng đóng vai trò như một cơ chế kiểm soát chi phí và độ trễ của hệ thống.
+
+\textbf{Cá nhân hóa hội thoại}
+
+Hệ thống tích hợp dữ liệu lịch sử mua hàng từ cơ sở dữ liệu đồ thị để cá nhân hóa tư vấn. Khi bắt đầu phiên làm việc, agent truy vấn để xác định các thuộc tính phổ biến như thương hiệu và màu sắc mà người dùng đã lựa chọn trong quá khứ.
+
+Các giá trị này được sử dụng để khởi tạo trạng thái hội thoại, đóng vai trò như các bộ lọc mặc định. Nhờ đó, agent có thể ưu tiên các sản phẩm phù hợp với sở thích của người dùng mà không cần yêu cầu nhập lại thông tin.
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Thiết kế API}
+
+Lớp API đóng vai trò là cầu nối giữa AI Agent và các thành phần bên ngoài, bao gồm giao diện người dùng và hệ thống ghi nhận giao dịch. API được xây dựng theo kiến trúc RESTful, sử dụng FastAPI nhằm tận dụng khả năng xử lý bất đồng bộ, hiệu năng cao và dễ mở rộng.
+
+Một đặc điểm quan trọng trong thiết kế là sự tách biệt giữa hai mức trạng thái:
+
 \begin{itemize}
-    \item Tiếp nhận và phân tích yêu cầu từ người dùng.
-    \item Xác định intent hiện tại của hội thoại.
-    \item Điều phối và kích hoạt agent chuyên môn tương ứng.
-    \item Theo dõi trạng thái thực thi và kiểm soát luồng xử lý tổng thể.
-\end{itemize}
-Supervisor \textbf{không trực tiếp thực hiện nghiệp vụ}, mà chỉ đóng vai trò điều phối và giám sát. Thiết kế này giúp tránh việc một agent phải xử lý nhiều loại tác vụ khác nhau, đồng thời tăng khả năng kiểm soát và mở rộng hệ thống.
-
-
-\textbf{Luồng Tư vấn -- LLMCompiler Agent}
-
-Agent tư vấn được thiết kế theo mô hình \textbf{LLMCompiler}, phù hợp với các nhiệm vụ yêu cầu khả năng suy luận nhiều bước và tổng hợp thông tin từ nhiều nguồn khác nhau. Luồng này tập trung vào việc hỗ trợ người dùng lựa chọn sản phẩm phù hợp dựa trên nhu cầu, ngân sách và sở thích cá nhân.
-
-Do đặc thù của nghiệp vụ tư vấn là các câu hỏi mở, không có quy trình cố định và không gây tác động trực tiếp đến trạng thái hệ thống, việc sử dụng LLMCompiler giúp tối ưu khả năng lập kế hoạch, truy xuất thông tin và tổng hợp câu trả lời một cách linh hoạt. Cấu trúc nội bộ của luồng này bao gồm:
-\begin{itemize}
-    \item \textbf{Planner}: phân tích yêu cầu tư vấn của người dùng và chia nhỏ thành các nhiệm vụ con.
-    \item \textbf{Task Fetching Unit}: thực hiện truy xuất dữ liệu (ví dụ: thông tin sản phẩm, so sánh cấu hình).
-    \item \textbf{Joiner}: tổng hợp kết quả từ các nhiệm vụ con thành câu trả lời hoàn chỉnh.
-    \item \textbf{Tool}: truy cập nguồn dữ liệu bên ngoài như cơ sở dữ liệu sản phẩm và hệ thống RAG.
-\end{itemize}
-Việc lựa chọn LLMCompiler cho luồng tư vấn giúp hệ thống nâng cao chất lượng reasoning, đồng thời đảm bảo an toàn do không phát sinh side-effect lên hệ thống nghiệp vụ.
-
-
-\textbf{Luồng Đặt hàng -- ReAct Agent}
-
-Agent đặt hàng được thiết kế theo mô hình \textbf{ReAct}, phù hợp với các nghiệp vụ có trạng thái kéo dài và phát sinh side-effect. Trong luồng này, trợ lý ảo không chỉ suy luận mà còn cần thực hiện các hành động cụ thể bao gồm: kiểm tra còn hàng tồn và tạo đơn hàng thông qua các dịch vụ backend.
-
-ReAct cho phép agent hoạt động theo vòng lặp Reason $ \rightarrow $ Act $ \rightarrow $ Observe, nhờ đó có thể kiểm soát chặt chẽ từng bước trong quy trình đặt hàng và đảm bảo các điều kiện nghiệp vụ được thỏa mãn trước khi thực hiện hành động. Cấu trúc nội bộ của luồng này bao gồm:
-\begin{itemize}
-    \item \textbf{LLM}: suy luận dựa trên trạng thái hiện tại của đơn hàng.
-    \item \textbf{API Calling Tool}: gọi các dịch vụ backend như:
-    \begin{itemize}
-        \item kiểm tra tồn kho
-        \item gửi tín hiệu đến backend để yêu cầu xác nhận đơn hàng
-    \end{itemize}
-\end{itemize}
-Thiết kế này giúp đảm bảo agent thu thập đầy đủ thông tin cần thiết (sản phẩm, số lượng, địa chỉ, phương thức thanh toán) trước khi tạo đơn, đồng thời hạn chế rủi ro do suy luận sai gây ra.
-
-
-\textbf{Luồng Hủy đơn -- ReAct Agent}
-
-Luồng hủy đơn cũng được thiết kế theo kiến trúc \textbf{ReAct}, do có nhiều điểm tương đồng với luồng đặt hàng. ReAct cho phép agent suy luận điều kiện hủy đơn dựa trên trạng thái hiện tại của đơn hàng và thông tin người dùng, sau đó mới thực hiện hành động thông qua các API chuyên biệt. Cấu trúc nội bộ của luồng này bao gồm:
-\begin{itemize}
-    \item \textbf{LLM}: suy luận điều kiện hủy đơn.
-    \item \textbf{API Calling Tool}: gọi dịch vụ kiểm tra thông tin đơn hàng và thực hiện hủy đơn.
-\end{itemize}
-Thiết kế này giúp hạn chế các hành vi hủy đơn trái phép hoặc nhầm lẫn, đồng thời đảm bảo tính an toàn và nhất quán của hệ thống.
-
-
-\textbf{Luồng Hỏi đáp (Q\&A) -- LLMCompiler Agent}
-
-Agent hỏi đáp được thiết kế theo mô hình \textbf{LLMCompiler}, tương tự luồng tư vấn nhưng tập trung vào việc trả lời các câu hỏi thông tin như chính sách bán hàng, bảo hành hoặc thông tin cửa hàng.
-
-Luồng hỏi đáp thường không có trạng thái kéo dài và không gây side-effect lên hệ thống, nhưng đòi hỏi độ chính xác cao và khả năng tổng hợp thông tin từ nhiều nguồn khác nhau. Vì vậy, LLMCompiler là lựa chọn phù hợp cho loại tác vụ này. Cấu trúc nội bộ của luồng này bao gồm:
-\begin{itemize}
-    \item \textbf{Planner}: phân tích câu hỏi.
-    \item \textbf{Task Fetching Unit}: truy xuất dữ liệu liên quan (chính sách, bảo hành, thông tin cửa hàng).
-    \item \textbf{Joiner}: tổng hợp câu trả lời.
-    \item \textbf{Tool}: truy cập kho tri thức hoặc hệ thống RAG.
-\end{itemize}
-Cách thiết kế này giúp hệ thống cung cấp câu trả lời đầy đủ, nhất quán và đáng tin cậy cho người dùng.
-
-
-
-
-
-\subsubsection{Thiết kế cấu trúc State}
-Trạng thái (State) đóng vai trò là nguồn dữ liệu trung tâm, dùng để lưu trữ toàn bộ trạng thái hội thoại, tiến trình nghiệp vụ và ngữ cảnh người dùng. Vai trò của State là giúp:
-\begin{itemize}
-    \item Điều phối chính xác giữa nhiều agent trong kiến trúc Hierarchical Supervisor.
-    \item Kiểm soát chặt chẽ các luồng nghiệp vụ quan trọng như đặt hàng và hủy đơn.
-    \item Cho phép hệ thống tạm ngắt, quay lại hoặc chuyển ngữ cảnh hội thoại mà không mất thông tin.
-    \item Tăng tính an toàn, khả năng debug và khả năng mở rộng hệ thống.
+\item Ở mức HTTP, API hoạt động theo mô hình stateless
+\item Ở mức ứng dụng, trạng thái hội thoại được duy trì thông qua session
 \end{itemize}
 
-Cấu trúc state của hệ thống được thiết kế như sau:
+\textbf{Quản lý phiên hội thoại}
+
+Mỗi phiên làm việc được định danh bằng một \texttt{session\_id} do phía client cung cấp. Trên phía server, các phiên được lưu trữ trong một cấu trúc dictionary trong bộ nhớ, trong đó mỗi phần tử chứa:
+
 \begin{itemize}
-    \item \textbf{State tổng thể}
-    \begin{itemize}
-        \item \textbf{messages}: Lưu trữ ngữ cảnh hội thoại giữa người dùng và trợ lý ảo.
-        \item \textbf{active\_agent}: Xác định agent hiện đang chịu trách nhiệm xử lý yêu cầu.
-        \item \textbf{intent\_stack}: Quản lý các yêu cầu (intent) của người dùng chưa được xử lý theo cơ chế stack.
-        \item \textbf{intent\_context}: Lưu trữ ngữ cảnh (context) nghiệp vụ tương ứng với intent hiện tại.
-        \item \textbf{user\_profile}: Lưu trữ thông tin người dùng phục vụ cho các nghiệp vụ liên quan.
-    \end{itemize}
+\item Trạng thái hội thoại (AgentState)
+\item Thời điểm tương tác cuối cùng
 \end{itemize}
 
+Khi một yêu cầu mới được gửi đến, hệ thống sẽ kiểm tra sự tồn tại của session. Nếu session chưa tồn tại, một trạng thái mới sẽ được khởi tạo; nếu đã tồn tại, trạng thái hiện tại sẽ được tái sử dụng và cập nhật.
 
-\textbf{Messages}
+Để tránh việc chiếm dụng bộ nhớ không cần thiết, hệ thống áp dụng cơ chế TTL (time-to-live). Các phiên không hoạt động trong một khoảng thời gian xác định (ví dụ $30$ phút) sẽ bị xóa tự động khi có yêu cầu mới. Cách làm này đơn giản nhưng hiệu quả trong bối cảnh số lượng người dùng ở mức vừa phải.
 
-\texttt{messages} lưu trữ danh sách các tin nhắn giữa người dùng và trợ lý ảo. Thành phần này phục vụ cho việc duy trì ngữ cảnh hội thoại và sinh phản hồi tự nhiên từ LLM.
+\textbf{Thiết kế endpoint hội thoại}
 
-Thiết kế chỉ lưu các tin nhắn cần thiết (user/assistant), không lưu log nội bộ hoặc kết quả tool call dài, nhằm tối ưu độ dài context và chi phí xử lý.
+Endpoint trung tâm của hệ thống là \texttt{/api/agent/chat}, chịu trách nhiệm tiếp nhận tin nhắn người dùng và trả về phản hồi từ agent.
 
+Quy trình xử lý của endpoint này gồm các bước chính:
 
-\textbf{Active\_Agent}
-
-\texttt{active\_agent} giúp xác định agent hiện đang xử lý hội thoại, thành phần này có thể nhận một trong những giá trị sau:
 \begin{itemize}
-    \item supervisor
-    \item consult\_agent
-    \item order\_agent
-    \item cancel\_agent
-    \item qa\_agent
+\item Dọn dẹp các session hết hạn
+\item Lấy hoặc khởi tạo session tương ứng
+\item Cập nhật trạng thái với tin nhắn mới
+\item Thực thi đồ thị agent
+\item Lưu lại trạng thái và trả về kết quả
 \end{itemize}
 
+Trong quá trình này, trạng thái hội thoại được serialize thành dạng dictionary để truyền vào LangGraph, sau đó được khôi phục lại thành đối tượng AgentState sau khi xử lý. Cách làm này giúp tách biệt rõ giữa lớp API và lớp xử lý agent.
 
-\textbf{Intent\_Stack}
+Endpoint này đóng vai trò như một ``entry point'' duy nhất cho toàn bộ luồng hội thoại, đảm bảo mọi tương tác đều đi qua cùng một pipeline xử lý.
 
-\texttt{intent\_stack} là một ngăn xếp (stack) chứa các intent chưa và đang được xử lý, ví dụ: order, qa, ... Thiết kế này cho phép hệ thống xử lý các tình huống hội thoại không tuyến tính, khi người dùng có thể chen ngang một intent phụ trong lúc đang thực hiện một intent chính, sau đó quay lại tiếp tục intent ban đầu.
+\textbf{Thiết kế endpoint ghi nhận giao dịch}
 
+Endpoint \texttt{/api/agent/purchase} được sử dụng để ghi nhận hành vi mua hàng của người dùng, phục vụ cho cơ chế cá nhân hóa.
 
-\textbf{Intent\_Context}
+Quy trình xử lý gồm hai bước. Trước hết, hệ thống kiểm tra sự tồn tại của biến thể sản phẩm dựa trên tên sản phẩm, màu sắc và giá. Bước kiểm tra này nhằm đảm bảo dữ liệu đầu vào hợp lệ và tránh ghi nhận các giao dịch không tồn tại.
 
-\texttt{intent\_context} được thiết kế để lưu trữ \textbf{toàn bộ dữ liệu nghiệp vụ liên quan trực tiếp đến intent đang được xử lý}. Mỗi loại intent trong hệ thống có một loại context riêng, phản ánh đúng yêu cầu dữ liệu, trạng thái và tiến trình của luồng nghiệp vụ tương ứng. Intent\_context có thể là một trong bốn loại sau:
+Sau khi xác nhận hợp lệ, hệ thống thực hiện thao tác ghi vào Neo4j:
+
 \begin{itemize}
-    \item \textbf{ConsultContext}: lưu thông tin nhu cầu, ngân sách và sở thích của người dùng để phục vụ tư vấn sản phẩm.
-    \item \textbf{OrderContext}: lưu toàn bộ trạng thái đặt hàng như sản phẩm, số lượng, địa chỉ giao hàng, phương thức thanh toán.
-    \item \textbf{CancelContext}: lưu thông tin của đơn cần hủy.
-    \item \textbf{QAContext}: lưu các thông tin liên quan đến chủ đề hỏi đáp.
-\end{itemize}
-Thiết kế này giúp tránh trộn lẫn dữ liệu giữa các nghiệp vụ khác nhau và hỗ trợ agent hoạt động chính xác theo từng ngữ cảnh.
-
-
-\textbf{User Profile}
-
-Thông tin cá nhân của người dùng được gom vào \texttt{user\_profile}, bao gồm:
-\begin{itemize}
-    \item user\_id
-    \item name
-    \item phone
-    \item address
-\end{itemize}
-Đây là thành phần duy nhất của State mà AI Agent không được phép thay đổi. Thành phần đóng vai trò như một bộ nhớ đệm (cache) nhỏ, để lưu các thông tin sẽ được dùng nhiều trong quá trình truy xuất các cơ sở dữ liệu.
-
-
-
-
-
-
-
-
-
-
-
-\subsubsection{Thiết kế Vector Database}
-Cơ sở dữ liệu vector (Vector Database) được sử dụng nhằm hỗ trợ \textbf{truy xuất tri thức theo ngữ nghĩa (semantic search)} và \textbf{Retrieval-Augmented Generation (RAG)}.
-Khác với các hệ quản trị cơ sở dữ liệu truyền thống chỉ cho phép truy vấn chính xác theo từ khóa, Vector Database cho phép hệ thống tìm kiếm các nội dung \textit{gần nghĩa} với câu hỏi của người dùng, từ đó nâng cao khả năng hiểu và phản hồi tự nhiên của Trợ lý Ảo.
-
-Vector Database đóng vai trò là \textbf{nguồn tri thức phi cấu trúc}, giúp AI Agent:
-\begin{itemize}
-    \item Trả lời các câu hỏi liên quan đến mô tả sản phẩm.
-    \item Cung cấp thông tin chính sách bán hàng, bảo hành.
+\item Tạo hoặc tái sử dụng nút Customer
+\item Tạo hoặc cập nhật quan hệ BOUGHT với thuộc tính số lượng
 \end{itemize}
 
+Việc sử dụng MERGE trong truy vấn Cypher đảm bảo tính idempotent, cho phép cập nhật số lượng mua mà không tạo trùng dữ liệu.
 
-Vector Database trong hệ thống sẽ lưu trữ các dữ liệu dạng văn bản, bao gồm:
-\begin{itemize}
-    \item Mô tả chi tiết sản phẩm điện thoại.
-    \item Thông số kỹ thuật được biểu diễn dưới dạng văn bản.
-    \item Chính sách bảo hành, đổi trả.
-    \item Câu hỏi thường gặp (FAQ).
-    \item Nội dung tư vấn và hướng dẫn mua hàng.
-\end{itemize}
+\textbf{Các endpoint hỗ trợ}
 
-Mỗi bản ghi trong Vector Database sẽ bao gồm:
-\begin{itemize}
-    \item Vector embedding đại diện cho ngữ nghĩa của nội dung.
-    \item Nội dung văn bản gốc.
-    \item Metadata mô tả ngữ cảnh, cụ thể: intent liên quan, loại tài liệu.
-\end{itemize}
-
-
-
-\subsubsection{Thiết kế Graph Database}
-
-
-Graph Database được sử dụng để mô hình hóa \textbf{mối quan hệ giữa các thực thể trong nghiệp vụ bán lẻ điện thoại}, từ đó hỗ trợ Trợ lý Ảo thực hiện các tác vụ suy luận logic như:
+Ngoài hai endpoint chính, hệ thống cung cấp một số endpoint hỗ trợ nhằm phục vụ việc kiểm tra và quản lý:
 
 \begin{itemize}
-    \item Gợi ý sản phẩm phù hợp với nhu cầu.
-    \item So sánh các sản phẩm tương tự.
-\end{itemize}
-
-
-Các thực thể và mối quan hệ trong Graph Database sẽ được lưu trữ dưới dạng các nốt và các cạnh, cụ thể:
-
-\textbf{Các thực thể chính}
-
-\begin{itemize}
-    \item \textbf{Phone}: đại diện cho sản phẩm điện thoại.
-    \item \textbf{Brand}: thương hiệu sản xuất.
-    \item \textbf{UseCase}: nhóm nhu cầu sử dụng (sinh viên, game thủ, văn phòng,\dots).
-    \item \textbf{User}: người dùng (dự kiến mở rộng trong giai đoạn triển khai).
-\end{itemize}
-
-\textbf{Các mối quan hệ chính}
-
-\begin{itemize}
-    \item Điện thoại thuộc về một thương hiệu.
-    \item Điện thoại sở hữu các đặc tính cụ thể.
-    \item Điện thoại phù hợp với một hoặc nhiều nhóm nhu cầu sử dụng.
-    \item Các điện thoại có mối quan hệ tương tự hoặc thay thế nhau.
-    \item Chương trình khuyến mãi áp dụng cho sản phẩm hoặc nhóm nhu cầu.
-\end{itemize}
-
-
-
-Vector Database và Graph Database được sử dụng song song, bổ trợ cho nhau:
-\begin{itemize}
-    \item Vector Database cung cấp tri thức phi cấu trúc và hỗ trợ truy vấn theo ngữ nghĩa.
-    \item Graph Database cung cấp tri thức có cấu trúc, hỗ trợ suy luận logic và gợi ý có thể giải thích.
-    \item Trợ lý Ảo AI Agent đóng vai trò điều phối và tổng hợp kết quả từ hai nguồn dữ liệu.
+\item \texttt{/api/agent/state/\{session\_id\}}: trả về toàn bộ trạng thái hội thoại hiện tại, hữu ích cho debug và kiểm tra
+\item \texttt{/api/agent/reset/\{session\_id\}}: xóa session tương ứng, buộc hệ thống tạo lại trạng thái mới
+\item \texttt{/api/agent/health}: kiểm tra trạng thái hoạt động của server và số lượng session hiện tại
 \end{itemize}

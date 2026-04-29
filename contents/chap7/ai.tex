@@ -1,0 +1,96 @@
+\subsection{AI Agent}
+\subsubsection{Hiện thực AI Agent}
+
+Toàn bộ hệ thống AI Agent được phát triển bằng Python. Việc lựa chọn một ngôn ngữ thống nhất giúp giảm chi phí tích hợp giữa các module, đồng thời tận dụng được hệ sinh thái thư viện mạnh cho scraping, xử lý dữ liệu và xây dựng hệ thống AI.
+
+Kiến trúc hiện thực có thể được xem như một pipeline nhiều tầng: dữ liệu được thu thập và chuẩn hóa, sau đó được lưu trữ vào các hệ quản trị phù hợp, và cuối cùng được khai thác thông qua AI Agent và API.
+
+\textbf{Hiện thực pipeline thu thập dữ liệu}
+
+Pipeline thu thập dữ liệu được tổ chức thành ba bước chính: crawl URL, crawl chi tiết sản phẩm và chuẩn hóa dữ liệu. Thay vì sử dụng các request HTTP đơn thuần, hệ thống sử dụng Playwright để mô phỏng trình duyệt, cho phép xử lý các trang có nội dung động.
+
+Ở bước crawl URL, hệ thống duyệt qua các trang danh mục và thực hiện thao tác ``xem thêm'' (load more) để thu thập toàn bộ liên kết sản phẩm. Việc sử dụng Playwright giúp đảm bảo rằng tất cả sản phẩm đều được tải, kể cả khi nội dung được render bằng JavaScript.
+
+Ở bước crawl chi tiết, mỗi URL sản phẩm được truy cập để trích xuất thông tin bao gồm:
+
+\begin{itemize}
+\item Thông tin chung: tên, thương hiệu, dòng sản phẩm
+\item Danh sách biến thể: màu sắc, giá
+\item Thông số kỹ thuật
+\end{itemize}
+
+\textbf{Hiện thực tầng lưu trữ dữ liệu}
+
+Sau khi chuẩn hóa, dữ liệu được ghi vào ba hệ quản trị theo đúng vai trò thiết kế.
+
+Đối với PostgreSQL, dữ liệu được insert theo thứ tự product $\rightarrow$ variant $\rightarrow$ product\_spec để đảm bảo ràng buộc khóa ngoại. Các thao tác ghi được thực hiện trong transaction nhằm đảm bảo tính toàn vẹn: nếu một bước thất bại, toàn bộ dữ liệu liên quan sẽ không được lưu.
+
+Đối với Neo4j, dữ liệu được ánh xạ thành các node và quan hệ. Việc ghi dữ liệu sử dụng câu lệnh MERGE để đảm bảo không tạo trùng node, đồng thời cho phép cập nhật khi dữ liệu đã tồn tại. Cách tiếp cận này giúp pipeline có thể chạy lại mà không gây sai lệch dữ liệu.
+
+Đối với ChromaDB, dữ liệu văn bản (mô tả sản phẩm, FAQ, chính sách) được chia thành các đoạn nhỏ và lưu trực tiếp dưới dạng document. Hệ thống không tự tính embedding mà sử dụng cơ chế embedding tích hợp của ChromaDB để đảm bảo tính nhất quán giữa quá trình insert và truy vấn.
+
+\textbf{Hiện thực AI Agent}
+
+AI Agent được hiện thực dựa trên LangGraph, trong đó mỗi node trong thiết kế được ánh xạ trực tiếp thành một hàm xử lý. Trạng thái hội thoại được định nghĩa bằng lớp AgentState, cho phép chuyển đổi linh hoạt sang dạng dictionary khi tương tác với LangGraph.
+
+Đồ thị xử lý được xây dựng thông qua Graph Builder, trong đó:
+
+\begin{itemize}
+\item Các node Parse, Resolve, Reason và Tools được khai báo rõ ràng
+\item Các cạnh (edges) được định nghĩa kèm điều kiện chuyển trạng thái
+\item Vòng lặp giữa Reason và Tools được hiện thực thông qua conditional edge
+\end{itemize}
+
+Luồng xử lý được biên dịch thành một graph hoàn chỉnh trước khi sử dụng. Khi nhận yêu cầu, agent chỉ cần gọi graph với trạng thái đầu vào và nhận lại trạng thái sau khi xử lý.
+
+Các tool được triển khai như các hàm độc lập, mỗi hàm thực hiện truy vấn tới một nguồn dữ liệu cụ thể (PostgreSQL hoặc ChromaDB). Kết quả từ tool được đưa trở lại state để tiếp tục vòng suy luận.
+
+Một điểm quan trọng trong hiện thực là việc kiểm soát lỗi. Các ngoại lệ phát sinh trong quá trình gọi tool không làm dừng hệ thống mà được đưa vào ngữ cảnh để node Reason xử lý. Điều này giúp agent có thể phản hồi linh hoạt ngay cả khi một phần hệ thống gặp lỗi.
+
+\textbf{Hiện thực lớp API}
+
+Lớp API được xây dựng bằng FastAPI, với endpoint trung tâm là \texttt{/api/agent/chat}. Endpoint này tiếp nhận tin nhắn người dùng và trả về phản hồi từ AI Agent.
+
+Quản lý session được thực hiện bằng dictionary trong bộ nhớ, trong đó mỗi session chứa trạng thái hội thoại và timestamp của lần truy cập cuối. Khi có request mới, hệ thống sẽ:
+
+\begin{itemize}
+\item Dọn dẹp các session hết hạn
+\item Lấy hoặc khởi tạo session
+\item Cập nhật trạng thái với tin nhắn mới
+\item Gọi agent graph để xử lý
+\item Lưu lại trạng thái và trả về phản hồi
+\end{itemize}
+
+FastAPI lifespan được sử dụng để khởi tạo tài nguyên khi server khởi động, bao gồm:
+
+\begin{itemize}
+\item Kết nối PostgreSQL
+\item Kết nối Neo4j
+\item Khởi tạo ChromaDB
+\item Load graph của AI Agent
+\end{itemize}
+
+Việc khởi tạo một lần tại startup giúp giảm chi phí cho mỗi request và đảm bảo hiệu năng ổn định.
+
+Ngoài endpoint hội thoại, hệ thống còn cung cấp endpoint \texttt{/api/agent/purchase} để ghi nhận hành vi mua hàng vào Neo4j. Endpoint này kiểm tra dữ liệu đầu vào và sử dụng MERGE để đảm bảo không tạo trùng quan hệ.
+
+\subsubsection{Triển khai AI Agent}
+
+Hệ thống được triển khai trên các nền tảng cloud khác nhau, theo hướng tận dụng các dịch vụ managed để giảm chi phí vận hành và đơn giản hóa quá trình cấu hình.
+
+Cụ thể, lớp API được triển khai trên nền tảng Railway dưới dạng một service duy nhất. Toàn bộ mã nguồn, bao gồm cả AI Agent và dữ liệu ChromaDB, được đóng gói chung trong cùng một repository để đảm bảo tính đồng nhất khi deploy.
+
+Cơ sở dữ liệu PostgreSQL được triển khai trên Supabase, giúp tận dụng các tính năng như backup, connection pooling và giao diện quản lý. API server kết nối đến Supabase thông qua connection string được cấu hình bằng biến môi trường.
+
+Đối với cơ sở dữ liệu đồ thị, hệ thống sử dụng Neo4j AuraDB, cung cấp endpoint truy cập và cơ chế xác thực sẵn có.
+
+ChromaDB được sử dụng dưới dạng lưu trữ cục bộ, dữ liệu vector được lưu trong thư mục và đóng gói cùng mã nguồn khi deploy.
+
+Thiết kế triển khai này có thể được xem là một dạng ``hybrid cloud architecture'', trong đó:
+
+\begin{itemize}
+\item API và AI Agent chạy trên Railway
+\item PostgreSQL được quản lý bởi Supabase
+\item Neo4j được quản lý bởi AuraDB
+\item ChromaDB được lưu trữ cục bộ
+\end{itemize}

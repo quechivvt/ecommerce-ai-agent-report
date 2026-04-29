@@ -1,0 +1,184 @@
+\subsection{Kiểm thử AI Agent}
+
+Hệ thống AI Agent được kiểm thử theo phương pháp phân tầng, bao gồm kiểm thử đơn vị (unit testing) và kiểm thử tích hợp (integration testing). Mỗi cấp độ tập trung vào một thành phần cụ thể nhằm đảm bảo rằng từng phần hoạt động chính xác trước khi kiểm tra toàn bộ luồng hệ thống.
+
+Chiến lược kiểm thử được xây dựng dựa trên hai nguyên tắc chính. Thứ nhất, mỗi thành phần quan trọng trong pipeline (parse, resolve, semantic search, API) đều được kiểm thử độc lập để xác định lỗi ở mức cục bộ. Thứ hai, các test case được thiết kế nhằm bao phủ cả trường hợp điển hình và trường hợp biên, đảm bảo hệ thống hoạt động ổn định ngay cả khi đầu vào không hoàn hảo.
+
+Tổng quan các cấp độ kiểm thử được trình bày trong Bảng 5.1.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+Cấp độ & Thành phần kiểm thử & Số test case & Kết quả \\
+\hline
+Unit & Node Parse & 20 & 20/20 (100\%) \\
+Unit & Node Resolve & 14 & 14/14 (100\%) \\
+Unit & Semantic Search & 10 & 10/10 (100\%) \\
+Integration & REST API & 11 & 10/11 (91\%) \\
+\hline
+\end{tabular}
+\caption{Tổng quan các cấp độ kiểm thử}
+\end{table}
+
+\subsubsection{Kiểm thử node Parse}
+
+\textbf{Mục tiêu và phương pháp}
+
+Node Parse đóng vai trò là bước đầu tiên trong pipeline, chịu trách nhiệm trích xuất ý định và các điều kiện lọc từ câu hỏi tiếng Việt tự nhiên. Sai sót ở bước này sẽ lan truyền và ảnh hưởng trực tiếp đến toàn bộ quá trình tư vấn.
+
+Việc kiểm thử được thực hiện bằng cách cung cấp các câu truy vấn đầu vào và so sánh kết quả trích xuất với giá trị kỳ vọng theo từng trường dữ liệu (danh mục, thương hiệu, giá, thông số kỹ thuật và tên sản phẩm). Các trường số được so sánh trực tiếp, trong khi các trường chuỗi được so sánh không phân biệt hoa thường. Đối với thông số kỹ thuật, từng điều kiện lọc được kiểm tra cả giá trị và toán tử so sánh.
+
+\textbf{Thiết kế test case}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|}
+\hline
+Nhóm & Nội dung kiểm thử & Kết quả \\
+\hline
+Nhận diện danh mục & laptop, mobile, tivi, tablet, máy in & PASS \\
+Nhận diện thương hiệu & Acer, Samsung, MSI & PASS \\
+Lọc theo giá & giá tối đa, tối thiểu, khoảng giá & PASS \\
+Thông số kỹ thuật & RAM, pin, màn hình, response time & PASS \\
+Kết hợp nhiều điều kiện & giá + RAM + kích thước màn hình & PASS \\
+Nhận diện sản phẩm & một hoặc nhiều sản phẩm trong câu & PASS \\
+Trường hợp đặc biệt & câu hỏi chung, mô tả định tính & PASS \\
+\hline
+\end{tabular}
+\caption{Thiết kế test case node Parse}
+\end{table}
+
+Các trường hợp đặc biệt đóng vai trò quan trọng. Ví dụ, với truy vấn mang tính tổng quát (“laptop tốt nhất hiện nay”), hệ thống không được suy đoán các trường không xuất hiện trong input. Tương tự, với mô tả định tính (“pin trâu”), hệ thống không được tự động chuyển thành giá trị số cụ thể.
+
+\textbf{Kết quả}
+
+Toàn bộ 20 test case đạt PASS (100\%). Kết quả cho thấy node Parse có khả năng trích xuất chính xác thông tin từ nhiều dạng câu hỏi khác nhau, bao gồm cả các trường hợp biên và input không đầy đủ.
+
+\subsubsection{Kiểm thử node Resolve}
+
+\textbf{Mục tiêu và phương pháp}
+
+Node Resolve có nhiệm vụ ánh xạ tên sản phẩm do người dùng nhập sang sản phẩm tương ứng trong cơ sở dữ liệu. Bài toán này bao gồm cả trường hợp tên đầy đủ, tên viết tắt và các biến thể không chính xác hoàn toàn.
+
+Việc kiểm thử được thực hiện bằng cách cung cấp tên sản phẩm đầu vào và đánh giá kết quả trả về theo hai hướng:
+
+\begin{itemize}
+\item Trường hợp hợp lệ: hệ thống phải tìm đúng sản phẩm
+\item Trường hợp không hợp lệ: hệ thống phải từ chối (trả về rỗng)
+\end{itemize}
+
+\textbf{Thiết kế test case}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|}
+\hline
+Nhóm & Mô tả & Kết quả \\
+\hline
+Khớp chính xác & Tên trùng hoàn toàn & PASS \\
+Khớp một phần & Thiếu hoặc dư từ & PASS \\
+Khớp điểm thấp & Tên đúng nhưng không đầy đủ & PASS \\
+Không khớp & Tên quá ngắn hoặc không tồn tại & PASS \\
+\hline
+\end{tabular}
+\caption{Thiết kế test case node Resolve}
+\end{table}
+
+Một điểm đáng chú ý là các trường hợp khớp điểm thấp vẫn được nhận diện đúng nhờ sử dụng ngưỡng similarity phù hợp.
+
+\textbf{Kết quả}
+
+Toàn bộ 14 test case đạt PASS (100\%). Kết quả xác nhận node Resolve hoạt động ổn định trong cả hai tình huống: nhận diện đúng và từ chối đúng.
+
+\subsubsection{Kiểm thử tìm kiếm ngữ nghĩa}
+
+\textbf{Mục tiêu và phương pháp}
+
+Thành phần semantic search chịu trách nhiệm truy xuất thông tin dựa trên ý nghĩa của câu truy vấn, thay vì khớp từ khóa trực tiếp.
+
+Việc đánh giá được thực hiện bằng các chỉ số:
+
+\begin{itemize}
+\item Hit@1
+\item Hit@3
+\end{itemize}
+
+\textbf{Kết quả}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+Chỉ số & Products & Policies & Tổng \\
+\hline
+Hit@1 & 100\% & 60\% & 80\% \\
+Hit@3 & 100\% & 100\% & 100\% \\
+\hline
+\end{tabular}
+\caption{Kết quả semantic search}
+\end{table}
+
+\textbf{Phân tích}
+
+Kết quả cho thấy semantic search hoạt động hiệu quả, đặc biệt trên tập dữ liệu sản phẩm. Đối với policies, Hit@1 thấp hơn do nội dung tương tự nhau, nhưng Hit@3 đạt 100\%.
+
+\subsubsection{Kiểm thử tích hợp API}
+
+\textbf{Mục tiêu và phương pháp}
+
+Kiểm thử tích hợp nhằm xác minh toàn bộ hệ thống hoạt động đúng từ đầu đến cuối.
+
+\textbf{Kết quả}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|}
+\hline
+Nhóm & Mô tả & Kết quả \\
+\hline
+Endpoint cơ bản & health check, chat & PASS \\
+Session & duy trì trạng thái nhiều lượt & PASS \\
+Error handling & thiếu dữ liệu, sai session & PASS \\
+Purchase flow & ghi nhận hành vi mua & PASS \\
+Multi-turn chat & hội thoại nhiều bước & FAIL (timeout) \\
+\hline
+\end{tabular}
+\caption{Kết quả kiểm thử API}
+\end{table}
+
+\textbf{Phân tích}
+
+10/11 test case đạt PASS (91\%). Trường hợp thất bại do timeout, không phải lỗi logic.
+
+\subsection{Tổng kết kiểm thử}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+Thành phần & Test case & Passed & Tỉ lệ \\
+\hline
+Node Parse & 20 & 20 & 100\% \\
+Node Resolve & 14 & 14 & 100\% \\
+Semantic Search & 10 & 10 & 100\% \\
+API Integration & 11 & 10 & 91\% \\
+Tổng & 55 & 54 & 98\% \\
+\hline
+\end{tabular}
+\caption{Tổng kết kết quả kiểm thử}
+\end{table}
+
+Kết quả kiểm thử cho thấy hệ thống đạt độ chính xác cao trên các thành phần cốt lõi.
+
+\subsubsection{Hạn chế và hướng cải thiện}
+
+Mặc dù kết quả kiểm thử tích cực, vẫn tồn tại một số hạn chế như chưa đánh giá trên dữ liệu lớn và chưa so sánh với các phương pháp baseline.
+
+Trong tương lai, hệ thống có thể được cải thiện bằng cách mở rộng tập dữ liệu kiểm thử và bổ sung các chỉ số đánh giá.
