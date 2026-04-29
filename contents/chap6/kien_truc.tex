@@ -208,6 +208,35 @@ Sơ đồ \ref{fig:internal_service_architecture} mô tả cấu trúc nội b�
 
 \bigskip
 
+\subsubsection{Cấu trúc nội bộ Frontend}
+
+Tầng Frontend được xây dựng dựa trên framework Next.js 16, áp dụng kiến trúc \textbf{Feature-Sliced Design (FSD)} kết hợp với các tính năng hiện đại của React 19 để tối ưu hóa khả năng bảo trì và hiệu năng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/chap4/architecture/frontend_fsd.png}
+    \vspace{0.5cm}
+    \caption{Cấu trúc nội bộ tầng Frontend}
+    \label{fig:frontend_internal_architecture}
+\end{figure}
+
+Sơ đồ \ref{fig:frontend_internal_architecture} mô tả các thành phần cốt lõi trong kiến trúc Frontend:
+
+\begin{itemize}
+    \item \textbf{App Router \& Server Components:} Next.js App Router quản lý luồng điều hướng và render các Server Components phía máy chủ. Điều này giúp giảm thiểu đáng kể lượng JavaScript tải xuống trình duyệt, đồng thời cho phép lấy dữ liệu (fetching) trực tiếp từ server-side trước khi gửi HTML về cho khách hàng.
+    \item \textbf{BFF (Backend for Frontend):} Các Route Handlers của Next.js đóng vai trò là một lớp BFF trung gian. Client-side components không gọi trực tiếp tới các Microservices ở Backend mà thông qua các API routes nội bộ. Lớp này giúp ẩn đi các thông tin nhạy cảm (như API Gateway URL), hợp nhất các lời gọi API và thực hiện các biến đổi dữ liệu cần thiết trước khi trả về UI.
+    \item \textbf{Features-based Modules:} Mã nguồn được tổ chức theo các tính năng (features) như \texttt{auth}, \texttt{cart}, \texttt{product}, \texttt{order} và \texttt{chat-ai}. Mỗi module chứa đầy đủ các thành phần (components), trạng thái (store), và hooks riêng biệt, giúp tăng tính cô lập và dễ dàng mở rộng.
+    \item \textbf{State Management Partitioning:} 
+        \begin{itemize}
+            \item \textbf{Server State:} Sử dụng TanStack Query để quản lý cache, đồng bộ và quản lý vòng đời của dữ liệu từ backend.
+            \item \textbf{Client State:} Sử dụng Zustand để quản lý các trạng thái cục bộ mượt mà, không gây re-render dư thừa.
+        \end{itemize}
+    \item \textbf{AI Chat Integration:} Thành phần Chatbot được thiết kế theo kiến trúc streaming. Sử dụng Vercel AI SDK để duy trì trạng thái hội thoại và xử lý luồng dữ liệu Server-Sent Events (SSE) từ AI Agent Service, đảm bảo phản hồi được hiển thị theo thời gian thực (token-by-token).
+\end{itemize}
+
+
+\bigskip
+
 \textbf{Tầng Database}
 
 Tầng Database chịu trách nhiệm lưu trữ dữ liệu cho từng microservice. Mỗi microservice có cơ sở dữ liệu riêng của nó:
