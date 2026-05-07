@@ -16,7 +16,7 @@ Sơ đồ trường hợp sử dụng (use case diagram) cung cấp cái nhìn t
 
 Dựa trên danh mục các yêu cầu chức năng đã xác lập, nhóm tiến hành đặc tả chi tiết các kịch bản tương tác thông qua các bảng mô tả trường hợp sử dụng. Việc đặc tả này nhằm làm rõ trình tự thực hiện, các điều kiện ràng buộc cũng như kết quả mong đợi của từng nghiệp vụ, giúp đảm bảo tính nhất quán giữa khâu phân tích và triển khai thực tế.
 
-Nhằm tối ưu hóa dung lượng của báo cáo và tập trung vào các đặc thù công nghệ của hệ thống, trong phạm vi chương này, nhóm trình bày các mô tả cho những trường hợp sử dụng cốt lõi, bao gồm các nghiệp vụ tìm kiếm sản phẩm, thêm sản phẩm vào giỏ hàng, đặt hàng, thanh toán và các luồng tương tác thông minh với trợ lý ảo AI thông qua các bảng \ref{tab:uc-search-product}, \ref{tab:uc-add-to-cart-checkout}, \ref{tab:uc-multipayment}, \ref{tab:uc-customer-review} và bảng \ref{tab:uc-admin-basic-reports}. Các bảng mô tả chi tiết cho các chức năng quản trị và những nghiệp vụ hỗ trợ khác được trình bày đầy đủ tại phần phụ lục \ref{sec:appx_usecase_detail} của đồ án.
+Nhằm tối ưu hóa dung lượng của báo cáo và tập trung vào các đặc thù công nghệ của hệ thống, trong phạm vi chương này, nhóm trình bày các mô tả cho những trường hợp sử dụng cốt lõi, bao gồm các nghiệp vụ tìm kiếm sản phẩm, thêm sản phẩm vào giỏ hàng, đặt hàng, thanh toán và các luồng tương tác thông minh với trợ lý ảo AI thông qua các bảng \ref{tab:uc-search-product}, \ref{tab:uc-add-to-cart-checkout}, \ref{tab:uc-multipayment}, \ref{tab:uc-customer-review}, \ref{tab:uc-admin-basic-reports}, \ref{tab:uc-product-suggestion} và bảng \ref{tab:uc-post-purchase-support}. Các bảng mô tả chi tiết cho các chức năng quản trị và những nghiệp vụ hỗ trợ khác được trình bày đầy đủ tại phần phụ lục \ref{sec:appx_usecase_detail} của đồ án.
 
 \needspace{3\baselineskip}
 \begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
@@ -228,7 +228,7 @@ Nhằm tối ưu hóa dung lượng của báo cáo và tập trung vào các đ
 \hline
 \textbf{Tên trường hợp sử dụng} & Hỗ trợ trong và sau mua hàng \\
 \hline
-\textbf{Tóm tắt mô tả} & AI ChatBot cung cấp thông tin, tư vấn và giải đáp thắc mắc liên quan đến đơn hàng trong quá trình xử lý hoặc sau khi đã hoàn tất. Đây là trường hợp sử dụng mở rộng từ “Xem trạng thái đơn hàng”. \\
+\textbf{Tóm tắt mô tả} & AI ChatBot cung cấp thông tin, tư vấn và giải đáp thắc mắc liên quan đến đơn hàng trong quá trình xử lý hoặc sau khi đã hoàn tất. \\
 \hline
 \textbf{Tác nhân} & AI ChatBot. \\
 \hline

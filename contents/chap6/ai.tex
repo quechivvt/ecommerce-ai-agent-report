@@ -16,8 +16,8 @@ Cụ thể, hệ thống bao gồm ba thành phần chính:
 PostgreSQL được sử dụng để lưu trữ dữ liệu sản phẩm dưới dạng có cấu trúc, phục vụ các truy vấn lọc theo điều kiện như danh mục, giá và thông số kỹ thuật. Mô hình dữ liệu được tổ chức thành ba bảng chính:
 
 \begin{itemize}
-\item Bảng product lưu thông tin chung của sản phẩm như tên, danh mục, thương hiệu, dòng sản phẩm và đánh giá.
-\item Bảng variant biểu diễn các biến thể của sản phẩm (màu sắc, giá, hình ảnh)
+\item Bảng product lưu thông tin chung của sản phẩm như: Tên, danh mục, thương hiệu, dòng sản phẩm và điểm đánh giá trung bình và số lượt đánh giá.
+\item Bảng variant biểu diễn các biến thể của sản phẩm (màu sắc, hình ảnh, số lượng tồn kho, giá ban đầu và giá sau giảm giá)
 \item Bảng product\_spec lưu thông số kỹ thuật theo mô hình EAV (Entity--Attribute--Value).
 \end{itemize}
 
@@ -32,6 +32,13 @@ Tuy nhiên, mô hình này cũng có nhược điểm là làm tăng độ phứ
 \item Tạo index riêng cho các trường thường truy vấn như price và color
 \item Tạo index trên (spec\_key, value\_num) để hỗ trợ lọc theo thông số kỹ thuật
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/chap6/ai/reldb.png}
+    \vspace{0.5cm}
+    \caption{Thiết kế cơ sở dữ liệu quan hệ của AI Agent}
+\end{figure}
 
 Ngoài ra, extension pg\_trgm được sử dụng để hỗ trợ tìm kiếm mờ theo tên sản phẩm. Điều này cho phép hệ thống xử lý các truy vấn không chính xác hoàn toàn, đặc biệt hữu ích trong bước định danh sản phẩm từ ngôn ngữ tự nhiên.
 
@@ -53,6 +60,13 @@ Trong hệ thống, các nút chính bao gồm:
 \end{itemize}
 
 Các quan hệ như HAS\_VARIANT, OF\_BRAND, IN\_SERIES và IN\_CATEGORY mô tả cấu trúc phân cấp của sản phẩm, trong khi quan hệ BOUGHT biểu diễn hành vi mua hàng của người dùng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/chap6/ai/bloom-visualisation.png}
+    \vspace{0.5cm}
+    \caption{Thiết kế cơ sở dữ liệu đồ thị của AI Agent}
+\end{figure}
 
 Việc sử dụng Neo4j mang lại lợi thế rõ rệt trong các truy vấn liên quan đến hành vi, chẳng hạn như xác định thương hiệu hoặc màu sắc được người dùng mua nhiều nhất. Nếu thực hiện truy vấn tương tự trong cơ sở dữ liệu quan hệ, hệ thống sẽ cần nhiều phép JOIN phức tạp, trong khi Neo4j cho phép biểu diễn trực tiếp bằng pattern matching.
 
@@ -77,11 +91,7 @@ Hệ thống sử dụng mô hình embedding tiếng Việt để đảm bảo c
 
 Tuy nhiên, tìm kiếm vector có chi phí tính toán cao hơn so với truy vấn SQL, và kết quả mang tính xấp xỉ. Do đó, ChromaDB chỉ được sử dụng cho các câu hỏi mang tính ngữ nghĩa, không thay thế cho các truy vấn chính xác.
 
-Do hệ thống sử dụng nhiều cơ sở dữ liệu, việc đảm bảo tính nhất quán dữ liệu là một vấn đề quan trọng. Trong quá trình xây dựng dữ liệu, mỗi sản phẩm được gán một định danh duy nhất (UUID) và được sử dụng xuyên suốt trong PostgreSQL và Neo4j. Quá trình ghi dữ liệu được thực hiện theo thứ tự ưu tiên: trước hết ghi vào PostgreSQL, sau đó mới ghi vào Neo4j. Nếu bước ghi vào PostgreSQL thất bại, toàn bộ giao dịch bị rollback và không tiếp tục ghi sang các hệ thống khác. Cách tiếp cận này đảm bảo rằng dữ liệu quan hệ luôn là nguồn chính xác.
-
-Việc sử dụng kiến trúc đa cơ sở dữ liệu giúp hệ thống tận dụng được thế mạnh của từng công nghệ, nhưng đồng thời làm tăng độ phức tạp tổng thể. Thay vì một hệ thống đơn giản, hệ thống cần quản lý ba loại database với các mô hình dữ liệu khác nhau.
-
-PostgreSQL đảm bảo tính nhất quán và hỗ trợ truy vấn chính xác, nhưng kém linh hoạt với dữ liệu quan hệ phức tạp. Neo4j xử lý tốt các quan hệ và hành vi, nhưng không phù hợp cho truy vấn lọc lớn. ChromaDB hỗ trợ tìm kiếm ngữ nghĩa, nhưng kết quả mang tính xấp xỉ và phụ thuộc vào chất lượng embedding.
+Việc sử dụng kiến trúc đa cơ sở dữ liệu giúp hệ thống tận dụng được thế mạnh của từng công nghệ, nhưng đồng thời làm tăng độ phức tạp tổng thể. Thay vì một hệ thống đơn giản, hệ thống cần quản lý ba loại database với các mô hình dữ liệu khác nhau. PostgreSQL đảm bảo tính nhất quán và hỗ trợ truy vấn chính xác, nhưng kém linh hoạt với dữ liệu quan hệ phức tạp. Neo4j xử lý tốt các quan hệ và hành vi, nhưng không phù hợp cho truy vấn lọc lớn. ChromaDB hỗ trợ tìm kiếm ngữ nghĩa, nhưng kết quả mang tính xấp xỉ và phụ thuộc vào chất lượng embedding.
 
 
 
@@ -209,8 +219,6 @@ Quy trình xử lý của endpoint này gồm các bước chính:
 \item Thực thi đồ thị agent
 \item Lưu lại trạng thái và trả về kết quả
 \end{itemize}
-
-Trong quá trình này, trạng thái hội thoại được serialize thành dạng dictionary để truyền vào LangGraph, sau đó được khôi phục lại thành đối tượng AgentState sau khi xử lý. Cách làm này giúp tách biệt rõ giữa lớp API và lớp xử lý agent.
 
 Endpoint này đóng vai trò như một ``entry point'' duy nhất cho toàn bộ luồng hội thoại, đảm bảo mọi tương tác đều đi qua cùng một pipeline xử lý.
 

@@ -2,7 +2,7 @@
 
 Trong khi sơ đồ hoạt động tập trung vào luồng xử lý logic và các điểm quyết định, sơ đồ tuần tự đóng vai trò chi tiết hóa sự tương tác giữa các đối tượng trong hệ thống theo trình tự thời gian. Các sơ đồ này làm rõ cách thức các dịch vụ Backend, cơ sở dữ liệu và trợ lý ảo AI phối hợp truyền tải thông điệp để hoàn thành một nghiệp vụ cụ thể. Đây là cơ sở quan trọng để nhóm xác định các phương thức và cấu trúc giao tiếp giữa các Microservices.
 
-Các hình từ \ref{fig:seq_find_product} đến \ref{fig:seq_report} trình bày các sơ đồ hoạt động cho những trường hợp sử dụng cốt lõi của hệ thống. Các sơ đồ còn lại sẽ được biểu diễn ở phần phụ lục \ref{sec:appx_activity_diagram}.
+Các hình từ \ref{fig:seq_find_product} đến \ref{fig:seq_shopping_support} trình bày các sơ đồ hoạt động cho những trường hợp sử dụng cốt lõi của hệ thống. Các sơ đồ còn lại sẽ được biểu diễn ở phần phụ lục \ref{sec:appx_activity_diagram}.
 
 \begin{figure}[H]
     \centering
@@ -58,4 +58,4 @@ Mô tả luồng tin nhắn giữa Khách hàng và Nhân viên hỗ trợ/Hệ 
    \vspace{0.5cm} \caption{Sơ đồ tuần tự Hỗ trợ sau mua hàng}
     \label{fig:seq_shopping_support}
 \end{figure}
-Quy trình xử lý các khiếu nại hoặc yêu cầu bảo hành. Nhân viên kiểm tra thông tin đơn hàng trên hệ thống và ghi nhận kết quả xử lý hỗ trợ.
+Quy trình xử lý các khiếu nại hoặc yêu cầu bảo hành. Trợ lý ảo truy xuất thông tin về chính sách trên hệ thống và trả về kết quả xử lý hỗ trợ.

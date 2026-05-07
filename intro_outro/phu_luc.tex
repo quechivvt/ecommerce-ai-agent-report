@@ -2,7 +2,7 @@
 \addcontentsline{toc}{section}{Phụ lục}
 
 
-\subsection{Giao diện người dùng (UI Prototype)}
+\subsection*{Giao diện người dùng (UI Prototype)}
 Các bản thiết kế giao diện được xây dựng và quản lý trên nền tảng Figma, thể hiện toàn bộ cấu trúc màn hình, luồng tương tác và bố cục hiển thị của hệ thống.
 
 \begin{figure}[H]
@@ -107,7 +107,7 @@ Các bản thiết kế giao diện được xây dựng và quản lý trên n�
 
 \vspace{12pt}
 
-\subsection{Đặc tả chi tiết các trường hợp sử dụng} \label{sec:appx_usecase_detail}
+\subsection*{Đặc tả chi tiết các trường hợp sử dụng} \label{sec:appx_usecase_detail}
 Phần này trình bày chi tiết các bảng đặc tả trường hợp sử dụng cho các chức năng quản trị và các nghiệp vụ hỗ trợ, bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{ss:usecase_detail} thông qua các bảng từ \ref{tab:uc-register} đến bảng \ref{tab:uc-admin-update-order-status}. 
 
 \needspace{3\baselineskip}
@@ -385,7 +385,7 @@ Phần này trình bày chi tiết các bảng đặc tả trường hợp sử 
 \hline
 \end{longtable}
 
-\subsection{Sơ đồ hoạt động} \label{sec:appx_activity_diagram}
+\subsection*{Sơ đồ hoạt động} \label{sec:appx_activity_diagram}
 Phần này mô tả chi tiết sơ đồ hoạt động cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:activity_diagram} thông qua các bảng từ bảng \ref{fig:act_register} đến bảng \ref{fig:act_change_status}.
 
 \begin{figure}[H]
@@ -453,7 +453,7 @@ Hình \ref{fig:act_manage_product} mô tả luồng quản lí sản phẩm. Lu�
 \end{figure}
 Quy trình xử lý đơn hàng phía Admin: Xác nhận đơn, chuyển sang trạng thái đóng gói, giao hàng, hoặc hoàn tất đơn hàng được biểu diễn qua hình \ref{fig:act_change_status}.
 
-\subsection{Sơ đồ tuần tự} \label{sec:appx_sequence_diagram}
+\subsection*{Sơ đồ tuần tự} \label{sec:appx_sequence_diagram}
 
 Phần này mô tả chi tiết sơ đồ tuần tự cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:sequence_diagram} thông qua các bảng từ bảng \ref{fig:seq_register} đến bảng \ref{fig:seq_change_status}.
 
@@ -521,7 +521,7 @@ Admin gửi yêu cầu Thêm/Sửa/Xóa. Hệ thống thực hiện Validate d�
 \end{figure}
 Hình \ref{fig:seq_change_status} biểu diễn luồng khi admin chọn đơn hàng và trạng thái mới (ví dụ: Xác nhận -> Đang giao). Hệ thống cập nhật bản ghi trong Database và có thể kích hoạt gửi email thông báo cho khách hàng.
 
-\subsection{ERD Mapping}
+\subsection*{ERD Mapping}
 
 Sau khi xác lập các thực thể và mối quan hệ tại mức khái niệm thông qua sơ đồ ERD ở chương \ref{sec:erd_section}, nhóm tiến hành ánh xạ các thành phần này sang lược đồ quan hệ logic. Bước này đóng vai trò quan trọng trong việc chuyển đổi các thực thể trừu tượng thành cấu trúc bảng cụ thể, xác định chính xác kiểu dữ liệu, khóa chính, khóa ngoại và các ràng buộc toàn vẹn.
 
@@ -581,9 +581,9 @@ Hình \ref{fig:mapping_erd_admin_service} hiện thực hóa các yêu cầu v�
     \label{fig:mapping_erd_orchestration_service}
 \end{figure}
 
-\subsection{Danh mục các API chi tiết}
+\subsection*{Danh mục các API chi tiết}
 
-\subsubsection{User Service}
+\subsubsection*{User Service}
 Bảng \ref{tab:full_user_api_appendix} dưới đây là danh sách đầy đủ các Endpoint của User Service được triển khai trong hệ thống.
 
 \begin{table}[H]
@@ -620,7 +620,7 @@ Mật khẩu & PUT & \texttt{/api/users/change-password/me} & Thay đổi mật 
 \end{tabular}
 \end{table}
 
-\subsubsection{Product Service}
+\subsubsection*{Product Service}
 
 Nhằm phục vụ công tác tra cứu toàn diện, phần này liệt kê danh mục đầy đủ các điểm cuối của Product Service, bao gồm các thao tác quản lý danh mục và các cấu hình chi tiết cho biến thể sản phẩm. Danh sách được trình bày tại Bảng \ref{tab:full_product_api_appendix}.
 
@@ -650,7 +650,7 @@ Nhằm phục vụ công tác tra cứu toàn diện, phần này liệt kê dan
 \end{tabular}
 \end{table}
 
-\subsubsection{Orchestration Service}
+\subsubsection*{Orchestration Service}
 
 Phần này cung cấp danh mục đầy đủ các điểm cuối thuộc dịch vụ điều phối, bao gồm các công cụ giả lập thanh toán phục vụ kiểm thử và các API truy vấn báo cáo tổng hợp từ nhiều nguồn dữ liệu.
 
@@ -675,7 +675,7 @@ Phần này cung cấp danh mục đầy đủ các điểm cuối thuộc dịc
 \end{tabular}
 \end{table}
 
-\subsubsection{Order Service}
+\subsubsection*{Order Service}
 
 Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê đầy đủ các điểm cuối liên quan đến việc cập nhật trạng thái thanh toán qua mã QR, quản lý nhật ký vận chuyển và các thao tác quản trị dành cho nhân viên vận hành hệ thống.
 
@@ -701,7 +701,7 @@ Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê
 \end{tabular}
 \end{table}
 
-\subsection{Mô hình hệ thống và lưu đồ hoạt động}
+\subsection*{Mô hình hệ thống và lưu đồ hoạt động}
 Các sơ đồ phân tích và thiết kế hệ thống:
 \begin{itemize}
     \item Sơ đồ usecase (Usecase Diagram)
@@ -718,51 +718,130 @@ Những sơ đồ này hỗ trợ làm rõ luồng xử lý, tương tác giữa
 \textbf{Link tổng hợp sơ đồ:} \\
 \url{https://drive.google.com/file/d/14pyk5joFueK1Urpb3XtDuxG2ympmKHd4/view}
 
-\subsection{Quá trình làm việc của nhóm}
+\subsection*{Quá trình làm việc của nhóm}
 
-Nhóm thực hiện đồ án theo mô hình Agile, chia công việc thành các sprint 2 tuần. Mỗi sprint bao gồm các hoạt động: lập kế hoạch, phân công nhiệm vụ, thực hiện, kiểm thử và đánh giá tiến độ. Bảng dưới đây tóm tắt quá trình làm việc, công việc chính và workload của từng thành viên:
+Trong giai đoạn hiện thực hệ thống, mỗi thành viên tham gia hiện thực với vai trò chính dựa trên thế mạnh cá nhân. Đồng thời, khi cần thiết, các thành viên cũng tham gia hỗ trợ cho các phần khác.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+\begin{itemize}
+    \item Nguyễn Ngọc Quế Chi (BE): Chủ yếu hiện thực các Microservices và thiết lập luồng Event-Driven Architecture sử dụng Kafka topics. Đồng thời quản lý các thành phần cơ sở dữ liệu và triển khai hệ thống backend cho các của dịch vụ nghiệp vụ.
+    \item Trần Nguyễn Anh Khoa (FE): Chịu trách nhiệm thiết kế giao diện người dùng bằng Next.js 16 và Tailwind CSS v4. Hiện thực hóa các thành phần tương tác (UI Components), tích hợp API từ Backend và xây dựng luồng phản hồi streaming cho Trợ lý ảo AI.
+    \item Phạm Quốc Toàn (AI/ML Engineer): Chịu trách nhiệm thiết kế và hiện thực hệ thống AI Agent, bao gồm xây dựng pipeline thu thập và xử lý dữ liệu, thiết kế kiến trúc đa cơ sở dữ liệu (PostgreSQL, Neo4j, ChromaDB) và triển khai cơ chế truy xuất dữ liệu. Đồng thời phát triển AI Agent dựa trên LangGraph, tích hợp với các nguồn dữ liệu để xử lý hội thoại nhiều bước.
+\end{itemize}
+
+Nhóm thực hiện đồ án theo mô hình Agile, chia công việc thành các sprint 2 tuần. Mỗi sprint bao gồm các hoạt động: lập kế hoạch, phân công nhiệm vụ, thực hiện, kiểm thử và đánh giá tiến độ. Các nhiệm vụ cụ thể và quá trình thực hiện chi tiết của từng thành viên sẽ được trình bày đầy đủ trong bảng \ref{tab:task-assigment} dưới đây.
+
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+%         \hline
+%         \textbf{STT} & \textbf{Sprint}         & \textbf{Công việc}                                                                                                 & \textbf{Workload từng người}                                                                                                                                                                                                                                                                                       \\ \hline
+%         1            & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu.                                                      &
+%         Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân...                                                                                                                                                                                                                           \\ \hline
+%         2            & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+%         Phạm Quốc Toàn: Xây dựng Vector Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng.                                                                                                                                                                                     \\ \hline
+%                      & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026                                                                                           &                                                                                                                                                                                                                                                                                    \\ \hline
+%         3            & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Graph Database\newline
+%         Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka.                                                                                                                                                                    \\ \hline
+%         4            & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Relational Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+%         Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng.                                                                                                                                                                                                                \\ \hline
+%         5            & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá.                                             &
+%         Phạm Quốc Toàn: Hiện thực AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng.                                                                                                                                                                       \\ \hline
+%         6            & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin.                                                                                 &
+%         Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. Các hoạt động của admin đều được lưu lại trong bảng adminActionLog sau khi nhận thông điệp từ Kafka.                                                                \\ \hline
+%         7            & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo.                         &
+%         Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+%         Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin. Vẽ sơ đồ các test scenrio cho các tính năng chính trong hệ thống và viết testcase. Viết báo cáo. Sửa các lỗi xảy ra trong quá trình kiểm thử.                                                                                                                                                  \\ \hline
+%         8            & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống.                                                                                      &
+%         Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+%         Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra tính nhất quán của giao diện cuối cùng. \newline
+%         Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo.                                                                                                                                                                                                                                                                                                          \\ \hline
+%     \end{tabular}
+%     \caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+%     \label{tab:task-assigment}
+% \end{table}
+
+
+
+
+\vspace{0.5cm}
+\begin{longtable}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+\caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+\label{tab:task-assigment} \\
+
 \hline
 \textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
 \hline
-1 & 25/08/2025 - 07/09/2025 & Nộp đề tài, họp triển khai đề tài, phân tích yêu cầu & 
-Phạm Quốc Toàn: ngữ cảnh, mục tiêu hệ thống \newline
-Trần Nguyễn Anh Khoa: phân tích các bên liên quan \newline
-Nguyễn Ngọc Quế Chi: yêu cầu chức năng, phi chức năng \\
-\hline
-2 & 08/09/2025 - 21/09/2025 & Vẽ use case diagram, viết use case table, vẽ activity diagram, sequence diagram & 
-Nguyễn Ngọc Quế Chi: use case table, sequence diagram (User) \newline
-Phạm Quốc Toàn: activity diagram (AI + User), sequence diagram (AI) \newline
-Trần Nguyễn Anh Khoa: activity diagram (Admin + User), sequence diagram (Admin) \\
-\hline
-3 & 22/09/2025 - 05/10/2025 & Vẽ ERD, mapping, lên ý tưởng UI, tìm hiểu Tech Stack & 
-Phạm Quốc Toàn: ERD AI + Admin \newline
-Trần Nguyễn Anh Khoa: ERD User \newline
-Nguyễn Ngọc Quế Chi: chỉnh sửa + mapping \\
-\hline
-4 & 06/10/2025 - 02/11/2025 & Nghiên cứu kiến trúc, thiết kế UI và các trang, lập sơ đồ kiến trúc & 
-Phạm Quốc Toàn: nghiên cứu kiến trúc, lựa chọn kiến trúc EDA + Cloud Native vẽ sơ đồ kiến trúc \newline
-Nguyễn Ngọc Quế Chi: vẽ UI, login, register, đơn hàng, giỏ hàng \newline
-Trần Nguyễn Anh Khoa: trang chủ, quản lý sản phẩm, trang sản phẩm, About Us \\
-\hline
-5 & 03/11/2025 - 16/11/2025 & Viết báo cáo nghiên cứu, kiểm tra sơ đồ, thử nghiệm Tech Stack & 
-Phạm Quốc Toàn: viết báo cáo các web tương tự, kiểm tra sơ đồ \newline
-Nguyễn Ngọc Quế Chi: nghiên cứu backend, thử nghiệm, vẽ lại ERD \newline
-Trần Nguyễn Anh Khoa: nghiên cứu frontend, thử nghiệm giao diện, mapping ERD \\
-\hline
-6 & 17/11/2025 - 07/12/2025 & Hoàn chỉnh báo cáo LaTeX & 
-Phạm Quốc Toàn: Giới thiệu, web tương tự, cơ sở lý thuyết kiến trúc + AI, lựa chọn kiến trúc \newline
-Nguyễn Ngọc Quế Chi: yêu cầu chức năng, phi chức năng, use case diagram \& table, backend, ERD, API, Kafka, kết luận, định hướng, workload \newline
-Trần Nguyễn Anh Khoa: activity diagram, sequence diagram, frontend tech stack, UI \\
-\hline
-\end{tabular}
-\caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
-\end{table}
+\endfirsthead
 
-\subsection{Báo cáo hiệu năng chi tiết (Lighthouse)}
+\hline
+\textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu. &
+Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân... \\ \hline
+
+2 & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+Phạm Quốc Toàn: Xây dựng Vector Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng. \\ \hline
+
+ & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026 & \\ \hline
+
+3 & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng. &
+Phạm Quốc Toàn: Xây dựng Graph Database\newline
+Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka. \\ \hline
+
+4 & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng. &
+Phạm Quốc Toàn: Xây dựng Relational Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng. \\ \hline
+
+5 & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá. &
+Phạm Quốc Toàn: Hiện thực AI Agent\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng. \\ \hline
+
+6 & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin. &
+Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. \\ \hline
+
+7 & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo. &
+Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin, viết testcase và báo cáo. \\ \hline
+
+8 & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống. &
+Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra giao diện. \newline
+Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo. \\ \hline
+
+\end{longtable}
+
+\subsection*{Báo cáo hiệu năng chi tiết (Lighthouse)}
 Dưới đây là các báo cáo đầy đủ về hiệu năng, khả năng truy cập và tối ưu hóa SEO của hệ thống được trích xuất từ Google Lighthouse.
 
 \begin{figure}[H]

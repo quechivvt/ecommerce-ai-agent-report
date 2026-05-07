@@ -16,7 +16,7 @@ Cấp độ & Thành phần kiểm thử & Số test case & Kết quả \\
 Unit & Node Parse & 20 & 20/20 (100\%) \\
 Unit & Node Resolve & 14 & 14/14 (100\%) \\
 Unit & Semantic Search & 10 & 10/10 (100\%) \\
-Integration & REST API & 11 & 10/11 (91\%) \\
+Integration & REST API & 11 & 11/11 (100\%) \\
 \hline
 \end{tabular}
 \caption{Tổng quan các cấp độ kiểm thử}
@@ -103,8 +103,8 @@ Thành phần semantic search chịu trách nhiệm truy xuất thông tin dựa
 Việc đánh giá được thực hiện bằng các chỉ số:
 
 \begin{itemize}
-\item Hit@1
-\item Hit@3
+\item Hit@1: Từ khóa có trong kết quả trả về đầu tiên
+\item Hit@3: Từ khóa có trong top 3 kết quả trả về
 \end{itemize}
 
 \textbf{Kết quả}
@@ -146,7 +146,7 @@ Endpoint cơ bản & health check, chat & PASS \\
 Session & duy trì trạng thái nhiều lượt & PASS \\
 Error handling & thiếu dữ liệu, sai session & PASS \\
 Purchase flow & ghi nhận hành vi mua & PASS \\
-Multi-turn chat & hội thoại nhiều bước & FAIL (timeout) \\
+Multi-turn chat & hội thoại nhiều bước & PASS \\
 \hline
 \end{tabular}
 \caption{Kết quả kiểm thử API}
@@ -154,9 +154,9 @@ Multi-turn chat & hội thoại nhiều bước & FAIL (timeout) \\
 
 \textbf{Phân tích}
 
-10/11 test case đạt PASS (91\%). Trường hợp thất bại do timeout, không phải lỗi logic.
+11/11 test case đạt PASS (100\%). Không có trường hợp thất bại. Kết quả cho thấy các API hoạt động ổn định, xử lý đúng các tình huống khác nhau và duy trì trạng thái session hiệu quả. 
 
-\subsection{Tổng kết kiểm thử}
+\subsubsection{Tổng kết kiểm thử}
 
 \begin{table}[h]
 \centering
@@ -168,16 +168,14 @@ Thành phần & Test case & Passed & Tỉ lệ \\
 Node Parse & 20 & 20 & 100\% \\
 Node Resolve & 14 & 14 & 100\% \\
 Semantic Search & 10 & 10 & 100\% \\
-API Integration & 11 & 10 & 91\% \\
-Tổng & 55 & 54 & 98\% \\
+API Integration & 11 & 11 & 100\% \\
+Tổng & 55 & 55 & 100\% \\
 \hline
 \end{tabular}
 \caption{Tổng kết kết quả kiểm thử}
 \end{table}
 
 Kết quả kiểm thử cho thấy hệ thống đạt độ chính xác cao trên các thành phần cốt lõi.
-
-\subsubsection{Hạn chế và hướng cải thiện}
 
 Mặc dù kết quả kiểm thử tích cực, vẫn tồn tại một số hạn chế như chưa đánh giá trên dữ liệu lớn và chưa so sánh với các phương pháp baseline.
 

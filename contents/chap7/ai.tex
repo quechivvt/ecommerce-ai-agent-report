@@ -76,21 +76,23 @@ Ngoài endpoint hội thoại, hệ thống còn cung cấp endpoint \texttt{/ap
 
 \subsubsection{Triển khai AI Agent}
 
-Hệ thống được triển khai trên các nền tảng cloud khác nhau, theo hướng tận dụng các dịch vụ managed để giảm chi phí vận hành và đơn giản hóa quá trình cấu hình.
+% Hệ thống được triển khai trên các nền tảng cloud khác nhau, theo hướng tận dụng các dịch vụ managed để giảm chi phí vận hành và đơn giản hóa quá trình cấu hình.
 
-Cụ thể, lớp API được triển khai trên nền tảng Railway dưới dạng một service duy nhất. Toàn bộ mã nguồn, bao gồm cả AI Agent và dữ liệu ChromaDB, được đóng gói chung trong cùng một repository để đảm bảo tính đồng nhất khi deploy.
+% Cụ thể, lớp API được triển khai trên nền tảng Railway dưới dạng một service duy nhất. Toàn bộ mã nguồn, bao gồm cả AI Agent và dữ liệu ChromaDB, được đóng gói chung trong cùng một repository để đảm bảo tính đồng nhất khi deploy.
 
-Cơ sở dữ liệu PostgreSQL được triển khai trên Supabase, giúp tận dụng các tính năng như backup, connection pooling và giao diện quản lý. API server kết nối đến Supabase thông qua connection string được cấu hình bằng biến môi trường.
+% Cơ sở dữ liệu PostgreSQL được triển khai trên Supabase, giúp tận dụng các tính năng như backup, connection pooling và giao diện quản lý. API server kết nối đến Supabase thông qua connection string được cấu hình bằng biến môi trường.
 
-Đối với cơ sở dữ liệu đồ thị, hệ thống sử dụng Neo4j AuraDB, cung cấp endpoint truy cập và cơ chế xác thực sẵn có.
+% Đối với cơ sở dữ liệu đồ thị, hệ thống sử dụng Neo4j AuraDB, cung cấp endpoint truy cập và cơ chế xác thực sẵn có.
 
-ChromaDB được sử dụng dưới dạng lưu trữ cục bộ, dữ liệu vector được lưu trong thư mục và đóng gói cùng mã nguồn khi deploy.
+% ChromaDB được sử dụng dưới dạng lưu trữ cục bộ, dữ liệu vector được lưu trong thư mục và đóng gói cùng mã nguồn khi deploy.
 
-Thiết kế triển khai này có thể được xem là một dạng ``hybrid cloud architecture'', trong đó:
+% Thiết kế triển khai này có thể được xem là một dạng ``hybrid cloud architecture'', trong đó:
 
-\begin{itemize}
-\item API và AI Agent chạy trên Railway
-\item PostgreSQL được quản lý bởi Supabase
-\item Neo4j được quản lý bởi AuraDB
-\item ChromaDB được lưu trữ cục bộ
-\end{itemize}
+% \begin{itemize}
+% \item API và AI Agent chạy trên Railway
+% \item PostgreSQL được quản lý bởi Supabase
+% \item Neo4j được quản lý bởi AuraDB
+% \item ChromaDB được lưu trữ cục bộ
+% \end{itemize}
+
+bà Chi chỉnh phần này nha
