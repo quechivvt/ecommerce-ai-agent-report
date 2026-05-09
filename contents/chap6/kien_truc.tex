@@ -231,7 +231,7 @@ Sơ đồ \ref{fig:frontend_internal_architecture} mô tả các thành phần c
             \item \textbf{Server State:} Sử dụng TanStack Query để quản lý cache, đồng bộ và quản lý vòng đời của dữ liệu từ backend.
             \item \textbf{Client State:} Sử dụng Zustand để quản lý các trạng thái cục bộ mượt mà, không gây re-render dư thừa.
         \end{itemize}
-    \item \textbf{AI Chat Integration:} Thành phần Chatbot được thiết kế theo kiến trúc streaming. Sử dụng Vercel AI SDK để duy trì trạng thái hội thoại và xử lý luồng dữ liệu Server-Sent Events (SSE) từ AI Agent Service, đảm bảo phản hồi được hiển thị theo thời gian thực (token-by-token).
+    \item \textbf{AI Chat Integration:} Thành phần Chatbot được thiết kế để giao tiếp với AI Agent Service thông qua các giao thức RESTful tiêu chuẩn. Hệ thống sử dụng các thư viện quản lý yêu cầu (fetching) để gửi câu hỏi từ người dùng dưới dạng JSON và nhận về phản hồi đã được xử lý hoàn chỉnh từ Backend, giúp đảm bảo tính đồng bộ và dễ dàng quản lý lịch sử hội thoại tại Client State.
 \end{itemize}
 
 

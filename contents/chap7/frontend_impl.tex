@@ -20,9 +20,9 @@ Hệ thống sử dụng Next.js Route Handlers để xây dựng một lớp pr
     \item Xử lý lỗi tập trung và trả về mã lỗi chuẩn hóa cho giao diện.
 \end{itemize}
 
-\textbf{Tích hợp luồng phản hồi hội thoại AI (Streaming Response)}
+\textbf{Tích hợp Trợ lý ảo AI (AI Agent Integration)}
 
-Để mang lại trải nghiệm Trợ lý Ảo giống thực tế nhất, nhóm hiện thực cơ chế streaming bằng Vercel AI SDK. Khi người dùng gửi câu hỏi, Frontend sẽ thiết lập một kết nối bất đồng bộ tới AI Agent Service. Dữ liệu trả về dưới dạng dòng văn bản (Server-Sent Events), cho phép UI cập nhật nội dung ngay khi từng từ (token) được tạo ra, thay vì phải chờ đợi toàn bộ câu trả lời hoàn tất.
+Để tối ưu hóa sự ổn định và khả năng kiểm soát dữ liệu, nhóm hiện thực việc giao tiếp giữa Frontend và AI Agent Service thông qua các RESTful API chuẩn hóa. Khi người dùng gửi yêu cầu tư vấn, Frontend sẽ đóng gói ngữ cảnh hội thoại và gửi đến Backend dưới dạng cấu trúc JSON. Hệ thống sử dụng cơ chế xử lý trạng thái chờ (loading state) mượt mà trong khi AI Agent phân tích và truy vấn dữ liệu. Kết quả trả về sau khi được xử lý tại server sẽ được hiển thị ngay lập tức lên giao diện, giúp người dùng nhận được thông tin tư vấn đầy đủ và chính xác nhất về các sản phẩm cũng như dịch vụ.
 
 \subsubsection{Triển khai Frontend}
 
