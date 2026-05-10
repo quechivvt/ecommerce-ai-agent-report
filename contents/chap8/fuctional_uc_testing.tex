@@ -212,8 +212,141 @@ TC-AGT-006 & Tra cứu chính sách cửa hàng & Người dùng hỏi về chí
 \end{tabularx}
 \end{table}
 
-\subsubsection{Tài liệu quản lý kiểm thử chi tiết}
+\subsubsection{Tính năng quản lý hồ sơ cá nhân}
 
+Tính năng quản lý hồ sơ cá nhân cho phép người dùng xem và cập nhật các thông tin cá nhân, thay đổi mật khẩu và cập nhật ảnh đại diện. Quy trình này kiểm tra khả năng lưu trữ, xác thực dữ liệu đầu vào và đảm bảo tính bảo mật khi người dùng thực hiện các thay đổi nhạy cảm trên hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/profile-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý hồ sơ cá nhân}
+\label{fig:flow_profile_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng cập nhật thông tin và kiểm soát bảo mật tài khoản.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý hồ sơ cá nhân}
+\label{tab:tc_profile_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-002-001 & Xem thông tin hồ sơ & Tải trang hồ sơ với phiên đăng nhập hợp lệ. & Hệ thống hiển thị đầy đủ và chính xác thông tin cá nhân (họ tên, email, số điện thoại). & Passed \\ \hline
+TC-002-002 & Cập nhật thông tin thành công & Thay đổi họ tên và số điện thoại và lưu thiết lập. & Hệ thống xác nhận lưu thành công và cập nhật ngay trên giao diện mà không cần tải lại trang. & Passed \\ \hline
+TC-002-003 & Đổi mật khẩu thành công & Nhập đúng mật khẩu hiện tại và thiết lập mật khẩu mới hợp lệ. & Mật khẩu được cập nhật thành công trên cơ sở dữ liệu, các trường nhập liệu tự động xóa trống. & Passed \\ \hline
+TC-002-004 & Sai mật khẩu hiện tại & Đổi mật khẩu nhưng nhập sai mật khẩu cũ. & Hệ thống từ chối yêu cầu và hiển thị cảnh báo lỗi sai mật khẩu. & Passed \\ \hline
+TC-002-005 & Thay đổi ảnh đại diện & Tải lên tập tin hình ảnh hợp lệ để làm ảnh đại diện. & Ảnh đại diện mới được cập nhật và hiển thị thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng quản lý thông tin sản phẩm}
+
+Tính năng quản lý sản phẩm dành cho quản trị viên bao gồm các nghiệp vụ liên quan đến việc duy trì danh mục hàng hóa, thương hiệu, biến thể (variant) và mã giảm giá (discount). Quy trình kiểm thử tập trung vào việc xác minh tính toàn vẹn của dữ liệu, khả năng xử lý các ràng buộc khóa ngoại và tính chính xác của bộ lọc tìm kiếm trong giao diện quản trị.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/product-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý thông tin sản phẩm}
+\label{fig:flow_product_management}
+\end{figure}
+
+Danh sách dưới đây là các ca kiểm thử tiêu biểu cho các luồng tương tác với danh mục hàng hóa và sản phẩm.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý thông tin sản phẩm}
+\label{tab:tc_product_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Danh mục (Category) \& Thương hiệu (Brand)}} \\ \hline
+TC-011-001 & Tạo mới danh mục & Nhập tên danh mục hợp lệ và xác nhận tạo mới. & Dữ liệu được khởi tạo thành công và xuất hiện trong danh sách. & Passed \\ \hline
+TC-011-002 & Tạo danh mục trùng tên & Nhập tên danh mục đã tồn tại trong hệ thống. & Hệ thống báo lỗi trùng tên và ngăn chặn việc tạo mới. & Passed \\ \hline
+TC-011-007 & Xóa danh mục có ràng buộc & Xóa một danh mục đang chứa các sản phẩm hoạt động bên trong. & Hệ thống ngăn chặn thao tác và hiển thị cảnh báo lỗi ràng buộc khóa ngoại. & Passed \\ \hline
+TC-011-011 & Tạo mới thương hiệu & Nhập tên thương hiệu mới và xác nhận lưu. & Thương hiệu mới hiển thị trong danh sách quản trị. & Passed \\ \hline
+TC-011-012 & Tạo thương hiệu trùng tên & Khởi tạo thương hiệu với tên đã có sẵn. & Hệ thống hiển thị thông báo lỗi trùng lặp dữ liệu. & Passed \\ \hline
+TC-011-014 & Cập nhật thương hiệu & Thay đổi tên thương hiệu hiện tại sang tên mới hợp lệ. & Thông tin được cập nhật thành công trên giao diện và DB. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Sản phẩm (Product)}} \\ \hline
+TC-011-021 & Tạo sản phẩm đơn biến thể & Thêm sản phẩm mới với một cấu hình duy nhất. & Sản phẩm hiển thị đúng giá và thông tin trên lưới quản trị. & Passed \\ \hline
+TC-011-022 & Tạo sản phẩm đa biến thể & Thêm sản phẩm kèm theo nhiều lựa chọn bộ nhớ, màu sắc. & Hệ thống lưu trữ chính xác toàn bộ danh sách biến thể đi kèm. & Passed \\ \hline
+TC-011-023 & Trùng mã biến thể & Khởi tạo sản phẩm với hai biến thể có chung mã định danh (Variant Code). & API từ chối thực thi và trả về lỗi trùng lặp mã biến thể. & Passed \\ \hline
+TC-011-024 & Chỉnh sửa sản phẩm & Thay đổi tên, giá hiển thị và thương hiệu của sản phẩm. & Thông tin mới được cập nhật và đồng bộ ngay trên giao diện. & Passed \\ \hline
+TC-011-027 & Lưu trữ sản phẩm & Thực hiện thao tác Archive một sản phẩm không còn kinh doanh. & Sản phẩm biến mất khỏi danh sách hiển thị cho khách hàng. & Passed \\ \hline
+TC-011-029 & Tìm kiếm theo từ khóa & Nhập từ khóa tìm kiếm sản phẩm tại trang quản trị. & Chỉ các sản phẩm có tên khớp với từ khóa mới được hiển thị. & Passed \\ \hline
+TC-011-033 & Bộ lọc kết hợp & Lọc theo tổ hợp thương hiệu, danh mục và khoảng giá. & Danh sách trả về chính xác sản phẩm thỏa mãn mọi tiêu chí lọc. & Passed \\ \hline
+TC-011-034 & Phân trang sản phẩm & Chuyển đổi giữa các trang danh sách sản phẩm. & Dữ liệu trang mới được tải nhanh chóng và chính xác. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Mã giảm giá (Discount)}} \\ \hline
+TC-011-036 & Khởi tạo mã giảm giá & Thiết lập mã giảm giá theo phần trăm với đầy đủ điều kiện. & Mã giảm giá được tạo thành công và sẵn sàng sử dụng. & Passed \\ \hline
+TC-011-039 & Áp dụng cho thương hiệu & Gán mã giảm giá cụ thể cho toàn bộ sản phẩm của một thương hiệu. & Mã giảm giá được kích hoạt đúng cho nhóm sản phẩm đã chọn. & Passed \\ \hline
+TC-011-040 & Chỉnh sửa mã giảm giá & Cập nhật lại giá trị và thời hạn hiệu lực của mã. & Thông tin mã giảm giá được cập nhật thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng quản lý đơn hàng}
+
+Tính năng quản lý đơn hàng cho phép quản trị viên theo dõi toàn bộ vòng đời của một giao dịch, từ lúc tiếp nhận đến khi vận chuyển và hoàn tất. Quy trình kiểm thử xác minh khả năng chuyển đổi trạng thái đơn hàng theo đúng logic nghiệp vụ, đồng thời cập nhật nhật ký giao hàng (delivery log) nhằm duy trì tính minh bạch.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/order-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý đơn hàng}
+\label{fig:flow_order_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng điều phối đơn hàng và nhật ký vận chuyển.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý đơn hàng}
+\label{tab:tc_order_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-042 & Lọc đơn hàng theo trạng thái & Chọn bộ lọc theo trạng thái (ví dụ: đang chờ xác nhận hoặc đang giao). & Hệ thống chỉ hiển thị những đơn hàng có trạng thái tương ứng. & Passed \\ \hline
+TC-011-046 & Hiển thị chi tiết đơn hàng & Truy cập trang chi tiết của một đơn hàng cụ thể. & Hệ thống hiển thị chính xác danh sách mặt hàng, tổng tiền và tiến trình xử lý. & Passed \\ \hline
+TC-011-048 & Chuyển đổi trạng thái hợp lệ & Quản trị viên cập nhật trạng thái đơn hàng theo thứ tự nghiệp vụ cho phép. & Trạng thái được cập nhật thành công trên giao diện và cơ sở dữ liệu. & Passed \\ \hline
+TC-011-051 & Thêm nhật ký vận chuyển & Khởi tạo dòng trạng thái mới mô tả tiến trình giao hàng (ví dụ: đã đến trạm trung chuyển). & Dòng nhật ký mới được thêm vào chuỗi sự kiện vận chuyển với mốc thời gian chính xác. & Passed \\ \hline
+TC-011-053 & Chỉnh sửa nhật ký vận chuyển & Cập nhật nội dung hoặc trạng thái của một sự kiện giao hàng đã tồn tại. & Thông tin được lưu lại và đồng bộ trực tiếp lên giao diện theo dõi. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng quản lý báo cáo và thống kê}
+
+Tính năng quản lý báo cáo cung cấp cho quản trị viên công cụ để tổng hợp dữ liệu kinh doanh, chẳng hạn như báo cáo doanh thu và sản phẩm bán chạy. Kịch bản kiểm thử tập trung vào quá trình hệ thống trích xuất dữ liệu, tạo lập tệp tin Excel, và lưu trữ trên nền tảng đám mây.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/report-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý báo cáo và thống kê}
+\label{fig:flow_report_management}
+\end{figure}
+
+Bảng dưới đây mô tả các ca kiểm thử nhằm xác nhận khả năng vận hành của hệ thống xuất báo cáo và ghi nhận hành vi.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý báo cáo và thống kê}
+\label{tab:tc_report_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-061 & Hiển thị danh sách báo cáo & Tải trang quản lý báo cáo đối với cơ sở dữ liệu đã có dữ liệu mẫu. & Hệ thống liệt kê toàn bộ các báo cáo đã tạo kèm theo thông tin loại báo cáo và ngày xuất. & Passed \\ \hline
+TC-011-063 & Khởi tạo báo cáo doanh thu & Gửi yêu cầu trích xuất báo cáo doanh thu theo tháng. & Hệ thống gọi API nền, tạo tệp Excel, lưu trữ lên Cloudinary và hiển thị kết quả thành công. & Passed \\ \hline
+TC-011-064 & Tải xuống tệp tin báo cáo & Nhấp chuột vào đường dẫn tải xuống của một báo cáo hoàn chỉnh. & Trình duyệt chuyển hướng đến liên kết lưu trữ đám mây và tải về tệp tin hợp lệ. & Passed \\ \hline
+TC-011-067 & Truy xuất nhật ký hệ thống & Chuyển sang phần theo dõi nhật ký hoạt động (Action Logs). & Danh sách hiển thị chi tiết các thao tác của hệ thống theo từng khoảng thời gian. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tài liệu quản lý kiểm thử chi tiết}
 Toàn bộ các bước thực hiện cụ thể và các trường hợp kiểm thử mở rộng cho toàn bộ hệ thống được lưu trữ tại tệp tin dưới đây:
 
 Truy cập tài liệu chi tiết tại: \href{https://docs.google.com/spreadsheets/d/1mHcj2cuIYbw-0h5_UOIEGGMhs_ll_Lcr/edit?usp=sharing&ouid=108057400976358149425&rtpof=true&sd=true}{Google Sheet}
