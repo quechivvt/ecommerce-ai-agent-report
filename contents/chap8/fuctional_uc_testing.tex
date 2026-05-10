@@ -124,6 +124,94 @@ TC-008-003 & Thanh toán trực tuyến thành công & Thực hiện quét mã Q
 \end{tabularx}
 \end{table}
 
+\subsubsection{Tính năng xem chi tiết đơn hàng}
+
+Tính năng xem chi tiết đơn hàng cho phép người dùng theo dõi đầy đủ thông tin của đơn hàng đã đặt, bao gồm danh sách sản phẩm, số lượng, tổng tiền và trạng thái xử lý. Quy trình này giúp xác minh khả năng truy xuất và hiển thị dữ liệu đơn hàng của hệ thống một cách chính xác và đầy đủ.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/chap8/fr/check_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Xem chi tiết đơn hàng}
+\label{fig:flow_order_detail}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xem chi tiết đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Xem chi tiết đơn hàng}
+\label{tab:tc_order_detail}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-009-001 & Xem đơn hàng hợp lệ & Người dùng chọn một đơn hàng trong danh sách & Hệ thống hiển thị đầy đủ thông tin chi tiết đơn hàng & Passed \\ \hline
+TC-009-002 & Hiển thị danh sách sản phẩm & Mở chi tiết đơn hàng có nhiều sản phẩm & Hệ thống hiển thị đúng các sản phẩm trong đơn hàng & Passed \\ \hline
+TC-009-003 & Hiển thị tổng tiền & Truy cập trang chi tiết đơn hàng & Tổng tiền đơn hàng được hiển thị chính xác & Passed \\ \hline
+TC-009-004 & Đơn hàng không tồn tại & Truy cập bằng mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo không tìm thấy đơn hàng & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng hủy đơn hàng}
+
+Tính năng hủy đơn hàng cho phép người dùng hủy các đơn hàng chưa hoàn tất xử lý hoặc giao hàng. Quy trình này giúp xác minh khả năng cập nhật trạng thái đơn hàng của hệ thống và đảm bảo các ràng buộc nghiệp vụ được xử lý chính xác khi thực hiện thao tác hủy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/chap8/fr/cancel_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Hủy đơn hàng}
+\label{fig:flow_cancel_order}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng hủy đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Hủy đơn hàng}
+\label{tab:tc_cancel_order}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-010-001 & Hủy đơn hàng hợp lệ & Người dùng hủy đơn hàng đang chờ xử lý & Hệ thống cập nhật trạng thái đơn hàng thành đã hủy & Passed \\ \hline
+TC-010-002 & Xác nhận hủy đơn hàng & Người dùng nhấn nút hủy đơn hàng & Hệ thống hiển thị hộp thoại xác nhận hủy & Passed \\ \hline
+TC-010-003 & Đơn hàng không tồn tại & Người dùng gửi yêu cầu hủy với mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo lỗi phù hợp & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng trợ lý khách hàng AI}
+
+Tính năng trợ lý tư vấn khách hàng AI cho phép người dùng tương tác bằng ngôn ngữ tự nhiên để tìm kiếm sản phẩm, so sánh và tra cứu chính sách cửa hàng. Quy trình này xác minh khả năng xử lý hội thoại đa lượt của hệ thống, bao gồm tích lũy bộ lọc qua các lượt hội thoại, cá nhân hóa theo lịch sử mua hàng, và truy xuất thông tin chính xác từ cơ sở dữ liệu sản phẩm cũng như chính sách cửa hàng.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/chap8/fr/ai.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Trợ lý khách hàng AI}
+\label{fig:flow_agent}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xử lý hội thoại cũng như khả năng suy luận và truy xuất thông tin của tác nhân AI.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Trợ lý khách hàng AI}
+\label{tab:tc_agent}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-AGT-001 & Cá nhân hóa theo lịch sử mua hàng & Người dùng đăng nhập với tài khoản có lịch sử mua hàng, gửi tin nhắn đầu tiên. & Trợ lý ưu tiên thương hiệu và màu sắc phù hợp với lịch sử mua hàng của người dùng. & Passed \\ \hline
+TC-AGT-002 & Tích lũy bộ lọc qua nhiều lượt hội thoại & Người dùng lần lượt nhập danh mục, khoảng giá, RAM và thương hiệu qua 3 lượt hội thoại. & Trạng thái hội thoại lưu đầy đủ tất cả bộ lọc sau mỗi lượt mà không mất dữ liệu cũ. & Passed \\ \hline
+TC-AGT-003 & Xóa bộ lọc khi đổi danh mục & Người dùng chuyển từ yêu cầu tìm laptop sang điện thoại trong cùng một phiên. & Danh mục được cập nhật, toàn bộ bộ lọc cũ được xóa và trạng thái bắt đầu lại. & Passed \\ \hline
+TC-AGT-004 & Gợi ý sản phẩm theo bộ lọc & Người dùng yêu cầu tìm laptop Dell RAM 16GB dưới 20 triệu. & Trợ lý trả về danh sách sản phẩm thực từ cơ sở dữ liệu khớp với tất cả điều kiện lọc. & Passed \\ \hline
+TC-AGT-005 & So sánh hai sản phẩm cụ thể & Người dùng yêu cầu so sánh MacBook Air M4 và ASUS Vivobook S14. & Trợ lý nhận diện và truy xuất đầy đủ thông tin cả hai sản phẩm, đưa ra so sánh chi tiết. & Passed \\ \hline
+TC-AGT-006 & Tra cứu chính sách cửa hàng & Người dùng hỏi về chính sách đổi trả hàng. & Trợ lý trả lời chính xác dựa trên dữ liệu chính sách, không tự bịa đặt thông tin. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
 \subsubsection{Tài liệu quản lý kiểm thử chi tiết}
 
 Toàn bộ các bước thực hiện cụ thể và các trường hợp kiểm thử mở rộng cho toàn bộ hệ thống được lưu trữ tại tệp tin dưới đây:
