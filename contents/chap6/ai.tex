@@ -135,7 +135,9 @@ Trạng thái bao gồm các nhóm thông tin chính:
 
 Các thông số kỹ thuật được chuẩn hóa thành dạng $(\text{value}, \text{operator})$, ví dụ ``RAM $\geq 8\text{GB}$'' được biểu diễn dưới dạng một cấu trúc có thể ánh xạ trực tiếp sang điều kiện SQL. Thiết kế này giúp giảm đáng kể độ phức tạp ở bước sinh truy vấn và đảm bảo tính nhất quán giữa các thành phần của hệ thống.
 
-\textbf{node Parse}
+\textbf{Thiết kế các node của AI Agent}
+
+\textbf{1. Node Parse}
 
 Node Parse chịu trách nhiệm chuyển đổi ngôn ngữ tự nhiên thành dữ liệu có cấu trúc. Thay vì sử dụng các phương pháp thủ công, hệ thống sử dụng mô hình ngôn ngữ với cơ chế structured output để đảm bảo đầu ra tuân theo một schema cố định.
 
@@ -143,7 +145,7 @@ Các thông tin được trích xuất bao gồm danh mục sản phẩm, các b
 
 Sau bước trích xuất, node thực hiện hợp nhất với trạng thái hiện tại. Việc hợp nhất không đơn thuần là ghi đè mà được thực hiện theo nguyên tắc cập nhật tối thiểu: chỉ những trường có giá trị mới mới được thay đổi, trong khi các thông tin khác được giữ nguyên. Ở đây có điểm quan trọng đó là cơ chế reset có điều kiện: khi danh mục sản phẩm thay đổi, toàn bộ các bộ lọc liên quan được đưa về trạng thái mặc định nhằm tránh sai lệch ngữ cảnh. Danh sách sản phẩm được đề cập được gộp và loại bỏ trùng lặp để phục vụ bước định danh.
 
-\textbf{node Resolve}
+\textbf{2. Node Resolve}
 
 Node Resolve thực hiện ánh xạ các tên sản phẩm tự nhiên sang định danh trong cơ sở dữ liệu. Cách tiếp cận được sử dụng là fuzzy matching dựa trên pg\_trgm của PostgreSQL.
 
@@ -151,7 +153,7 @@ Với mỗi tên sản phẩm, hệ thống tính toán độ tương đồng v�
 
 Kết quả định danh được gắn kèm một mức độ tin cậy. Giá trị này không chỉ dùng để đánh giá độ chính xác mà còn được đưa vào bước suy luận tiếp theo. Cụ thể, các kết quả có độ tin cậy thấp sẽ kích hoạt cơ chế xác nhận lại với người dùng trước khi tiếp tục tư vấn.
 
-\textbf{node Reason}
+\textbf{3. Node Reason}
 
 Node Reason là thành phần điều phối trung tâm của hệ thống, có thể được xem như một ``policy layer'' nằm giữa mô hình ngôn ngữ và các công cụ truy xuất dữ liệu. Nhiệm vụ của node này là đánh giá trạng thái hiện tại và quyết định hành động tiếp theo.
 
@@ -161,11 +163,95 @@ Quy trình ra quyết định được tổ chức theo thứ tự ưu tiên. Tr
 
 \textbf{Thiết kế cơ chế gọi công cụ}
 
+Để nâng cao khả năng hỗ trợ người dùng và tăng độ chính xác trong quá trình hội thoại, hệ thống AI Agent được thiết kế theo hướng tích hợp các công cụ hỗ trợ (tools). Thay vì chỉ sinh phản hồi dựa trên tri thức nội tại của mô hình ngôn ngữ lớn (LLM), Agent có thể chủ động sử dụng các công cụ để truy xuất dữ liệu và bổ sung ngữ cảnh trước khi tạo phản hồi cuối cùng.
+
+Cách tiếp cận này giúp hệ thống:
+
+\begin{itemize}
+    \item giảm hiện tượng hallucination,
+    \item tăng khả năng truy xuất thông tin thời gian thực,
+    \item hỗ trợ xử lý các truy vấn mang tính nghiệp vụ,
+    \item duy trì hội thoại nhiều lượt hiệu quả hơn.
+\end{itemize}
+
 Hệ thống sử dụng ba nhóm công cụ chính, tương ứng với ba loại nhu cầu truy vấn khác nhau: tìm kiếm sản phẩm theo điều kiện, truy vấn sản phẩm cụ thể và tìm kiếm ngữ nghĩa.
+
+\textbf{1. Công cụ tìm kiếm sản phẩm}
+
+Công cụ tìm kiếm sản phẩm được sử dụng khi người dùng có nhu cầu tìm kiếm hoặc tư vấn sản phẩm dựa trên các tiêu chí cụ thể như:
+
+\begin{itemize}
+    \item loại sản phẩm,
+    \item thương hiệu,
+    \item khoảng giá,
+    \item màu sắc,
+    \item thông số kỹ thuật.
+\end{itemize}
+
+Agent sẽ phân tích yêu cầu của người dùng, sau đó sử dụng tool để truy vấn cơ sở dữ liệu sản phẩm và trả về các sản phẩm phù hợp nhất.
+
+Khác với phương pháp tìm kiếm ngữ nghĩa thuần túy, công cụ này hỗ trợ xử lý các điều kiện có cấu trúc như:
+
+\begin{itemize}
+    \item ``điện thoại dưới 10 triệu'',
+    \item ``laptop RAM 16GB'',
+    \item ``màn hình 144Hz''.
+\end{itemize}
+
+Nhờ đó, hệ thống có thể cung cấp kết quả chính xác và phù hợp hơn với nhu cầu thực tế của người dùng.
 
 Các truy vấn SQL được xây dựng động từ trạng thái hội thoại. Đối với các điều kiện liên quan đến biến thể và thông số kỹ thuật, hệ thống sử dụng mệnh đề EXISTS thay vì JOIN trực tiếp nhằm tránh việc nhân bản bản ghi khi một sản phẩm có nhiều biến thể hoặc nhiều thông số. Điều này giúp giữ cho kết quả truy vấn gọn và chính xác.
 
-Kết quả được giới hạn ở một số lượng nhỏ (ví dụ top $5$ sản phẩm) để giảm tải cho bước sinh phản hồi của mô hình, đồng thời đảm bảo tính dễ đọc cho người dùng. Việc giới hạn này cũng đóng vai trò như một cơ chế kiểm soát chi phí và độ trễ của hệ thống.
+\textbf{2. Công cụ truy xuất thông tin sản phẩm theo ngữ cảnh hội thoại}
+
+Trong các hội thoại nhiều lượt, người dùng thường đặt các câu hỏi tiếp nối liên quan đến sản phẩm đã được đề cập trước đó. Để duy trì ngữ cảnh hội thoại, hệ thống sử dụng công cụ truy xuất thông tin sản phẩm theo ngữ cảnh.
+
+Công cụ này cho phép Agent:
+
+\begin{itemize}
+    \item ghi nhớ các sản phẩm đã được xác định trong hội thoại,
+    \item truy xuất lại thông tin chi tiết của các sản phẩm đó,
+    \item hỗ trợ so sánh và tư vấn chuyên sâu.
+\end{itemize}
+
+Ví dụ, sau khi người dùng yêu cầu:
+
+\begin{quote}
+    ``So sánh iPhone 15 và Samsung S24''
+\end{quote}
+
+Agent có thể tiếp tục xử lý các câu hỏi:
+
+\begin{itemize}
+    \item ``máy nào pin tốt hơn?''
+    \item ``máy nào phù hợp chơi game?''
+\end{itemize}
+
+mà không cần yêu cầu người dùng nhập lại tên sản phẩm.
+
+Cơ chế này giúp tăng tính tự nhiên và liên tục của hội thoại.
+
+\textbf{3. Công cụ tìm kiếm ngữ nghĩa}
+
+Ngoài dữ liệu có cấu trúc trong cơ sở dữ liệu quan hệ, hệ thống còn tích hợp semantic search để hỗ trợ các truy vấn mang tính mô tả hoặc hỏi đáp tự nhiên.
+
+Công cụ semantic search được sử dụng cho:
+
+\begin{itemize}
+    \item mô tả sản phẩm
+    \item FAQ
+    \item các thông tin về quy định và chính sách
+\end{itemize}
+
+Hệ thống sử dụng vector database để lưu trữ embedding của các tài liệu tri thức. Khi người dùng gửi truy vấn, Agent sẽ thực hiện truy vấn ngữ nghĩa để tìm các đoạn thông tin liên quan nhất trước khi tổng hợp phản hồi.
+
+Cách tiếp cận này giúp Agent:
+
+\begin{itemize}
+    \item hiểu tốt hơn các truy vấn ngôn ngữ tự nhiên,
+    \item tăng độ chính xác khi trả lời,
+    \item giảm phụ thuộc hoàn toàn vào tri thức nội tại của LLM.
+\end{itemize}
 
 \textbf{Cá nhân hóa hội thoại}
 
