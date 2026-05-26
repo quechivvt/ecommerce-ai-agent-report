@@ -193,12 +193,12 @@ Tính năng trợ lý tư vấn khách hàng AI cho phép người dùng tương
 \label{fig:flow_agent}
 \end{figure}
 
-Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xử lý hội thoại cũng như khả năng suy luận và truy xuất thông tin của tác nhân AI.
+Để đánh giá toàn diện chất lượng của tác nhân AI, các ca kiểm thử được chia thành bốn nhóm: kiểm thử chức năng cốt lõi, câu hỏi trong phạm vi, câu hỏi ngoài phạm vi và câu hỏi dễ gây ảo giác. Cách phân nhóm này nhằm đánh giá không chỉ tính đúng đắn của luồng xử lý hội thoại mà còn khả năng nhận biết giới hạn và tránh bịa đặt thông tin của tác nhân AI.
 
 \begin{table}[H]
 \centering
-\caption{Các ca kiểm thử tính năng Trợ lý khách hàng AI}
-\label{tab:tc_agent}
+\caption{Các ca kiểm thử chức năng cốt lõi}
+\label{tab:tc_agent_core}
 \small
 \begin{tabularx}{\textwidth}{|l|X|X|X|c|}
 \hline
@@ -211,6 +211,73 @@ TC-AGT-005 & So sánh hai sản phẩm cụ thể & Người dùng yêu cầu so
 TC-AGT-006 & Tra cứu chính sách cửa hàng & Người dùng hỏi về chính sách đổi trả hàng. & Trợ lý trả lời chính xác dựa trên dữ liệu chính sách, không tự bịa đặt thông tin. & Passed \\ \hline
 \end{tabularx}
 \end{table}
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử câu hỏi trong phạm vi}
+\label{tab:tc_agent_inscope}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-AGT-007 & Tìm điện thoại theo thông số pin & Người dùng hỏi điện thoại Samsung pin trâu. & Trợ lý gợi ý đúng danh mục và ưu tiên sản phẩm có dung lượng pin lớn. & Passed \\ \hline
+TC-AGT-008 & Tìm laptop gaming theo nhiều tiêu chí & Người dùng hỏi laptop gaming dưới 25 triệu màn hình 144Hz. & Trợ lý lọc đúng theo giá và tần số quét màn hình. & Passed \\ \hline
+TC-AGT-009 & Tìm sản phẩm theo nhu cầu sử dụng & Người dùng hỏi máy tính bảng cho trẻ em học online. & Trợ lý gợi ý các sản phẩm tablet phù hợp với nhu cầu. & Passed \\ \hline
+TC-AGT-010 & Tra cứu chính sách bảo hành & Người dùng hỏi thời gian bảo hành sản phẩm. & Trợ lý trả lời chính xác dựa trên dữ liệu chính sách. & Passed \\ \hline
+TC-AGT-011 & Tra cứu chính sách vận chuyển & Người dùng hỏi về phí vận chuyển. & Trợ lý trả lời đúng thông tin vận chuyển từ dữ liệu chính sách. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử câu hỏi ngoài phạm vi}
+\label{tab:tc_agent_outscope}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-AGT-012 & Câu hỏi không liên quan & Người dùng hỏi về thời tiết hôm nay. & Trợ lý từ chối lịch sự và chuyển hướng về tư vấn sản phẩm. & Passed \\ \hline
+TC-AGT-013 & Yêu cầu ngoài chức năng & Người dùng yêu cầu cung cấp công thức nấu ăn. & Trợ lý từ chối lịch sự và không thực hiện yêu cầu. & Passed \\ \hline
+TC-AGT-014 & Hỏi về đối thủ cạnh tranh & Người dùng hỏi sản phẩm tại cửa hàng khác. & Trợ lý từ chối và chỉ tư vấn sản phẩm trong hệ thống. & Passed \\ \hline
+TC-AGT-015 & Yêu cầu sáng tác & Người dùng yêu cầu viết một bài thơ. & Trợ lý từ chối lịch sự và chuyển hướng về tư vấn sản phẩm. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử câu hỏi dễ gây ảo giác}
+\label{tab:tc_agent_hallucination}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-AGT-016 & Sản phẩm không tồn tại & Người dùng hỏi về laptop XYZ ProMax 9000. & Trợ lý thông báo không tìm thấy sản phẩm, không tự bịa thông tin. & Passed \\ \hline
+TC-AGT-017 & Sản phẩm ngoài danh mục & Người dùng hỏi giá iPhone 15 Pro Max. & Trợ lý thông báo sản phẩm không có trong hệ thống, không tự đưa ra giá. & Passed \\ \hline
+TC-AGT-018 & Thuộc tính không có trong dữ liệu & Người dùng hỏi Samsung Galaxy S25 Ultra có màu tím không. & Trợ lý chỉ trả lời các màu có trong cơ sở dữ liệu, không tự bịa màu sắc. & Passed \\ \hline
+TC-AGT-019 & Thông số kỹ thuật không được lưu & Người dùng hỏi laptop Dell có hỗ trợ bút cảm ứng không. & Trợ lý chỉ trả lời dựa trên thông số có trong dữ liệu, không tự suy diễn. & Passed \\ \hline
+TC-AGT-020 & Thông tin khuyến mãi không có trong dữ liệu & Người dùng hỏi cửa hàng có giảm giá Black Friday không. & Trợ lý không bịa đặt chương trình khuyến mãi, chỉ cung cấp thông tin có trong hệ thống. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+Bảng~\ref{tab:tc_agent_summary} tổng hợp kết quả kiểm thử theo từng nhóm, thể hiện tỉ lệ phản hồi đúng, từ chối đúng và ảo giác của tác nhân AI trên toàn bộ 20 ca kiểm thử.
+
+\begin{table}[H]
+\centering
+\caption{Tổng hợp kết quả kiểm thử tác nhân AI}
+\label{tab:tc_agent_summary}
+\small
+\begin{tabularx}{\textwidth}{|X|c|c|c|c|}
+\hline
+\textbf{Nhóm} & \textbf{Tổng} & \textbf{Đúng} & \textbf{Từ chối đúng} & \textbf{Ảo giác} \\ \hline
+Chức năng cốt lõi (TC-AGT-001 -- 006) & 6 & 6 (100\%) & 0 & 0 \\ \hline
+Câu hỏi trong phạm vi (TC-AGT-007 -- 011) & 5 & 5 (100\%) & 0 & 0 \\ \hline
+Câu hỏi ngoài phạm vi (TC-AGT-012 -- 015) & 4 & 0 & 4 (100\%) & 0 \\ \hline
+Câu hỏi dễ gây ảo giác (TC-AGT-016 -- 020) & 5 & 5 (100\%) & 0 & 0 \\ \hline
+\textbf{Tổng} & \textbf{20} & \textbf{16 (80\%)} & \textbf{4 (20\%)} & \textbf{0 (0\%)} \\ \hline
+\end{tabularx}
+\end{table}
+
+Kết quả cho thấy tác nhân AI xử lý chính xác toàn bộ 20 ca kiểm thử. Đối với các câu hỏi trong phạm vi, trợ lý truy xuất và trả lời đúng thông tin từ cơ sở dữ liệu sản phẩm và chính sách. Đối với các câu hỏi ngoài phạm vi, trợ lý nhận biết và từ chối đúng mà không cố gắng trả lời. Đáng chú ý, không có trường hợp ảo giác nào được ghi nhận trong toàn bộ quá trình kiểm thử, cho thấy tác nhân AI hoạt động đáng tin cậy trong việc chỉ cung cấp thông tin có căn cứ từ dữ liệu thực tế.
 
 \subsubsection{Tính năng quản lý hồ sơ cá nhân}
 
