@@ -6,6 +6,34 @@ Toàn bộ hệ thống AI Agent được phát triển bằng Python. Việc l�
 
 Kiến trúc hiện thực có thể được xem như một pipeline nhiều tầng: dữ liệu được thu thập và chuẩn hóa, sau đó được lưu trữ vào các hệ quản trị phù hợp, và cuối cùng được khai thác thông qua AI Agent và API.
 
+\textbf{Tiêu chí xây dựng tập dữ liệu}
+
+Dữ liệu sản phẩm được thu thập từ website \texttt{CellPhones.com.vn}. Đây là dữ liệu của toàn bộ hệ thống, dùng cho các quy trình nghiệp vụ của web app chính và phục vụ vai trò knowledge base cho hệ thống tìm kiếm và tư vấn --- không dùng để huấn luyện mô hình. Tập dữ liệu thu được gồm 898 sản phẩm, 1.692 biến thể, 35 thương hiệu và 189 dòng sản phẩm thuộc 7 danh mục: điện thoại, máy tính bảng, laptop, màn hình, máy in, micro thu âm và tivi.
+
+Quá trình xây dựng tập dữ liệu áp dụng các tiêu chí và ràng buộc sau:
+
+\textbf{1. Tiêu chí nguồn dữ liệu}
+
+\begin{itemize}
+    \item Chỉ thu thập từ một nguồn duy nhất là \texttt{CellPhones.com.vn} nhằm đảm bảo tính nhất quán về cấu trúc dữ liệu và tránh xung đột thông tin giữa các nguồn.
+    \item Giới hạn trong 7 danh mục sản phẩm công nghệ phù hợp với phạm vi hệ thống bán lẻ điện thoại và thiết bị điện tử.
+\end{itemize}
+
+\textbf{2. Ràng buộc chất lượng dữ liệu}
+
+\begin{itemize}
+    \item \textbf{Bắt buộc có biến thể:} sản phẩm không có ít nhất một biến thể (màu sắc, giá) bị loại bỏ, vì đây là thông tin cốt lõi để tư vấn và so sánh.
+    \item \textbf{Bắt buộc có thông số kỹ thuật:} sản phẩm không có thông số kỹ thuật bị loại bỏ, vì agent cần thông tin này để lọc theo điều kiện như RAM, dung lượng pin, kích thước màn hình.
+    \item \textbf{Chuẩn hóa rating:} giá trị đánh giá sao được chuẩn hóa về số nguyên, loại bỏ các giá trị không hợp lệ (\texttt{null}, không phải số). Sản phẩm chưa có đánh giá được giữ lại với giá trị \texttt{null}.
+\end{itemize}
+
+\textbf{3. Ràng buộc về thông số kỹ thuật}
+
+\begin{itemize}
+    \item Chỉ giữ lại các thông số có tên nằm trong danh sách ánh xạ chuẩn hóa (\texttt{SPEC\_MAPPING}), loại bỏ các thông số không liên quan hoặc không nhất quán giữa các danh mục.
+    \item Các thông số dùng để lọc (RAM, dung lượng pin, kích thước màn hình, tần số quét, thời gian phản hồi, trọng lượng, dung lượng pin, năm ra mắt) bắt buộc phải có giá trị số có thể trích xuất được; nếu không thì lưu dạng văn bản và không dùng để lọc.
+\end{itemize}
+
 \textbf{Hiện thực pipeline thu thập dữ liệu}
 
 Pipeline thu thập dữ liệu được tổ chức thành ba bước chính: crawl URL, crawl chi tiết sản phẩm và chuẩn hóa dữ liệu. Thay vì sử dụng các request HTTP đơn thuần, hệ thống sử dụng Playwright để mô phỏng trình duyệt, cho phép xử lý các trang có nội dung động.

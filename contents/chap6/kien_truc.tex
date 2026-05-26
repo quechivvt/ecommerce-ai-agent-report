@@ -13,6 +13,83 @@ Từ những phân tích về nhu cầu kỹ thuật và khả năng phát tri�
     \item Hỗ trợ tích hợp Trợ lý Ảo một cách dễ dàng.
 \end{itemize}
 
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\small
+\begin{tabularx}{\textwidth}{|p{4.5cm}|X|X|X|}
+\hline
+\textbf{Tiêu chí theo yêu cầu hệ thống} &
+\textbf{Monolithic Architecture} &
+\textbf{Microservices Architecture} &
+\textbf{Event-Driven + Cloud-Native Architecture} \\
+\hline
+
+Khả năng mở rộng từng chức năng độc lập &
+Thấp. Toàn bộ hệ thống phải scale cùng nhau &
+Có thể scale theo từng service &
+Cao. Các service và consumer có thể scale độc lập theo tải thực tế \\
+\hline
+
+Hỗ trợ xử lý bất đồng bộ và realtime &
+Hạn chế, chủ yếu xử lý đồng bộ &
+Có hỗ trợ nhưng cần cơ chế giao tiếp bổ sung &
+Tốt, phù hợp cho xử lý event realtime và message-driven workflow \\
+\hline
+
+Tính cô lập giữa các thành phần &
+Thấp. Lỗi ở một module dễ ảnh hưởng toàn hệ thống &
+Tốt hơn nhờ tách service &
+Cao. Các service hoạt động độc lập thông qua event broker \\
+\hline
+
+Khả năng triển khai và cập nhật riêng từng thành phần &
+Khó triển khai riêng lẻ &
+Có thể triển khai từng service độc lập &
+Tốt. Hỗ trợ CI/CD và rolling deployment hiệu quả trên Cloud \\
+\hline
+
+Độ tin cậy và khả năng chịu lỗi &
+Thấp. Dễ xảy ra lỗi dây chuyền &
+Trung bình &
+Cao nhờ cơ chế phân tán và bất đồng bộ \\
+\hline
+
+Khả năng tận dụng hạ tầng Cloud &
+Hạn chế &
+Có hỗ trợ &
+Tốt. Phù hợp với container orchestration, auto scaling và load balancing \\
+\hline
+
+Hỗ trợ tích hợp AI Agent &
+Khó tích hợp và mở rộng riêng AI service &
+Có thể triển khai AI thành service riêng &
+Phù hợp. AI Agent có thể hoạt động như service độc lập và giao tiếp qua event \\
+\hline
+
+Khả năng mở rộng trong tương lai &
+Hạn chế khi hệ thống lớn dần &
+Khá tốt &
+Tốt, phù hợp với hệ thống phân tán quy mô lớn \\
+\hline
+
+Độ linh hoạt trong phát triển và bảo trì &
+Thấp &
+Trung bình &
+Cao \\
+\hline
+
+Mức độ phù hợp với đề tài &
+Thấp &
+Khá phù hợp &
+Phù hợp nhất \\
+\hline
+
+\end{tabularx}
+\caption{So sánh các kiến trúc hệ thống theo yêu cầu của đề tài}
+\label{tab:architecture-comparison}
+\end{table}
+
 Sau khi tìm hiểu, nghiên cứu về cơ sở lý thuyết của các mô hình kiến trúc phổ biến như \textit{Monolithic}, \textit{Microservices} và \textit{EDA + Cloud-Native}, nhóm lựa chọn kiến trúc \textbf{EDA + Cloud-Native} vì những lý do sau:
 \begin{itemize}
     \item Phù hợp với hệ thống có nhiều sự kiện phát sinh và cần xử lý bất đồng bộ như hệ thống thương mại điện tử.

@@ -97,6 +97,102 @@ LangGraph & Kiểm soát tốt, hỗ trợ stateful & Phức tạp hơn \\
 
 LangGraph được lựa chọn do cho phép xây dựng AI Agent dưới dạng đồ thị có trạng thái, giúp kiểm soát rõ ràng luồng xử lý và dễ dàng mở rộng.
 
+\subsubsection{Mô hình ngôn ngữ lớn (LLM) và mô hình embedding}
+
+AI Agent yêu cầu hai năng lực ngôn ngữ khác nhau: trích xuất thông tin có cấu trúc từ câu hỏi người dùng và sinh phản hồi tự nhiên kết hợp gọi công cụ. Do đặc thù của từng bài toán, hệ thống sử dụng hai mô hình ngôn ngữ riêng biệt được tích hợp qua API, không thực hiện huấn luyện hay fine-tuning.
+
+Cần làm rõ rằng đây là kiến trúc RAG kết hợp Tool-calling Agent: các mô hình LLM được sử dụng hoàn toàn như một dịch vụ suy luận (inference service). Kiến thức về sản phẩm và chính sách không được đưa vào mô hình qua quá trình huấn luyện mà được truy xuất động từ cơ sở dữ liệu tại thời điểm xử lý yêu cầu. Điều này giúp hệ thống cập nhật dữ liệu mà không cần huấn luyện lại mô hình.
+
+Node Parse yêu cầu mô hình có khả năng sinh ra đầu ra tuân theo schema cố định (structured output). Các lựa chọn được xem xét:
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Mô hình} & \textbf{Ưu điểm} & \textbf{Nhược điểm} \\
+        \hline
+        
+        GPT-4o (OpenAI)
+        & Structured output chính xác, chất lượng cao, hỗ trợ tiếng Việt tốt
+        & Chi phí cao hơn so với các mô hình nhỏ hơn \\
+        \hline
+        
+        GPT-4o mini (OpenAI)
+        & Structured output ổn định, tốc độ nhanh hơn GPT-4o, chi phí thấp, hỗ trợ tiếng Việt tốt
+        & Chất lượng suy luận phức tạp kém hơn GPT-4o \\
+        \hline
+        
+        Gemini 2.5 Flash (Google)
+        & Tốc độ nhanh, chi phí thấp
+        & Structured output kém ổn định hơn với schema phức tạp trong thực nghiệm \\
+        \hline
+    \end{tabular}
+\end{table}
+
+GPT-4o mini được lựa chọn vì cung cấp structured output ổn định với schema phức tạp (nhiều trường lồng nhau), tốc độ phản hồi nhanh và chi phí thấp hơn GPT-4o. Node Parse được gọi ở mỗi lượt hội thoại nên tốc độ và chi phí là yếu tố quan trọng, trong khi chất lượng structured output vẫn đáp ứng đủ yêu cầu.
+
+Node Reason yêu cầu mô hình có khả năng lập luận phức tạp, gọi công cụ (tool calling) linh hoạt và sinh phản hồi tự nhiên bằng tiếng Việt. Các lựa chọn được xem xét:
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Mô hình} & \textbf{Ưu điểm} & \textbf{Nhược điểm} \\
+        \hline
+        
+        GPT-4o (OpenAI)
+        & Lập luận phức tạp tốt, tool calling chính xác, hỗ trợ tiếng Việt tốt
+        & Chi phí cao hơn GPT-4o mini \\
+        \hline
+        
+        GPT-4o mini (OpenAI)
+        & Chi phí thấp, tốc độ nhanh
+        & Lập luận đa bước và tool calling kém chính xác hơn với các tình huống phức tạp \\
+        \hline
+        
+        LLaMA 3.3 70B (Meta/Groq)
+        & Tốc độ rất cao nhờ Groq LPU, chi phí thấp
+        & Tool calling kém ổn định hơn GPT-4o trong một số tình huống \\
+        \hline
+    \end{tabular}
+\end{table}
+
+GPT-4o được lựa chọn vì khả năng lập luận đa bước và tool calling chính xác cao. Node Reason là thành phần điều phối trung tâm của agent, có thể thực hiện nhiều vòng gọi công cụ trong một lượt hội thoại, do đó chất lượng ra quyết định được ưu tiên hơn chi phí.
+
+Để hỗ trợ tìm kiếm ngữ nghĩa tiếng Việt trong ChromaDB, hệ thống cần một mô hình embedding phù hợp với ngôn ngữ này. Các lựa chọn được xem xét:
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Mô hình} & \textbf{Ưu điểm} & \textbf{Nhược điểm} \\
+        \hline
+        
+        text-embedding-3 (OpenAI)
+        & Chất lượng cao, đa ngôn ngữ
+        & Chi phí theo lượt gọi API, phụ thuộc dịch vụ bên ngoài \\
+        \hline
+        
+        multilingual-e5-large (Microsoft)
+        & Đa ngôn ngữ, chạy local
+        & Chưa được tối ưu đặc biệt cho tiếng Việt \\
+        \hline
+        
+        vietnamese-embedding (dangvantuan)
+        & Được huấn luyện đặc biệt cho tiếng Việt, chạy local, miễn phí
+        & Chỉ hỗ trợ tiếng Việt \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Mô hình \texttt{dangvantuan/vietnamese-embedding} (\texttt{SentenceTransformer}) được lựa chọn vì được huấn luyện đặc biệt cho tiếng Việt, đảm bảo chất lượng biểu diễn ngữ nghĩa trong ngữ cảnh hội thoại tiếng Việt. Mô hình chạy hoàn toàn cục bộ, không phát sinh chi phí theo lượt truy vấn và không phụ thuộc vào dịch vụ bên ngoài.
+
 \subsubsection{Công nghệ xây dựng API: FastAPI}
 
 Hệ thống cần một framework để xây dựng API có hiệu năng cao và hỗ trợ tốt cho các tác vụ bất đồng bộ.
@@ -116,23 +212,3 @@ FastAPI & Hiệu năng cao, hỗ trợ async, typing & Cộng đồng nhỏ hơn
 \end{tabular}
 
 FastAPI được lựa chọn do hỗ trợ bất đồng bộ, hiệu năng cao và tích hợp tốt với Python typing.
-
-% \subsubsection{Công nghệ triển khai: Railway}
-
-% Hệ thống cần một nền tảng triển khai đơn giản, hỗ trợ nhanh việc đưa ứng dụng lên môi trường chạy thực tế.
-
-% Các lựa chọn:
-
-% \begin{tabular}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
-% \hline
-% Công nghệ & Ưu điểm & Nhược điểm \\
-% \hline
-% VPS & Toàn quyền kiểm soát & Cần tự cấu hình nhiều \\
-% \hline
-% Heroku & Dễ deploy & Hạn chế free tier \\
-% \hline
-% Railway & Triển khai nhanh, tích hợp tốt & Ít tùy chỉnh nâng cao \\
-% \hline
-% \end{tabular}
-
-% Railway được lựa chọn do khả năng triển khai trực tiếp từ GitHub và cấu hình đơn giản, phù hợp với quy mô hệ thống.
