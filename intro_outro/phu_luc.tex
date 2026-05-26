@@ -385,6 +385,49 @@ Phần này trình bày chi tiết các bảng đặc tả trường hợp sử 
 \hline
 \end{longtable}
 
+\subsection*{Sơ đồ lớp} \label{sec:appx_class_diagram}
+Phần này trình bày chi tiết sơ đồ lớp cho các dịch vụ hỗ trợ và quản trị bổ sung của hệ thống, bao gồm dịch vụ người dùng, sản phẩm, giỏ hàng và quản trị. Các thành phần này kế thừa nhất quán kiến trúc tổng thể đã được trình bày tại mục \ref{sec}, đồng thời được lược giản một số thành phần phụ trợ nhằm đảm bảo tính trực quan và tránh lặp lại các khuôn mẫu thiết kế tương đồng.
+
+Hình \ref{fig:user_service_class_diagram} minh họa kiến trúc của dịch vụ người dùng. Dịch vụ này quản lý các chức năng liên quan đến xác thực, quản lý thông tin cá nhân và địa chỉ người dùng. Tương tự các dịch vụ khác trong hệ thống, kiến trúc được xây dựng theo hướng phân tách giữa truy vấn và xử lý trạng thái, đồng thời sử dụng cơ chế xử lý sự kiện nội bộ nhằm giảm mức độ phụ thuộc giữa các thành phần. Để đảm bảo tính trực quan, biểu đồ tập trung vào hai nghiệp vụ chính là xác thực và quản lý địa chỉ, trong khi các chức năng khác như hồ sơ người dùng hoặc tài khoản thanh toán được chủ ý lược giản.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/user-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ người dùng}
+\label{fig:user_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:product_service_class_diagram} minh họa kiến trúc của dịch vụ sản phẩm. Dịch vụ này chịu trách nhiệm quản lý thông tin sản phẩm, biến thể sản phẩm và chính sách giảm giá. Biểu đồ tập trung mô tả hai nghiệp vụ chính là quản lý sản phẩm và quản lý chương trình khuyến mãi, đồng thời thể hiện cơ chế cập nhật dữ liệu bất đồng bộ và xử lý các tác vụ nền phục vụ đồng bộ trạng thái hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/product-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ sản phẩm}
+\label{fig:product_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:cart_service_class_diagram} minh họa kiến trúc của dịch vụ giỏ hàng. Dịch vụ này chịu trách nhiệm quản lý thông tin sản phẩm được người dùng lựa chọn trong quá trình mua sắm. Biểu đồ thể hiện các nghiệp vụ chính như thêm sản phẩm, cập nhật số lượng, xóa dữ liệu và tính toán giá trị đơn hàng, đồng thời cho thấy sự phân tách giữa luồng truy vấn và xử lý thay đổi trạng thái.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/cart-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ giỏ hàng}
+\label{fig:cart_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:admin_service_class_diagram} minh họa kiến trúc của dịch vụ quản trị. Dịch vụ này hỗ trợ các tác vụ quản trị hệ thống như tạo báo cáo thống kê và lưu trữ lịch sử thao tác của quản trị viên. Biểu đồ tập trung mô tả các thành phần xử lý báo cáo và cơ chế ghi nhận hành động nhằm hỗ trợ theo dõi hoạt động và quản lý dữ liệu vận hành của hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{images/chap6/class_diagram/admin-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ quản trị}
+\label{fig:admin_service_class_diagram}
+\end{figure}
+
 \subsection*{Sơ đồ hoạt động} \label{sec:appx_activity_diagram}
 Phần này mô tả chi tiết sơ đồ hoạt động cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:activity_diagram} thông qua các bảng từ bảng \ref{fig:act_register} đến bảng \ref{fig:act_change_status}.
 
@@ -700,6 +743,154 @@ Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê
 & GET & \texttt{/api/orders/feedback/{id}} & Xem feedback theo đơn hàng. \\ \hline
 \end{tabular}
 \end{table}
+
+\subsection*{Các trường hợp kiểm thử còn lại của end-to-end testing} \label{sec:appx_e2e_testing}
+
+Phần này bổ sung các trường hợp kiểm thử chi tiết cho các tính năng chưa được nhắc đến ở phần end-to-end testing tại mục \ref{sec:e2e_testing}.
+\subsubsection*{Tính năng thanh toán đa phương thức}
+
+Tính năng thanh toán đa phương thức cho phép người dùng linh hoạt lựa chọn giữa các hình thức giao dịch truyền thống và trực tuyến giả lập. Quy trình này xác minh khả năng xử lý của hệ thống khi tiếp nhận các phương thức thanh toán khác nhau và đảm bảo trạng thái đơn hàng được cập nhật chính xác sau khi giao dịch hoàn tất.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/chap8/fr/payment.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Thanh toán đa phương thức}
+\label{fig:flow_payment}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng thanh toán giả lập cũng như khả năng xử lý các tình huống hủy bỏ giao dịch từ phía người dùng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Thanh toán đa phương thức}
+\label{tab:tc_payment}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-008-001 & Phương thức COD & Lựa chọn hình thức thanh toán khi nhận hàng và xác nhận đơn. & Hệ thống ghi nhận phương thức COD và chuyển đơn hàng sang trạng thái chờ xác nhận. & Passed \\ \hline
+TC-008-002 & Hủy thanh toán trực tuyến & Lựa chọn thanh toán mã QR nhưng thực hiện hủy bỏ giao dịch. & Hệ thống dừng quy trình thanh toán an toàn và giữ nguyên trạng thái chờ của đơn hàng. & Passed \\ \hline
+TC-008-003 & Thanh toán trực tuyến thành công & Thực hiện quét mã QR giả lập và xác nhận hoàn tất giao dịch trực tuyến. & Hệ thống xác nhận thanh toán thành công và cập nhật trạng thái đơn hàng đã thanh toán. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng xem chi tiết đơn hàng}
+
+Tính năng xem chi tiết đơn hàng cho phép người dùng theo dõi đầy đủ thông tin của đơn hàng đã đặt, bao gồm danh sách sản phẩm, số lượng, tổng tiền và trạng thái xử lý. Quy trình này giúp xác minh khả năng truy xuất và hiển thị dữ liệu đơn hàng của hệ thống một cách chính xác và đầy đủ.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/chap8/fr/check_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Xem chi tiết đơn hàng}
+\label{fig:flow_order_detail}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xem chi tiết đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Xem chi tiết đơn hàng}
+\label{tab:tc_order_detail}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-009-001 & Xem đơn hàng hợp lệ & Người dùng chọn một đơn hàng trong danh sách & Hệ thống hiển thị đầy đủ thông tin chi tiết đơn hàng & Passed \\ \hline
+TC-009-002 & Hiển thị danh sách sản phẩm & Mở chi tiết đơn hàng có nhiều sản phẩm & Hệ thống hiển thị đúng các sản phẩm trong đơn hàng & Passed \\ \hline
+TC-009-003 & Hiển thị tổng tiền & Truy cập trang chi tiết đơn hàng & Tổng tiền đơn hàng được hiển thị chính xác & Passed \\ \hline
+TC-009-004 & Đơn hàng không tồn tại & Truy cập bằng mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo không tìm thấy đơn hàng & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng hủy đơn hàng}
+
+Tính năng hủy đơn hàng cho phép người dùng hủy các đơn hàng chưa hoàn tất xử lý hoặc giao hàng. Quy trình này giúp xác minh khả năng cập nhật trạng thái đơn hàng của hệ thống và đảm bảo các ràng buộc nghiệp vụ được xử lý chính xác khi thực hiện thao tác hủy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/chap8/fr/cancel_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Hủy đơn hàng}
+\label{fig:flow_cancel_order}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng hủy đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Hủy đơn hàng}
+\label{tab:tc_cancel_order}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-010-001 & Hủy đơn hàng hợp lệ & Người dùng hủy đơn hàng đang chờ xử lý & Hệ thống cập nhật trạng thái đơn hàng thành đã hủy & Passed \\ \hline
+TC-010-002 & Xác nhận hủy đơn hàng & Người dùng nhấn nút hủy đơn hàng & Hệ thống hiển thị hộp thoại xác nhận hủy & Passed \\ \hline
+TC-010-003 & Đơn hàng không tồn tại & Người dùng gửi yêu cầu hủy với mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo lỗi phù hợp & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng quản lý hồ sơ cá nhân}
+
+Tính năng quản lý hồ sơ cá nhân cho phép người dùng xem và cập nhật các thông tin cá nhân, thay đổi mật khẩu và cập nhật ảnh đại diện. Quy trình này kiểm tra khả năng lưu trữ, xác thực dữ liệu đầu vào và đảm bảo tính bảo mật khi người dùng thực hiện các thay đổi nhạy cảm trên hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/profile-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý hồ sơ cá nhân}
+\label{fig:flow_profile_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng cập nhật thông tin và kiểm soát bảo mật tài khoản.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý hồ sơ cá nhân}
+\label{tab:tc_profile_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-002-001 & Xem thông tin hồ sơ & Tải trang hồ sơ với phiên đăng nhập hợp lệ. & Hệ thống hiển thị đầy đủ và chính xác thông tin cá nhân (họ tên, email, số điện thoại). & Passed \\ \hline
+TC-002-002 & Cập nhật thông tin thành công & Thay đổi họ tên và số điện thoại và lưu thiết lập. & Hệ thống xác nhận lưu thành công và cập nhật ngay trên giao diện mà không cần tải lại trang. & Passed \\ \hline
+TC-002-003 & Đổi mật khẩu thành công & Nhập đúng mật khẩu hiện tại và thiết lập mật khẩu mới hợp lệ. & Mật khẩu được cập nhật thành công trên cơ sở dữ liệu, các trường nhập liệu tự động xóa trống. & Passed \\ \hline
+TC-002-004 & Sai mật khẩu hiện tại & Đổi mật khẩu nhưng nhập sai mật khẩu cũ. & Hệ thống từ chối yêu cầu và hiển thị cảnh báo lỗi sai mật khẩu. & Passed \\ \hline
+TC-002-005 & Thay đổi ảnh đại diện & Tải lên tập tin hình ảnh hợp lệ để làm ảnh đại diện. & Ảnh đại diện mới được cập nhật và hiển thị thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng quản lý báo cáo và thống kê}
+
+Tính năng quản lý báo cáo cung cấp cho quản trị viên công cụ để tổng hợp dữ liệu kinh doanh, chẳng hạn như báo cáo doanh thu và sản phẩm bán chạy. Kịch bản kiểm thử tập trung vào quá trình hệ thống trích xuất dữ liệu, tạo lập tệp tin Excel, và lưu trữ trên nền tảng đám mây.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/report-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý báo cáo và thống kê}
+\label{fig:flow_report_management}
+\end{figure}
+
+Bảng dưới đây mô tả các ca kiểm thử nhằm xác nhận khả năng vận hành của hệ thống xuất báo cáo và ghi nhận hành vi.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý báo cáo và thống kê}
+\label{tab:tc_report_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-061 & Hiển thị danh sách báo cáo & Tải trang quản lý báo cáo đối với cơ sở dữ liệu đã có dữ liệu mẫu. & Hệ thống liệt kê toàn bộ các báo cáo đã tạo kèm theo thông tin loại báo cáo và ngày xuất. & Passed \\ \hline
+TC-011-063 & Khởi tạo báo cáo doanh thu & Gửi yêu cầu trích xuất báo cáo doanh thu theo tháng. & Hệ thống gọi API nền, tạo tệp Excel, lưu trữ lên Cloudinary và hiển thị kết quả thành công. & Passed \\ \hline
+TC-011-064 & Tải xuống tệp tin báo cáo & Nhấp chuột vào đường dẫn tải xuống của một báo cáo hoàn chỉnh. & Trình duyệt chuyển hướng đến liên kết lưu trữ đám mây và tải về tệp tin hợp lệ. & Passed \\ \hline
+TC-011-067 & Truy xuất nhật ký hệ thống & Chuyển sang phần theo dõi nhật ký hoạt động (Action Logs). & Danh sách hiển thị chi tiết các thao tác của hệ thống theo từng khoảng thời gian. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
 
 \subsection*{Mô hình hệ thống và lưu đồ hoạt động}
 Các sơ đồ phân tích và thiết kế hệ thống:

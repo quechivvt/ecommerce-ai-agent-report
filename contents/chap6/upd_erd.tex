@@ -109,16 +109,19 @@ Việc chỉ lưu trữ các ID ngoại lai mà không có ràng buộc vật l�
 
 \subsubsection{ERD chi tiết cho admin service}
 
-Admin Service đóng vai trò là domain phụ trợ, chịu trách nhiệm duy trì tính minh bạch qua việc ghi vết hành động quản trị và quản lý các báo cáo hệ thống. Thực thể AdminActionLog đóng vai trò lưu trữ nhật ký thao tác chi tiết của quản trị viên, ghi nhận cụ thể loại hành động, thực thể bị tác động cùng các ghi chú liên quan để phục vụ mục đích kiểm soát tính minh bạch. Bên cạnh đó, thực thể Report chịu trách nhiệm quản lý danh mục các báo cáo thống kê đã được kết xuất. Thay vì lưu trữ trực tiếp dữ liệu thô gây tốn kém tài nguyên, thực thể này chỉ lưu giữ thông tin về loại báo cáo và đường dẫn liên kết đến tệp kết quả hoàn chỉnh.
+Admin Service đóng vai trò hỗ trợ các nghiệp vụ quản trị và giám sát hoạt động của hệ thống thông qua việc quản lý báo cáo, lưu trữ thông tin liên hệ và ghi nhận lịch sử thao tác của quản trị viên. Dịch vụ này hỗ trợ quá trình theo dõi hệ thống, đồng thời cung cấp cơ chế quản lý dữ liệu phục vụ cho hoạt động vận hành và tương tác với người dùng.
 
-Hình \ref{fig:admin-service} mô tả các mối liên kết ngoại lai nhằm duy trì tính nhất quán dữ liệu giữa các dịch vụ. Cụ thể, quan hệ has từ thực thể AdminActionLog và quan hệ create từ thực thể Report đều tham chiếu trực tiếp đến thực thể Admin thuộc User Service. Việc thiết lập các liên kết logic này giúp hệ thống định danh chính xác người chịu trách nhiệm cho từng thao tác quản trị cũng như xác định tác giả của các báo cáo thống kê được tạo lập.
+Thực thể AdminActionLog chịu trách nhiệm lưu trữ lịch sử thao tác của quản trị viên, bao gồm loại hành động thực hiện, đối tượng tác động và các thông tin mô tả liên quan nhằm phục vụ mục đích kiểm tra và truy vết hệ thống. Thực thể Report quản lý thông tin các báo cáo được tạo ra như loại báo cáo, tên và liên kết đến tệp kết quả. Ngoài ra, thực thể Subscriber lưu trữ danh sách người dùng đăng ký nhận báo cáo định kỳ, trong khi ContactInfo quản lý các thông tin liên hệ và phản hồi được gửi đến hệ thống.
+
+Hình \ref{fig:admin-service} mô tả mối quan hệ giữa các thực thể trong dịch vụ quản trị. Cụ thể, một Subscriber có thể tạo nhiều Report, thể hiện quan hệ một - nhiều giữa hai thực thể. Đồng thời, AdminActionLog lưu trữ lịch sử thao tác của quản trị viên nhằm hỗ trợ giám sát hoạt động hệ thống và nâng cao khả năng kiểm soát dữ liệu.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/chap6/erd/new-admin-service-erd.png}
-    \vspace{0.5cm}
-    \caption{ERD chi tiêt của admin service}
-    \label{fig:admin-service}
+\centering
+\includegraphics[width=0.9\linewidth]{images/chap6/erd/new-admin-service-erd.png}
+\vspace{0.5cm}
+\caption{ERD chi tiết của admin service}
+\label{fig:admin-service}
 \end{figure}
+
 
 
