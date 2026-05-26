@@ -1,57 +1,138 @@
 \subsection{AI Agent}
-\subsubsection{LangGraph}
-LangGraph là framework chuyên dụng để xây dựng AI Agent có khả năng lập luận theo từng bước (\textit{step-by-step reasoning}), duy trì trạng thái (stateful) và phối hợp nhiều công cụ (tools) theo luồng xử lý dạng đồ thị. LangGraph mở rộng mô hình ngôn ngữ lớn (LLM) bằng cách cho phép quản lý logic xử lý rõ ràng và có thể kiểm soát được.
 
-\textbf{Vai trò trong hệ thống}
+Quá trình lựa chọn được thực hiện dựa trên việc so sánh các giải pháp phổ biến cho từng bài toán, với các tiêu chí chính bao gồm: mức độ phù hợp với yêu cầu hệ thống, khả năng mở rộng, độ phức tạp triển khai và chi phí vận hành.
+
+Các công nghệ chính được sử dụng trong hệ thống bao gồm:
+
 \begin{itemize}
-    \item Tạo AI Agent có khả năng phân tích yêu cầu của khách hàng.
-    \item Điều phối quá trình reasoning: nhận câu hỏi → xác định nhu cầu → quyết định công cụ cần dùng → thực thi → tổng hợp kết quả.
-    \item Kết nối với Milvus và Neo4j thông qua các tool tùy chỉnh.
-    \item Đảm bảo hệ thống AI hoạt động ổn định, minh bạch và có thể debug.
+\item PostgreSQL / Supabase (cơ sở dữ liệu quan hệ)
+\item Neo4j / AuraDB (cơ sở dữ liệu đồ thị)
+\item ChromaDB (cơ sở dữ liệu vector)
+\item LangGraph (xây dựng AI Agent)
+\item FastAPI (xây dựng API)
+% \item Railway (triển khai hệ thống)
 \end{itemize}
 
-\textbf{Lý do lựa chọn}
-\begin{itemize}
-    \item Hỗ trợ thiết kế workflow linh hoạt và dễ mở rộng.
-    \item Tích hợp tốt với các mô hình LLM hiện đại.
-    \item Tích hợp tốt với nhiều công cụ và cơ sở dữ liệu.
-    \item Tối ưu cho bài toán AI Agent phức tạp thay vì chỉ chat đơn thuần.
-\end{itemize}
+\subsubsection{Cơ sở dữ liệu quan hệ: PostgreSQL / Supabase}
 
+Hệ thống cần một cơ sở dữ liệu để lưu trữ dữ liệu sản phẩm có cấu trúc và hỗ trợ các truy vấn lọc theo điều kiện như giá, thương hiệu và thông số kỹ thuật.
 
+Các lựa chọn phổ biến được xem xét bao gồm:
 
-\subsubsection{Milvus}
-Milvus là cơ sở dữ liệu vector hiệu năng cao, được thiết kế để lưu trữ và truy vấn các embedding từ dữ liệu phi cấu trúc. Milvus hỗ trợ các thuật toán indexing như IVF, HNSW giúp tìm kiếm tương đồng nhanh chóng và chính xác.
+\begin{tabular}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+Công nghệ & Ưu điểm & Nhược điểm \\
+\hline
+MySQL & Phổ biến, dễ sử dụng & Hạn chế extension nâng cao \\
+\hline
+PostgreSQL & Hỗ trợ mạnh (index, extension, JSON) & Cấu hình phức tạp hơn \\
+\hline
+MongoDB & Linh hoạt schema & Không tối ưu cho truy vấn quan hệ \\
+\hline
+\end{tabular}
 
-\textbf{Vai trò trong hệ thống}
-\begin{itemize}
-    \item Lưu trữ vector của tài liệu phi cấu trúc như mô tả sản phẩm, FAQ, chính sách, hướng dẫn sử dụng.
-    \item Hỗ trợ AI Agent thực hiện RAG để lấy đúng thông tin liên quan từ kho dữ liệu.
-    \item Giảm hiện tượng hallucination của LLM bằng việc cung cấp dữ liệu tham chiếu tin cậy.
-\end{itemize}
+PostgreSQL được lựa chọn do khả năng hỗ trợ truy vấn phức tạp, hệ thống index mạnh và khả năng mở rộng thông qua extension. Những đặc điểm này phù hợp với yêu cầu xử lý dữ liệu sản phẩm có nhiều thuộc tính và cần lọc theo nhiều điều kiện.
 
-\textbf{Lý do lựa chọn}
-\begin{itemize}
-    \item Tốc độ tìm kiếm nhanh, ổn định ngay cả khi dữ liệu lớn.
-    \item Hỗ trợ mở rộng theo chiều ngang dễ dàng.
-    \item Tích hợp trực tiếp với hệ sinh thái AI như LangChain, LangGraph, HuggingFace.
-\end{itemize}
+Trong triển khai thực tế, PostgreSQL được sử dụng thông qua nền tảng Supabase. Việc sử dụng Supabase giúp tận dụng một dịch vụ database được quản lý sẵn, giảm đáng kể chi phí vận hành và cấu hình, đồng thời cung cấp các tính năng bổ trợ như quản lý dữ liệu và backup.
 
+\subsubsection{Cơ sở dữ liệu đồ thị: Neo4j / AuraDB}
 
+Đối với các bài toán liên quan đến quan hệ giữa các thực thể, cơ sở dữ liệu đồ thị là lựa chọn phù hợp hơn so với mô hình quan hệ truyền thống.
 
-\subsubsection{Neo4j}
-Neo4j là hệ quản trị cơ sở dữ liệu đồ thị hàng đầu, được tối ưu cho việc lưu trữ và truy vấn dữ liệu có nhiều mối quan hệ phức tạp. Dữ liệu được tổ chức thành node (thực thể) và relationship (quan hệ), và được truy vấn bằng ngôn ngữ Cypher.
+Các giải pháp được xem xét:
 
-\textbf{Vai trò trong hệ thống}
-\begin{itemize}
-    \item Hỗ trợ AI Reasoning nhờ khả năng truy vấn theo quan hệ.
-    \item Hỗ trợ Recommendation System bằng cách tìm sản phẩm liên quan, tương đồng hoặc bổ trợ.
-    \item Cung cấp nền tảng tri thức có cấu trúc giúp AI đưa ra kết luận chính xác hơn.
-\end{itemize}
+\begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+\hline
+Công nghệ & Ưu điểm & Nhược điểm \\
+\hline
+PostgreSQL (self-join) & Không cần thêm hệ thống mới & Query phức tạp, kém hiệu quả \\
+\hline
+Neo4j & Tối ưu cho graph, query trực quan (Cypher) & Cần học thêm ngôn ngữ \\
+\hline
+ArangoDB & Multi-model & Ít phổ biến hơn \\
+\hline
+\end{tabular}
 
-\textbf{Lý do lựa chọn}
-\begin{itemize}
-    \item Hiệu quả cao trong các bài toán quan hệ mà SQL khó tối ưu.
-    \item Dễ mô hình hóa tri thức, trực quan, mở rộng linh hoạt.
-    \item Tương thích tốt với AI Agent thông qua truy vấn Cypher.
-\end{itemize}
+Neo4j được lựa chọn do là hệ quản trị đồ thị phổ biến, hỗ trợ ngôn ngữ truy vấn Cypher trực quan và tối ưu cho các truy vấn quan hệ phức tạp.
+
+Trong triển khai, hệ thống sử dụng Neo4j AuraDB — dịch vụ Neo4j được quản lý trên cloud. Điều này giúp loại bỏ nhu cầu tự vận hành database và đơn giản hóa quá trình triển khai.
+
+\subsubsection{Cơ sở dữ liệu vector: ChromaDB}
+
+Để hỗ trợ tìm kiếm ngữ nghĩa trong các câu hỏi tự nhiên, hệ thống cần một cơ sở dữ liệu vector có khả năng lưu trữ và truy vấn embedding.
+
+Các lựa chọn phổ biến:
+
+\begin{tabular}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+Công nghệ & Ưu điểm & Nhược điểm \\
+\hline
+FAISS & Hiệu năng cao & Không có persistence mặc định \\
+\hline
+Pinecone & Managed, dễ dùng & Chi phí cao \\
+\hline
+ChromaDB & Nhẹ, dễ tích hợp, hỗ trợ local & Ít tính năng nâng cao \\
+\hline
+\end{tabular}
+
+ChromaDB được lựa chọn do dễ tích hợp với Python và hỗ trợ lưu trữ cục bộ. Điều này cho phép hệ thống triển khai đơn giản mà không cần thêm một dịch vụ bên ngoài, đồng thời vẫn đáp ứng tốt nhu cầu tìm kiếm ngữ nghĩa với quy mô dữ liệu của đồ án.
+
+\subsubsection{Công nghệ xây dựng AI Agent: LangGraph}
+
+Hệ thống hội thoại yêu cầu khả năng điều phối giữa mô hình ngôn ngữ và các công cụ truy xuất dữ liệu theo nhiều bước. Do đó, cần một framework hỗ trợ orchestration và quản lý trạng thái.
+
+Các lựa chọn:
+
+\begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
+\hline
+Công nghệ & Ưu điểm & Nhược điểm \\
+\hline
+Prompt chaining (thuần) & Đơn giản & Khó mở rộng, khó kiểm soát \\
+\hline
+LangChain Agent & Linh hoạt & Khó kiểm soát luồng \\
+\hline
+LangGraph & Kiểm soát tốt, hỗ trợ stateful & Phức tạp hơn \\
+\hline
+\end{tabular}
+
+LangGraph được lựa chọn do cho phép xây dựng AI Agent dưới dạng đồ thị có trạng thái, giúp kiểm soát rõ ràng luồng xử lý và dễ dàng mở rộng.
+
+\subsubsection{Công nghệ xây dựng API: FastAPI}
+
+Hệ thống cần một framework để xây dựng API có hiệu năng cao và hỗ trợ tốt cho các tác vụ bất đồng bộ.
+
+Các lựa chọn:
+
+\begin{tabular}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+Công nghệ & Ưu điểm & Nhược điểm \\
+\hline
+Flask & Đơn giản, dễ dùng & Không hỗ trợ async tốt \\
+\hline
+Django & Full-stack, nhiều tính năng & Nặng, dư thừa \\
+\hline
+FastAPI & Hiệu năng cao, hỗ trợ async, typing & Cộng đồng nhỏ hơn Django \\
+\hline
+\end{tabular}
+
+FastAPI được lựa chọn do hỗ trợ bất đồng bộ, hiệu năng cao và tích hợp tốt với Python typing.
+
+% \subsubsection{Công nghệ triển khai: Railway}
+
+% Hệ thống cần một nền tảng triển khai đơn giản, hỗ trợ nhanh việc đưa ứng dụng lên môi trường chạy thực tế.
+
+% Các lựa chọn:
+
+% \begin{tabular}{|p{2.5cm}|p{5.5cm}|p{5.5cm}|}
+% \hline
+% Công nghệ & Ưu điểm & Nhược điểm \\
+% \hline
+% VPS & Toàn quyền kiểm soát & Cần tự cấu hình nhiều \\
+% \hline
+% Heroku & Dễ deploy & Hạn chế free tier \\
+% \hline
+% Railway & Triển khai nhanh, tích hợp tốt & Ít tùy chỉnh nâng cao \\
+% \hline
+% \end{tabular}
+
+% Railway được lựa chọn do khả năng triển khai trực tiếp từ GitHub và cấu hình đơn giản, phù hợp với quy mô hệ thống.

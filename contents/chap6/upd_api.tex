@@ -1,0 +1,199 @@
+\subsection{Thiết kế API}
+
+\subsubsection{Mục tiêu của thiết kế API}
+
+Mục tiêu chung của việc thiết kế API là cung cấp điểm truy cập thống nhất cho ứng dụng frontend và đảm bảo tính nhất quán cho các giao dịch phân tán nội bộ.
+
+Hệ thống triển khai hai loại API chính dựa trên mục đích sử dụng:
+
+\begin{enumerate}
+    \item External API (Frontend-Facing): Là các API công khai, phục vụ giao tiếp trực tiếp với ứng dụng frontend. Hầu hết các API này là điểm khởi đầu cho các luồng xử lý command hoặc kích hoạt một giao dịch phân tán.
+    \item Internal API (Backend/Saga Orchestration): Là các API nội bộ, được gọi đồng bộ bởi orchestrator service để thực hiện các bước tuần tự của một giao dịch phân tán phức tạp. Các API này đảm bảo tính nhất quán giữa nhiều microservice theo mô hình Saga Orchestration.
+\end{enumerate}
+
+\subsubsection{Nguyên tắc thiết kế API}
+
+Để đảm bảo một hệ thống API đồng bộ, dễ hiểu, dễ mở rộng và an toàn, việc tuân thủ một bộ các nguyên tắc thiết kế thống nhất là điều tối quan trọng. Các nguyên tắc dưới đây tập trung vào việc áp dụng mô hình Resource-Oriented và chuẩn mực RESTful cùng với các biện pháp bảo mật và quản lý phiên bản hiệu quả đối với các External API.
+\begin{itemize}
+    \item Theo mô hình Resource-Oriented (dựa trên tài nguyên: users, products, carts, orders…).
+    \item RESTful: sử dụng GET/POST/PUT/DELETE.
+    \item Áp dụng DTO cho mọi request/response, hạn chế lộ entity gốc.
+    \item Sử dụng token-based authentication cho những API yêu cầu xác thực.
+\end{itemize}
+
+\subsubsection{Cấu trúc mẫu của Request/Response trong API}
+
+Để đảm bảo tính thống nhất giữa các microservice và giảm thiểu trùng lặp trong quá trình thiết kế API, hệ thống chuẩn hóa toàn bộ phản hồi và truy vấn phân trang thông qua ba lớp cơ sở: BaseResponse, BasePaginationResponse, và BasePaginationRequest. Các thành phần này đóng vai trò làm khuôn mẫu chung được sử dụng xuyên suốt tất cả service nghiệp vụ.
+
+\textbf{\textit{a/ BaseResponse<T> – Cấu trúc phản hồi chuẩn }}
+
+BaseResponse được sử dụng cho tất cả API không yêu cầu phân trang. Đây là cấu trúc phản hồi đơn giản nhưng thống nhất, giúp frontend xử lý kết quả và lỗi một cách dễ dàng.
+
+Các trường thông tin:
+
+\begin{itemize}
+    \item status (int): Mã trạng thái HTTP hoặc mã nội bộ xác định kết quả xử lý, ví dụ: 200, 400, 404,...
+    \item data (T): Payload chứa dữ liệu cần trả về cho frontend, có thể là DTO hoặc bất kỳ kiểu dữ liệu nào.
+    \item message (String): Thông tin mô tả kết quả xử lý, ví dụ: "Success", "Invalid credentials".
+\end{itemize}
+
+Việc áp dụng các nguyên tắc này có ý nghĩa quan trọng trong việc chuẩn hóa giao diện API giữa các service, đảm bảo tính đồng nhất và khả năng tích hợp dễ dàng. Sự chuẩn hóa này cũng trực tiếp hỗ trợ logging và tracking dễ dàng hơn, giúp hệ thống theo dõi và xử lý lỗi hiệu quả. Hơn nữa, nó còn giúp giảm thiểu số lượng schema response lặp lại, tối ưu hóa mã nguồn và đơn giản hóa việc phát triển cho các ứng dụng client.
+
+\textbf{\textit{BasePaginationResponse<T> – Cấu trúc phản hồi phân trang}}
+
+BasePaginationResponse được sử dụng cho các API trả về danh sách có phân trang (ví dụ: danh sách sản phẩm, danh sách đơn hàng, danh sách người dùng admin).
+
+Lớp này mở rộng cấu trúc BaseResponse bằng cách bổ sung các thông tin phân trang cần thiết.
+
+Các trường thông tin:
+
+\begin{itemize}
+    \item status (int): Mã trạng thái HTTP hoặc mã nội bộ xác định kết quả xử lý, ví dụ: 200, 400, 404,\dots
+    \item page\_number (int): Số trang hiện tại (zero-based).
+    \item page\_size (int): Số lượng item trên mỗi trang.
+    \item count\_items (long): Tổng số item lấy được từ truy vấn.
+    \item count\_pages (int): Tổng số trang có thể hiển thị.
+    \item data (T): Payload chứa dữ liệu cần trả về cho frontend, có thể là DTO hoặc bất kỳ kiểu dữ liệu nào.
+    \item message (String): Thông tin mô tả kết quả xử lý, ví dụ: "Success", "Invalid credentials".
+\end{itemize}
+
+Việc thống nhất cơ chế phân trang mang lại ý nghĩa then chốt là chuẩn hóa mọi API phân trang trên các service, tạo ra một giao diện đồng nhất. Điều này không chỉ giúp frontend hiển thị giao diện phân trang dễ dàng hơn nhờ vào cấu trúc response đã được định trước, mà còn hỗ trợ backend sử dụng các công cụ như Spring Data xây dựng phân trang hiệu quả và nhất quán xuyên suốt hệ thống.
+
+\textbf{\textit{BasePaginationRequest – Chuẩn hóa Request phân trang}}
+
+BasePaginationRequest là lớp DTO dùng cho toàn bộ API cần phân trang. Lớp này hỗ trợ Spring Data trực tiếp thông qua hàm toPageable(), giúp code service gọn và tránh lặp lại logic phân trang.
+
+Các trường thông tin:
+\begin{itemize}
+    \item page (int): Chỉ số trang (bắt đầu từ 0). Có validate là không được nhỏ hơn 0.
+    \item size (int): Số lượng phần tử mỗi trang. Có validate là không được nhỏ hơn 1.
+    \item sortBy (String): Tên trường cần sắp xếp.
+    \item sortDirection (String): Hướng sắp xếp: "ASC" hoặc "DESC" (mặc định "DESC").
+\end{itemize}
+
+Việc chuẩn hóa cách thức backend nhận yêu cầu phân trang giúp tăng tính nhất quán giữa các API khác nhau, đảm bảo mọi dịch vụ đều xử lý yêu cầu phân trang theo cùng một quy tắc. Điều này cho phép tái sử dụng logic phân trang đã được định nghĩa trong hầu hết mọi service, từ đó tiết kiệm thời gian phát triển và giảm thiểu lỗi.
+
+\subsubsection{User Service}
+
+Nhằm đảm bảo tính súc tích cho báo cáo, nhóm chỉ tập trung trình bày các nhóm API đại diện cho các luồng nghiệp vụ cốt lõi của User Service như xác thực, quản lý hồ sơ và các thông tin giao dịch cá nhân. Chi tiết về các Endpoint quan trọng này được tổng hợp tại Bảng \ref{tab:core_user_api}.
+
+\begin{table}[H]
+\centering
+\caption{Các API quan trọng của User Service}
+\label{tab:core_user_api}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Xác thực} & POST & \texttt{/api/auth/login/local} & Đăng nhập hệ thống. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/register/local} & Đăng ký tài khoản mới. \\ \hline
+\multirow{2}{*}{Tài khoản} & GET & \texttt{/api/users/profile/me} & Lấy thông tin cá nhân. \\ \cline{2-4} 
+ & PUT & \texttt{/api/users/change-password/me} & Đổi mật khẩu. \\ \hline
+\multirow{2}{*}{Địa chỉ} & POST & \texttt{/api/addresses} & Thêm địa chỉ mới. \\ \cline{2-4} 
+ & GET & \texttt{/api/addresses/default} & Lấy địa chỉ mặc định. \\ \hline
+Thanh toán & POST & \texttt{/api/payment-accounts} & Liên kết tài khoản. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Product Service}
+
+Dịch vụ sản phẩm chịu trách nhiệm cung cấp thông tin danh mục cho khách hàng và các công cụ quản lý nội dung cho quản trị viên. Dưới đây là các API đặc trưng phục vụ luồng nghiệp vụ chính như tìm kiếm sản phẩm và quản lý chương trình khuyến mãi, chi tiết được tổng hợp tại Bảng \ref{tab:core_product_api}.
+
+\begin{table}[H]
+\centering
+\caption{Các API quan trọng của Product Service}
+\label{tab:core_product_api}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Khách hàng} & GET & \texttt{/api/products/paged} & Liệt kê sản phẩm phân trang. \\ \cline{2-4}
+& GET & \texttt{/api/products/search-filter} & Tìm kiếm sản phẩm nâng cao. \\ \hline
+\multirow{2}{*}{Quản trị sản phẩm} & POST & \texttt{/api/products/admin} & Tạo sản phẩm mới. \\ \cline{2-4}
+& POST & \texttt{/api/products/admin/{id}/variant} & Thêm biến thể cho sản phẩm. \\ \hline
+\multirow{2}{*}{Khuyến mãi} & POST & \texttt{/api/discounts/from-code} & Kiểm tra khuyến mãi từ mã code. \\ \cline{2-4}
+& POST & \texttt{/api/discounts/admin} & Thiết lập chương trình ưu đãi mới. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Cart Service}
+
+Dịch vụ giỏ hàng chịu trách nhiệm quản lý các mặt hàng tạm thời của khách hàng trước khi tiến hành đặt hàng. Do tính chất tập trung vào hiệu năng xử lý các thao tác thêm, sửa, xóa thường xuyên, hệ thống cung cấp đầy đủ các điểm cuối để quản lý trạng thái giỏ hàng và tính toán giá trị trực tiếp. Toàn bộ danh mục API của dịch vụ được chi tiết tại Bảng \ref{tab:all_cart_api}.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục API của Cart Service}
+\label{tab:all_cart_api}
+\begin{tabular}{|l|c|p{5cm}|p{4.5cm}|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Giỏ hàng (Cart)} & GET & \texttt{/api/carts} & Lấy thông tin giỏ hàng hiện tại. \\ \cline{2-4}
+& POST & \texttt{/api/carts/add-to-cart} & Thêm sản phẩm vào giỏ. \\ \hline
+\multirow{2}{*}{Truy vấn} & GET & \texttt{/api/carts/with-items-paging} & Lấy danh sách item phân trang. \\ \cline{2-4}
+& POST & \texttt{/api/cart-items/by-ids} & Truy xuất items theo danh sách ID. \\ \hline
+\multirow{3}{*}{Điều chỉnh} & PATCH & \texttt{/api/cart-items/increase/{id}} & Tăng số lượng sản phẩm. \\ \cline{2-4}
+& PATCH & \texttt{/api/cart-items/decrease/{id}} & Giảm số lượng sản phẩm. \\ \cline{2-4}
+& DELETE & \texttt{/api/cart-items/delete/{id}} & Xóa sản phẩm khỏi giỏ hàng. \\ \hline
+Tính toán & POST & \texttt{/api/carts/price} & Tính toán tổng giá trị giỏ hàng. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Orchestration Service}
+
+Dịch vụ điều phối chịu trách nhiệm quản lý tính nhất quán của dữ liệu thông qua mô hình Saga. Đây là trung tâm điều khiển các giao dịch phân tán phức tạp như đặt hàng, thanh toán và xử lý hoàn tác khi có sự cố. Các API đại diện cho luồng nghiệp vụ này được tổng hợp tại Bảng \ref{tab:core_orchestration_api}.
+
+\begin{table}[H]
+\centering
+\caption{Các API quan trọng của Orchestration Service}
+\label{tab:core_orchestration_api}
+\begin{tabular}{|l|c|l|p{4.5cm}|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Checkout} & POST & \texttt{/api/checkout/preview/init} & Khởi tạo phiên kiểm tra đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/checkout/confirm} & Xác nhận đặt hàng và kích hoạt Saga. \\ \hline
+\multirow{2}{*}{Thanh toán} & POST & \texttt{/api/payments} & Xử lý yêu cầu thanh toán đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/payments/simulate} & Giả lập môi trường thanh toán thử nghiệm. \\ \hline
+\multirow{2}{*}{Saga và Order} & POST & \texttt{/api/sagas/cancel-order} & Hủy đơn hàng và kích hoạt bù trừ (Compensating). \\ \cline{2-4}
+& GET & \texttt{/api/sagas/{id}} & Kiểm tra trạng thái tiến trình Saga. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Order Service}
+
+Dịch vụ đơn hàng chịu trách nhiệm lưu trữ thông tin giao dịch cuối cùng, quản lý trạng thái vận chuyển và ghi nhận phản hồi từ khách hàng. Để đảm bảo tính minh bạch trong quá trình vận hành, dịch vụ cung cấp hệ thống nhật ký giao hàng chi tiết cho từng giai đoạn của đơn hàng. Các API đại diện được trình bày tại Bảng \ref{tab:core_order_api}.
+
+\begin{table}[H]
+\centering
+\caption{Các API quan trọng của Order Service}
+\label{tab:core_order_api}
+\begin{tabular}{|l|c|l|p{4.5cm}|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Truy vấn đơn} & GET & \texttt{/api/orders/{id}} & Xem chi tiết đơn hàng cá nhân. \\ \cline{2-4}
+& GET & \texttt{/api/orders/by-delivery-status} & Lọc đơn theo trạng thái vận chuyển. \\ \hline
+\multirow{2}{*}{Vận chuyển} & POST & \texttt{/api/orders/admin/{id}/...} & Tạo nhật ký giao hàng mới (Admin). \\ \cline{2-4}
+& GET & \texttt{/api/delivery-logs/latest/{id}} & Lấy trạng thái vận chuyển mới nhất. \\ \hline
+\multirow{2}{*}{Feedback} & POST & \texttt{/api/orders/feedback} & Gửi đánh giá cho sản phẩm. \\ \cline{2-4}
+& GET & \texttt{/api/orders/feedback/product/{id}} & Xem các đánh giá của sản phẩm. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Admin Service}
+
+Dịch vụ quản trị cung cấp các công cụ hỗ trợ theo dõi biến động hệ thống và kết xuất dữ liệu thống kê. Điểm đặc biệt của dịch vụ này là khả năng lưu vết chi tiết mọi hành động của người quản lý thông qua hệ thống Action Logs, đảm bảo tính minh bạch và an toàn dữ liệu. Danh mục toàn bộ API của dịch vụ được trình bày tại Bảng \ref{tab:all_admin_api}.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục API của Admin Service}
+\label{tab:all_admin_api}
+\begin{tabular}{|l|c|l|p{3cm}|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{2}{*}{Tạo báo cáo} & POST & \texttt{/api/admins/reports/top-selling-products} & Thống kê sản phẩm bán chạy. \\ \cline{2-4}
+& POST & \texttt{/api/admins/reports/monthly-revenue} & Thống kê doanh thu định kỳ. \\ \hline
+\multirow{2}{*}{Truy vấn báo cáo} & GET & \texttt{/api/admins/reports} & Danh sách các tệp báo cáo. \\ \cline{2-4}
+& GET & \texttt{/api/admins/reports/{id}} & Xem thông tin báo cáo chi tiết. \\ \hline
+\multirow{2}{*}{Nhật ký thao tác} & GET & \texttt{/api/admins/action-logs/filter} & Lọc nhật ký thao tác nâng cao. \\ \cline{2-4}
+& GET & \texttt{/api/admins/action-logs/by-id/{id}} & Xem chi tiết một bản ghi log. \\ \hline
+\end{tabular}
+\end{table}
+
+

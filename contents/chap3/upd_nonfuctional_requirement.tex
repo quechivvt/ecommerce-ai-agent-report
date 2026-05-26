@@ -1,0 +1,30 @@
+\subsection{Yêu cầu phi chức năng}
+
+Các yêu cầu phi chức năng được thiết lập nhằm đảm bảo hệ thống vận hành đúng thiết kế, an toàn và có khả năng kiểm chứng trực tiếp trên kiến trúc Microservices.
+
+\subsubsection{Tính ổn định và trải nghiệm người dùng}
+
+\begin{itemize}
+    \item \textbf{[NFR1] Tính ổn định giao diện} \hfill (\textit{Ưu tiên: Cao})\\
+    Giao diện người dùng được thiết kế tối giản, tập trung vào việc hoàn thành quy trình đặt hàng thông qua các bước logic được điều hướng rõ ràng, tránh gây nhầm lẫn trong thao tác.
+
+    \item \textbf{[NFR2] Hiệu năng phản hồi AI Agent} \hfill (\textit{Ưu tiên: Cao})\\
+    Trợ lý ảo được thiết kế để xử lý luồng suy luận tập trung, đảm bảo đưa ra phản hồi đúng ngữ cảnh nghiệp vụ bán lẻ điện thoại và hạn chế các thông báo lỗi kỹ thuật trực tiếp tới người dùng.
+
+    \item \textbf{[NFR3] Tính dễ học} \hfill (\textit{Ưu tiên: Trung bình})\\
+    Người dùng có thể tự làm quen và sử dụng các chức năng tìm kiếm, xem chi tiết sản phẩm và thao tác giỏ hàng một cách tự nhiên mà không cần hướng dẫn phức tạp.
+\end{itemize}
+
+\subsubsection{Bảo mật, tin cậy và khả năng bảo trì}
+
+\begin{itemize}
+    \item \textbf{[NFR4] Bảo mật thông tin} \hfill (\textit{Ưu tiên: Cao})\\
+    Triển khai cơ chế bảo mật cho mật khẩu người dùng bằng các thuật toán mã hóa một chiều trước khi lưu trữ. Đảm bảo an toàn quyền truy cập thông qua các cơ chế xác thực được tích hợp trong hệ thống.
+
+    \item \textbf{[NFR5] Khả năng quản trị và mở rộng} \hfill (\textit{Ưu tiên: Cao})\\
+    Kiến trúc Microservices cho phép tách biệt hoàn toàn giữa dịch vụ nghiệp vụ (Java) và dịch vụ AI (Python), giúp việc bảo trì hoặc nâng cấp từng thành phần không gây ảnh hưởng đến toàn bộ hệ thống.
+
+    \item \textbf{[NFR6] Tính toàn vẹn dữ liệu} \hfill (\textit{Ưu tiên: Cao})\\
+    Sử dụng cơ chế truyền tải sự kiện thông qua Message Broker để đảm bảo trạng thái dữ liệu (như đơn hàng, sản phẩm) được đồng bộ hóa nhất quán giữa các dịch vụ phân tán.
+\end{itemize}
+

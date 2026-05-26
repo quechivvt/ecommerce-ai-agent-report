@@ -19,6 +19,8 @@
 \usepackage[framemethod=tikz]{mdframed}% For highlighting paragraph backgrounds
 \usepackage{caption,subcaption}
 
+\usepackage{chngcntr}
+
 \usepackage{lastpage}
 \usepackage[lined,boxed,commentsnumbered]{algorithm2e}
 \usepackage{enumerate}
@@ -36,15 +38,18 @@
 \usepackage{tikz}
 \usepackage{titlesec}
 \usepackage{url}
+\usepackage{needspace}
 
 \usetikzlibrary{arrows,snakes,backgrounds,calc}
 \usepackage[unicode]{hyperref}
 \hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true} 
 \usepackage{listings}
 
-%\usepackage{pstcol} 								% PSTricks with the standard color package
-
 \usepackage[normalem]{ulem}
+
+% Đánh số hình theo chương 
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
 
 \newtheorem{theorem}{{\bf Định lý}}
 \newtheorem{property}{{\bf Tính chất}}
@@ -125,7 +130,7 @@ morekeywords={}
 		\tiny \bf 
 	\end{tabular}  }
 \fancyfoot{} % clear all footer fields
-\fancyfoot[L]{\scriptsize  Báo cáo Đồ án chuyên ngành (CO4029) - HK1 2025 - 2026}
+\fancyfoot[L]{\scriptsize  Báo cáo Đồ án tốt nghiệp (CO4337) - HK2 2025 - 2026}
 \fancyfoot[R]{\scriptsize  Trang {\thepage}/\pageref{LastPage}}
 
 \renewcommand{\headrulewidth}{0.3pt}
@@ -181,93 +186,99 @@ morekeywords={}
 \begin{document}
 
 \begin{titlepage}
-\begin{tikzpicture}[remember picture, overlay]
-  \draw[line width = 4pt] ($(current page.north west) + (0.4in,-0.5in)$) rectangle ($(current page.south east) + (-0.4in,0.5in)$);
-  \draw[line width=1.5pt]
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[line width = 4pt] ($(current page.north west) + (0.4in,-0.5in)$) rectangle ($(current page.south east) + (-0.4in,0.5in)$);
+    \draw[line width=1.5pt]
     ($ (current page.north west) + (0.45in,-0.55in) $)
     rectangle
     ($ (current page.south east) + (-0.45in,0.55in) $);
-\end{tikzpicture}
+  \end{tikzpicture}
 
-\begin{center}
-\LARGE \textbf{ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH} \\
-\vspace{0.2cm}
-\LARGE \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\
-\vspace{0.2cm}
-\LARGE \textbf{KHOA KHOA HỌC VÀ KĨ THUẬT MÁY TÍNH}
-\end{center}
-\vspace{0.3cm}
+  \begin{center}
+    \LARGE \textbf{ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH} \\
+    \vspace{0.2cm}
+    \LARGE \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\
+    \vspace{0.2cm}
+    \LARGE \textbf{KHOA KHOA HỌC VÀ KĨ THUẬT MÁY TÍNH}
+  \end{center}
+  \vspace{0.3cm}
 
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=4cm]{images/logo_hcmut.png}
-\end{center}
-\end{figure}
+  \begin{figure}[h!]
+    \begin{center}
+      \includegraphics[width=4cm]{images/logo_hcmut.png}
+    \end{center}
+  \end{figure}
 
-\begin{center}
-\begin{tabular}{c}
-\multicolumn{1}{c}{\textbf{{\LARGE BÁO CÁO}}}\\
-\\{\textbf{{\LARGE ĐỒ ÁN CHUYÊN NGÀNH}}}
-\vspace{0.2cm}
-\\{\textbf{{\LARGE HỌC KỲ: 251 - NĂM HỌC: 2025-2026}}}
-\\
-\\
-\end{tabular}
-\vspace{0.5cm}
+  \begin{center}
+    \begin{tabular}{c}
+      \multicolumn{1}{c}{\textbf{{\LARGE BÁO CÁO}}} \\
+      \\{\textbf{{\LARGE ĐỒ ÁN TỐT NGHIỆP}}}
+      \vspace{0.2cm}
+      \\{\textbf{{\LARGE HỌC KỲ: 252 - NĂM HỌC: 2025-2026}}}
+      \\
+      \\
+    \end{tabular}
+    \vspace{0.3cm}
 
-\begin{tabular}{p{14cm}}
-\textbf{\LARGE HỆ THỐNG THƯƠNG MẠI ĐIỆN TỬ CHO BÁN LẺ ĐIỆN THOẠI TÍCH HỢP TRỢ LÝ ẢO AI AGENT}
-\vspace{0.25cm}
+    \begin{tabular}{p{14cm}}
+      \noindent\rule{\linewidth}{1.2pt}
+      \vspace{0.2cm}
+      \textbf{\LARGE HỆ THỐNG THƯƠNG MẠI ĐIỆN TỬ CHO BÁN LẺ ĐIỆN THOẠI TÍCH HỢP TRỢ LÝ ẢO AI AGENT}
+      \vspace{0.2cm}
+      \noindent\rule{\linewidth}{1.2pt}
 
-\begin{center}
-{\Large NGÀNH: KHOA HỌC MÁY TÍNH}
-\end{center}
+      \vspace{0.2cm}
 
-\end{tabular}
-\end{center}
-\vspace{0.5cm}
+      \begin{center}
+        {\Large NGÀNH: KHOA HỌC MÁY TÍNH}
+      \end{center}
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \begin{tabular}{ll}
+      \textbf{\Large HỘI ĐỒNG:} {\Large 19L Khoa học Máy tính}
+      \\
+      \\
+      % \textbf{\Large Chủ tịch:} {\Large PGS. TS. Trần Văn Hoài}
+      % \\
+      % \\
+      % \textbf{\Large Ủy viên:} {\Large ThS. Lê Thị Bảo Thu}
+      % \\
+      % \\
+      \textbf{\Large GVHD:} {\Large PGS. TS. Quản Thành Thơ}
+      \\
+      \\
+      \textbf{\Large TKHĐ:} {\Large ThS. Nguyễn Minh Tâm}
+    \end{tabular}
+  \end{center}
+
+  \begin{center}
+    \textbf{\Large ---o0o---}
+  \end{center}
+
+  \begin{center}
+    \begin{tabular}{ll}
+      \textbf{\Large SVTH1:} {\Large Phạm Quốc Toàn - 2213539}
+      \\
+      \\
+      \textbf{\Large SVTH2:}  {\Large Nguyễn Ngọc Quế Chi - 2210371}
+      \\
+      \\
+      \textbf{\Large SVTH3:}  {\Large Trần Nguyễn Anh Khoa - 2211651}
+      \\
+      \\
+    \end{tabular}
+  \end{center}
+  \vspace{0.5cm}
 
 
 
 
-\begin{center}
-\begin{tabular}{ll}
-\textbf{\Large HỘI ĐỒNG:} {\Large ................................}
-\\
-\\
-\textbf{\Large GVHD:} {\Large PGS. TS Quản Thành Thơ.}
-\\
-\\
-\textbf{\Large TKHĐ:} {\Large ................................}
-\end{tabular}
-\end{center}
 
-\begin{center}
-\textbf{\Large ---o0o---}
-\end{center}
-
-\begin{center}
-\begin{tabular}{ll}
-\textbf{\Large SVTH1:} {\Large Phạm Quốc Toàn - 2213539}
-\\
-\\
-\textbf{\Large SVTH2:}  {\Large Nguyễn Ngọc Quế Chi - 2210371}
-\\
-\\
-\textbf{\Large SVTH3:}  {\Large Trần Nguyễn Anh Khoa - 2211651}
-\\
-\\
-\end{tabular}
-\end{center}
-\vspace{0.5cm}
-
-
-
-
-
-\begin{center}
-{\Large TP. Hồ Chí Minh, Tháng 12/2025}
-\end{center}
+  \begin{center}
+    {\Large TP. Hồ Chí Minh, Tháng 05/2026}
+  \end{center}
 \end{titlepage}
 \newpage
 \clearpage
@@ -276,32 +287,29 @@ morekeywords={}
 \clearpage
 
 
-
-
-
 %%%%%%%%%%%%%%%%%INTRO SET UP%%%%%%%%%%%%%%%%%%%
 \fontsize{13pt}{15.6pt}\selectfont
 \setlength{\parskip}{1.5ex}
 
 \titleformat{\section}[block]
-  {\normalfont\fontsize{15pt}{18pt}\selectfont\bfseries\centering} 
-  {\thesection}
-  {1em}
-  {}
+{\normalfont\fontsize{15pt}{18pt}\selectfont\bfseries\centering}
+{\thesection}
+{1em}
+{}
 \titlespacing*{\section}{0pt}{0.8em}{0.4em}
 
 \titleformat{\subsection}
-  {\normalfont\fontsize{14pt}{16.8pt}\bfseries} 
-  {\thesubsection}
-  {1em}
-  {}
+{\normalfont\fontsize{14pt}{16.8pt}\bfseries}
+{\thesubsection}
+{1em}
+{}
 \titlespacing*{\subsection}{0pt}{0.6em}{0.2em}
 
 \titleformat{\subsubsection}
-  {\normalfont\fontsize{13pt}{15.6pt}\bfseries} 
-  {\thesubsubsubsection}
-  {1em}
-  {}
+{\normalfont\fontsize{13pt}{15.6pt}\bfseries}
+{\thesubsubsubsection}
+{1em}
+{}
 \titlespacing*{\subsubsection}{0pt}{0.3em}{0.1em}
 %%%%%%%%%%%%%%%%%INTRO%%%%%%%%%%%%%%%%%%%
 \input{intro_outro/chu_ky_thay.tex}
@@ -312,8 +320,7 @@ morekeywords={}
 
 
 
-
-
+\pagestyle{empty} 
 \tableofcontents
 \clearpage
 \listoffigures
@@ -326,11 +333,12 @@ morekeywords={}
 
 
 %%%%%%%%%%%%%%%%%CONTENTS%%%%%%%%%%%%%%%%%%%
-\titleformat{\section}[block] 
-  {\normalfont\fontsize{15pt}{18pt}\selectfont\bfseries}
-  {\thesection}
-  {1em}
-  {}
+\pagestyle{fancy}
+\titleformat{\section}[block]
+{\normalfont\fontsize{15pt}{18pt}\selectfont\bfseries}
+{\thesection}
+{1em}
+{}
 \setcounter{page}{1}
 
 
@@ -340,12 +348,12 @@ morekeywords={}
 \section{Giới thiệu đề tài}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm trình bày tổng quan về đề tài nghiên cứu, bao gồm bối cảnh và lý do lựa chọn đề tài, mục tiêu cần đạt được cũng như phạm vi thực hiện của hệ thống. Thông qua đó, chương này nhằm xác định rõ ý nghĩa, hướng phát triển và giới hạn của đề tài.
-\end{center}
-\end{minipage}
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Trong chương này, nhóm trình bày tổng quan về đề tài, bao gồm bối cảnh và lý do lựa chọn đề tài, mục tiêu cần đạt được cũng như phạm vi thực hiện của hệ thống. Thông qua đó, chương này nhằm xác định rõ ý nghĩa, hướng phát triển và giới hạn của đề tài.
+    \end{center}
+  \end{minipage}
 \end{center}
 \input{contents/chap1/ly_do.tex}
 \input{contents/chap1/muc_tieu.tex}
@@ -356,36 +364,23 @@ Trong chương này, nhóm trình bày tổng quan về đề tài nghiên cứu
 
 
 
-\section{Khảo sát thị trường}
-\hrule
-\begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm khảo sát, tìm hiểu và trải nghiệm các hệ thống tương tự hiện có trên thị trường. Sau đó, nhóm so sánh các hệ thống và tìm ra khoảng trống trên thị trường. Thông qua đó, xác định hướng phát triển hợp lý của đề tài.
-\end{center}
-\end{minipage}
-\end{center}
-\input{contents/chap2/cellphones.tex}
-\input{contents/chap2/fpt.tex}
-\input{contents/chap2/tgdd.tex}
-\input{contents/chap2/so_sanh.tex}
-\clearpage
-
-
-
-
-
 \section{Phân tích yêu cầu}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm ...
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Trong chương này, nhóm đã làm rõ các yêu cầu và luồng nghiệp vụ thông qua đặc tả các trường hợp sử dụng cùng các biểu đồ UML. Đây là khung sườn quan trọng giúp xác định phạm vi chức năng và là cơ sở để triển khai thiết kế kỹ thuật ở chương tiếp theo.
+    \end{center}
+  \end{minipage}
 \end{center}
-\end{minipage}
-\end{center}
+\input{contents/chap3/market.tex}
+\input{contents/chap3/upd_stakeholder.tex}
+\input{contents/chap3/upd_functional_requirement.tex}
+\input{contents/chap3/upd_nonfuctional_requirement.tex}
+\input{contents/chap3/upd_usecase.tex}
+\input{contents/chap3/upd_activity_diagram.tex}
+\input{contents/chap3/upd_sequence_diagram.tex}
 \clearpage
 
 
@@ -395,12 +390,12 @@ Trong chương này, nhóm ...
 \section{Cơ sở lý thuyết}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Chương này tập trung vào các cơ sở lý thuyết quan trọng về kiến trúc hệ thống và AI Agent. Những cơ sở lý thuyết này đóng vai trò làm nền tảng cho việc thực hiện đề tài.
-\end{center}
-\end{minipage}
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Chương này tập trung vào các cơ sở lý thuyết quan trọng về kiến trúc hệ thống và AI Agent. Những cơ sở lý thuyết này đóng vai trò làm nền tảng cho việc thực hiện đề tài.
+    \end{center}
+  \end{minipage}
 \end{center}
 \input{contents/chap4/kien_truc.tex}
 \input{contents/chap4/ai.tex}
@@ -413,16 +408,17 @@ Chương này tập trung vào các cơ sở lý thuyết quan trọng về ki�
 \section{Công nghệ}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã tìm hiểu, nghiên cứu và quyết định lựa chọn để thực hiện đồ án.
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã tìm hiểu, nghiên cứu và quyết định lựa chọn để thực hiện đồ án.
+    \end{center}
+  \end{minipage}
 \end{center}
-\end{minipage}
-\end{center}
-\input{contents/chap5/fe.tex}
-\input{contents/chap5/be.tex}
+\input{contents/chap5/upd_backend.tex}
+\input{contents/chap5/frontend.tex}
 \input{contents/chap5/ai.tex}
+\input{contents/chap5/upd_infrastructure.tex}
 \clearpage
 
 
@@ -432,14 +428,60 @@ Trong chương này, nhóm giới thiệu về các công nghệ mà nhóm đã 
 \section{Thiết kế hệ thống}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm ...
-\end{center}
-\end{minipage}
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Chương này thiết kế hệ thống dựa trên kiến trúc đã chọn. Các nội dung về thiết kế kiến trúc, cơ sở dữ liệu và giao diện được trình bày chi tiết nhằm tạo cơ sở kỹ thuật để triển khai hệ thống.
+    \end{center}
+  \end{minipage}
 \end{center}
 \input{contents/chap6/kien_truc.tex}
+\input{contents/chap6/class_diagram.tex}
+\input{contents/chap6/upd_erd.tex}
+\input{contents/chap6/upd_api.tex}
+\input{contents/chap6/upd_kafka-message.tex}
+\input{contents/chap6/ui_ux.tex}
+\input{contents/chap6/ai.tex}
+\clearpage
+
+
+
+
+
+\section{Hiện thực và triển khai hệ thống}
+\hrule
+\begin{center}
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Chương này trình bày quá trình hiện thực và triển khai hệ thống dựa trên các thiết kế đã xây dựng ở chương trước. Các nội dung bao gồm cách hiện thực từng thành phần trong hệ thống, tổ chức pipeline xử lý và phương pháp triển khai trên môi trường thực tế, nhằm đảm bảo hệ thống có thể vận hành ổn định và hiệu quả.
+    \end{center}
+  \end{minipage}
+\end{center}
+\input{contents/chap7/frontend_impl.tex}
+\input{contents/chap7/ai.tex}
+\clearpage
+
+
+
+
+
+\section{Kiểm thử và đánh giá hệ thống}
+\hrule
+\begin{center}
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Chương này trình bày quá trình kiểm thử hệ thống nhằm đánh giá độ chính xác và tính ổn định của các thành phần. Các nội dung tập trung vào thiết kế test case, phương pháp đánh giá và phân tích kết quả, từ đó xác nhận hệ thống đáp ứng các yêu cầu đã đề ra.
+    \end{center}
+  \end{minipage}
+\end{center}
+\input{contents/chap8/backend_unit_testing.tex}
+\input{contents/chap8/backend_api_testing.tex}
+\input{contents/chap8/frontend_testing.tex}
+\input{contents/chap8/ai.tex}
+\input{contents/chap8/non_functional_testing.tex}
+\input{contents/chap8/fuctional_uc_testing.tex}
 \clearpage
 
 
@@ -449,13 +491,15 @@ Trong chương này, nhóm ...
 \section{Kết luận và hướng phát triển}
 \hrule
 \begin{center}
-\begin{minipage}{0.75\textwidth}
-\begin{center}
-\itshape
-Trong chương này, nhóm ...
+  \begin{minipage}{0.75\textwidth}
+    \begin{center}
+      \itshape
+      Trong chương này, nhóm tổng kết những kết quả đã đạt được trong quá trình nghiên cứu và triển khai hệ thống. Bên cạnh đó, chương cũng đề xuất một số hướng phát triển trong tương lai.
+    \end{center}
+  \end{minipage}
 \end{center}
-\end{minipage}
-\end{center}
+\input{contents/chap9/ketqua.tex}
+\input{contents/chap9/dinhhuong.tex}
 \clearpage
 
 
@@ -463,6 +507,9 @@ Trong chương này, nhóm ...
 
 
 %%%%%%%%%%%%%%%%%OUTRO%%%%%%%%%%%%%%%%%%%
+\phantomsection
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+\renewcommand{\refname}{Tài liệu tham khảo}
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 \clearpage

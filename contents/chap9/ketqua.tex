@@ -1,0 +1,32 @@
+\subsection{Kết quả đạt được}
+
+Sau quá trình nghiên cứu, thiết kế và hiện thực hóa, nhóm đã hoàn thành việc xây dựng hệ thống thương mại điện tử tích hợp Trợ lý ảo AI Agent đáp ứng đầy đủ các mục tiêu đề ra ban đầu. Dưới đây là những kết quả cụ thể mà hệ thống đã đạt được:
+
+\subsubsection{Về kiến trúc hệ thống}
+\begin{itemize}
+    \item Xây dựng thành công hệ thống dựa trên kiến trúc Microservices với 7 dịch vụ độc lập, được container hóa bằng Docker, giúp hệ thống có khả năng mở rộng ngang linh hoạt.
+    \item Hiện thực hóa mô hình hướng sự kiện (Event-Driven Architecture) thông qua Apache Kafka, đảm bảo sự tách biệt (loose coupling) và tính chịu lỗi cao giữa các dịch vụ Java và Python.
+    \item Áp dụng thành công mô hình CQRS và Saga Pattern để quản lý các giao dịch phân tán, đảm bảo tính nhất quán dữ liệu ngay cả khi xử lý các luồng nghiệp vụ phức tạp như thanh toán và cập nhật kho hàng.
+\end{itemize}
+
+\subsubsection{Về nền tảng thương mại điện tử}
+\begin{itemize}
+    \item Hoàn thiện đầy đủ các luồng nghiệp vụ cốt lõi: từ quản lý sản phẩm, giỏ hàng, đặt hàng đến quy trình thanh toán đa bước.
+    \item Giao diện người dùng được tối ưu hóa bằng Next.js 16, đạt điểm số hiệu năng cao trên Google Lighthouse (trên 90 điểm cho các chỉ số quan trọng), hỗ trợ tốt cho SEO và trải nghiệm di động.
+    \item Hệ thống quản trị (Admin Dashboard) cho phép theo dõi báo cáo doanh thu, quản lý tồn kho và trạng thái đơn hàng theo thời gian thực.
+\end{itemize}
+
+\subsubsection{Về trợ lý ảo AI Agent}
+\begin{itemize}
+    \item Tích hợp thành công Trợ lý ảo dựa trên kiến trúc RAG (Retrieval-Augmented Generation), cho phép AI tư vấn sản phẩm dựa trên dữ liệu thực tế từ kho hàng.
+    \item AI có khả năng thực hiện các tác vụ phức tạp như so sánh cấu hình điện thoại, kiểm tra tình trạng đơn hàng và đưa ra gợi ý cá nhân hóa dựa trên nhu cầu của khách hàng.
+\end{itemize}
+
+\subsubsection{Về chất lượng mã nguồn và kiểm thử}
+\begin{itemize}
+    \item Hệ thống đạt độ bao phủ mã nguồn (Code Coverage) trên 80\% thông qua các bộ unit test tự động cho cả Backend (JUnit/Mockito) và Frontend (Vitest).
+    \item Quy trình CI/CD được thiết lập tự động giúp kiểm soát chất lượng mã nguồn và rút ngắn thời gian triển khai các tính năng mới.
+\end{itemize}
+
+\vspace{10pt}
+Nhìn chung, hệ thống không chỉ là một trang web bán hàng đơn thuần mà là một nền tảng công nghệ hiện đại, kết hợp hài hòa giữa sức mạnh của kiến trúc hệ thống phân tán và khả năng hỗ trợ thông minh của trí tuệ nhân tạo.

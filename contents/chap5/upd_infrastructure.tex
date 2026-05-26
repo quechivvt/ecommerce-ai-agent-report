@@ -1,0 +1,85 @@
+\subsection{Hạ tầng và triển khai}
+
+Các thành phần hạ tầng như cơ sở dữ liệu, công cụ đóng gói, nền tảng triển khai và hệ thống quản lý phiên bản là những yếu tố cần thiết đối với hệ thống thương mại điện tử bán lẻ điện thoại tích hợp AI Agent của nhóm. Đây là lớp công nghệ bảo đảm dữ liệu được lưu trữ an toàn, môi trường thực thi của các dịch vụ duy trì tính nhất quán, quá trình triển khai diễn ra ổn định và vòng đời phát triển phần mềm được kiểm soát chặt chẽ. 
+
+\subsubsection{Cơ sở dữ liệu}
+
+Cơ sở dữ liệu là thành phần nền tảng có vai trò lưu trữ, quản lý và truy xuất thông tin phục vụ các nghiệp vụ cốt lõi của ứng dụng. Việc triển khai hợp lý giúp đảm bảo tính toàn vẹn, nhất quán và an toàn dữ liệu. Để tìm ra giải pháp phù hợp nhất cho hệ thống, nhóm đã tiến hành nghiên cứu và đánh giá các hệ quản trị cơ sở dữ liệu quan hệ phổ biến hiện nay. Dữ liệu tóm tắt được biểu diễn ở bảng \ref{tab:database_comparison}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+\caption{So sánh các hệ quản trị cơ sở dữ liệu} \label{tab:database_comparison} \\
+\hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endfirsthead
+
+\caption[]{So sánh các hệ quản trị cơ sở dữ liệu (tt)} \\ \hline
+\centering\textbf{Công nghệ} & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+\endhead
+
+Oracle Database&
+- Khả năng xử lý khối lượng dữ liệu khổng lồ với tính bảo mật và độ ổn định gần như tuyệt đối. \newline
+- Cung cấp các công cụ quản trị chuyên sâu tối ưu cho doanh nghiệp lớn. &
+- Chi phí bản quyền cực kỳ đắt đỏ và yêu cầu cấu hình phần cứng rất cao. \newline
+- Quy trình triển khai và bảo trì phức tạp, không linh hoạt cho các dự án vừa và nhỏ. &
+Không lựa chọn do chi phí vận hành quá lớn và mức độ phức tạp vượt quá nhu cầu thực tế của dự án. \\ \hline
+
+MySQL &
+- Tốc độ thực thi nhanh đối với các truy vấn đọc và ghi dữ liệu đơn giản. \newline
+- Cấu hình nhẹ nhàng, dễ triển khai và có cộng đồng hỗ trợ rộng lớn. &
+- Khả năng xử lý các truy vấn lồng nhau phức tạp và các kiểu dữ liệu hiện đại còn hạn chế. \newline
+- Chưa đáp ứng tốt các tiêu chuẩn khát khe về tính toàn vẹn dữ liệu trong các kịch bản phức tạp. &
+Không chọn do cần một hệ thống mạnh mẽ hơn để quản lý các giao dịch nghiệp vụ và dữ liệu đa dạng. \\\hline
+
+PostgreSQL &
+- Tuân thủ chặt chẽ tiêu chuẩn SQL và đặc tính ACID, đảm bảo an toàn giao dịch tuyệt đối. \newline 
+- Tích hợp tốt với các thư viện hiện đại như Spring Data JPA, hỗ trợ quản lý chỉ mục tự động hiệu quả. \newline
+- Hỗ trợ kiểu dữ liệu JSONB linh hoạt cho dữ liệu phi cấu trúc. & 
+- Mức độ tiêu thụ tài nguyên hệ thống cao hơn so với các giải pháp cơ sở dữ liệu tối giản. \newline 
+- Tốc độ đọc dữ liệu cơ bản đôi khi chậm hơn MySQL trong một số kịch bản truy vấn đơn lẻ. & 
+Được chọn nhờ khả năng xử lý dữ liệu tin cậy, hỗ trợ tốt các dịch vụ trực tuyến miễn phí và tính tương thích cao với hệ sinh thái Spring. \\ \hline
+
+\end{longtable}
+\end{center}
+
+\vspace{-40pt}
+
+PostgreSQL được nhóm đánh giá là hệ quản trị cơ sở dữ liệu quan hệ mã nguồn mở tiên tiến nhất hiện nay, mang trong mình sức mạnh xử lý tương đương các giải pháp thương mại đắt đỏ. Nền tảng này nổi bật với khả năng tuân thủ chặt chẽ các đặc tính ACID, đảm bảo an toàn tuyệt đối cho các giao dịch quan trọng như quản lý đơn hàng và kho vận. Ngoài ra, PostgreSQL còn cung cấp các tính năng mở rộng mạnh mẽ như kiểu dữ liệu JSONB, tạo điều kiện thuận lợi để hệ thống có thể tích hợp và quản lý các thông số kỹ thuật đa dạng của sản phẩm điện thoại trong các giai đoạn phát triển tiếp theo mà không cần tái cấu trúc toàn bộ cơ sở dữ liệu.
+
+Thay vì phải tự vận hành hạ tầng phức tạp, nhóm có thể dễ dàng tận dụng các nền tảng đám mây hiện đại như Supabase hoặc Neon. Các dịch vụ này cung cấp các gói lưu trữ trực tuyến miễn phí với hiệu suất ổn định và khả năng kết nối linh hoạt, cực kỳ phù hợp với quy mô triển khai và nguồn lực của một đồ án sinh viên. So với sự tốn kém của Oracle hay những hạn chế về tính năng nâng cao của MySQL, PostgreSQL chính là sự lựa chọn tối ưu khi vừa đảm bảo tính kinh tế, vừa đáp ứng trọn vẹn các tiêu chuẩn khắt khe về an toàn dữ liệu và khả năng mở rộng lâu dài cho hệ thống.
+
+\subsubsection{Công cụ đóng gói}
+
+Công cụ đóng gói đóng vai trò quyết định trong việc chuẩn hóa môi trường thực thi, giúp loại bỏ các sai khác giữa máy tính cá nhân và môi trường triển khai thực tế. Việc container hóa cho phép mỗi dịch vụ hoạt động độc lập, từ đó đơn giản hóa quy trình cập nhật và duy trì tính ổn định của toàn hệ thống.
+
+Docker đóng vai trò là giải pháp container hóa hàng đầu, cho phép đóng gói mỗi microservice cùng với toàn bộ môi trường thực thi của nó vào một container độc lập. Việc sử dụng Docker giúp loại bỏ hoàn toàn các lỗi phát sinh do sự khác biệt về môi trường hệ điều hành hoặc xung đột thư viện giữa các máy tính trong nhóm phát triển.
+
+Tuy việc vận hành container có thể làm tăng nhẹ mức độ tiêu thụ tài nguyên hệ thống, nhưng Docker mang lại khả năng chuẩn hóa môi trường Cloud-Native tuyệt vời cho cả dịch vụ Java và Python. Nhờ vào Docker, nhóm có thể đảm bảo tính nhất quán từ giai đoạn phát triển đến khi triển khai thực tế, đồng thời tạo tiền đề vững chắc cho việc quản lý vòng đời ứng dụng một cách chuyên nghiệp và linh hoạt.
+
+\subsubsection{Công cụ quản lí phiên bản}
+
+Hệ thống quản lý phiên bản là thành phần không thể thiếu nhằm đảm bảo tính đồng nhất của mã nguồn và hỗ trợ làm việc nhóm một cách có tổ chức. Công cụ này cho phép kiểm soát lịch sử thay đổi, giúp tăng tính minh bạch và an toàn cho tài sản số của dự án.
+
+GitHub là nền tảng quản lý mã nguồn tập trung dựa trên Git, đóng vai trò then chốt trong việc kiểm soát lịch sử thay đổi và hỗ trợ cộng tác giữa các thành viên trong nhóm. Nền tảng này cung cấp các công cụ quản lý quy trình phát triển chuyên nghiệp như Pull Request và Code Review, giúp tăng tính minh bạch và đảm bảo tính toàn vẹn của mã nguồn xuyên suốt dự án.
+
+Tuy đòi hỏi các thành viên phải tuân thủ nghiêm ngặt các quy tắc về phân nhánh và kiểm tra mã nguồn, nhưng GitHub mang lại khả năng phối hợp nhóm cực kỳ hiệu quả. Việc sử dụng GitHub làm kho lưu trữ tập trung không chỉ giúp bảo vệ tài sản số của dự án mà còn hỗ trợ nhóm theo dõi tiến độ và xử lý các xung đột mã nguồn một cách nhanh chóng, đảm bảo luồng phát triển luôn diễn ra ổn định và chuyên nghiệp.
+
+\subsubsection{Tóm tắt công nghệ}
+
+Bảng \ref{tab:infrastructure_summary} dưới đây là bảng tổng hợp các công nghệ then chốt được áp dụng ở hạ tầng nhằm hiện thực hóa hệ thống microservice phân tán:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\caption{Tổng hợp các công nghệ sử dụng tại Hạ tầng}
+\label{tab:infrastructure_summary}
+\begin{tabular}{|l|p{4.5cm}|p{6.5cm}|}
+\hline
+\textbf{Thành phần} & \textbf{Công nghệ} & \textbf{Vai trò cốt lõi} \\ \hline
+Cơ sở dữ liệu & PostgreSQL & Lưu trữ dữ liệu giao dịch chính, hỗ trợ tối ưu truy vấn cho luồng đọc/ghi. \\ \hline
+Containerization & Docker & Chuẩn hóa môi trường Cloud-Native cho các dịch vụ Java và Python.\\ \hline
+Quản lý Phiên bản & GitHub & Quản lý mã nguồn tập trung và cộng tác phát triển nhóm. \\ \hline
+\end{tabular}
+\end{table}
+

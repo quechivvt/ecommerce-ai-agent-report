@@ -1,1 +1,1053 @@
-\section{Phụ lục}
+\section*{Phụ lục}
+\addcontentsline{toc}{section}{Phụ lục}
+
+
+\subsection*{Giao diện người dùng (UI Prototype)}
+Các bản thiết kế giao diện được xây dựng và quản lý trên nền tảng Figma, thể hiện toàn bộ cấu trúc màn hình, luồng tương tác và bố cục hiển thị của hệ thống.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap6/ui/ui_register.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Đăng ký tài khoản}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap6/ui/ui_forgot_password.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Quên mật khẩu}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap6/ui/ui_reset_password.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Đặt lại mật khẩu}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/chap6/ui/ui_about_us_1.png}
+        \vspace{0.3cm}
+        \caption*{(a) Trang Giới thiệu – Nội dung doanh nghiệp}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/chap6/ui/ui_about_us_2.png}
+        \vspace{0.3cm}
+        \caption*{(b) Trang Giới thiệu – Số liệu và đánh giá}
+    \end{minipage}
+    \vspace{0.4cm}
+    \caption{Giao diện trang Giới thiệu}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{images/chap6/ui/ui_chatbot.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Chatbot hỗ trợ}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/chap6/ui/ui_view_profile_address.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Sổ địa chỉ}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap6/ui/ui_view_profile_bank.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Tài khoản ngân hàng liên kết}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap6/ui/ui_view_profile_change_password.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Đổi mật khẩu}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/chap6/ui/ui_order_detail.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Chi tiết đơn hàng}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/chap6/ui/ui_give_feedback.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Đánh giá sản phẩm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/chap6/ui/ui_report_management.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Báo cáo thống kê}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/chap6/ui/ui_order_management_track_one.png}
+    \vspace{0.5cm}
+    \caption{Giao diện Chi tiết xử lý đơn hàng}
+\end{figure}
+
+\noindent
+\textbf{Link Figma UI:} \\
+\url{https://www.figma.com/design/zgNUxEcDKXeja4xWZwZOmX/CO4029?node-id=2-3&p=f&t=D6qgjIBfXOG20iMA-0}
+
+\vspace{12pt}
+
+\subsection*{Đặc tả chi tiết các trường hợp sử dụng} \label{sec:appx_usecase_detail}
+Phần này trình bày chi tiết các bảng đặc tả trường hợp sử dụng cho các chức năng quản trị và các nghiệp vụ hỗ trợ, bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{ss:usecase_detail} thông qua các bảng từ \ref{tab:uc-register} đến bảng \ref{tab:uc-admin-update-order-status}. 
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: Đăng ký tài khoản}
+\label{tab:uc-register} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC1] Đăng ký tài khoản \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng tạo tài khoản mới. Tài khoản quản trị viên được cấp riêng và không thể tự đăng ký. \\
+\hline
+\textbf{Tác nhân} & Khách hàng \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \\
+& 2. Cơ sở dữ liệu được kết nối với hệ thống. \\
+& 3. Kết nối với internet được đảm bảo. \\
+& 4. Khách hàng chưa có tài khoản trong hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn nút “Đăng ký” trên giao diện hệ thống. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị biểu mẫu đăng ký. \\
+& 2. Khách hàng nhập thông tin bắt buộc (email/số điện thoại, mật khẩu,...). \\
+& 3. Hệ thống kiểm tra tính hợp lệ của thông tin. \\
+& 4. Hệ thống lưu thông tin khách hàng vào cơ sở dữ liệu. \\
+& 5. Hệ thống xác nhận đăng ký thành công. \\
+& 6. Khách hàng có thể đăng nhập sau khi xác nhận. \\
+\hline
+\textbf{Hậu điều kiện} & Tài khoản mới được tạo thành công và khách hàng có thể đăng nhập. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & Ngoại lệ 1: Tại bước 3 \\
+& 3a. Nếu email đã tồn tại, hệ thống thông báo (\textit{yêu cầu nhập lại email khác}). \\
+& 3b. Nếu mật khẩu không đạt yêu cầu, hệ thống hiển thị thông báo lỗi và yêu cầu đổi mật khẩu khác. \\
+& 3c. Nếu các thông tin khác không hợp lệ hoặc chưa điền đủ các trường bắt buộc, hệ thống báo lỗi và yêu cầu nhập chính xác. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: Đăng nhập}
+\label{tab:uc-login} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC2] Đăng nhập \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép người dùng đăng nhập vào hệ thống bằng tài khoản đã đăng ký. \\
+\hline
+\textbf{Tác nhân} & Khách hàng, quản trị viên \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Người dùng đã có tài khoản trong hệ thống.\\
+\hline
+\textbf{Sự kiện kích hoạt} & Người dùng nhấn nút “Đăng nhập” trên giao diện hệ thống. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị màn hình đăng nhập. \newline
+2. Người dùng nhập thông tin đăng nhập. \newline
+3. Hệ thống xác thực thông tin đăng nhập. \newline
+4. Người dùng được chuyển đến trang chủ nếu đăng nhập thành công. \\
+\hline
+\textbf{Hậu điều kiện} & Người dùng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 2} \newline
+2a. Đối với người dùng là khách hàng, nếu quên mật khẩu, khách hàng nhấn chọn nút “Quên mật khẩu” để chuyển đến trang cấp lại mật khẩu. \newline
+2b. Đối với người dùng là khách hàng, nếu chọn phương thức đăng nhập bằng Google, hệ thống sẽ chuyển đến trang xác thực của Google\\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin đăng nhập không hợp lệ (sai tên tài khoản hoặc mật khẩu), hệ thống hiển thị thông báo lỗi và yêu cầu người dùng thử lại. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả use case: [UC3] Quên mật khẩu}
+\label{tab:uc-forgot-password} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Quên mật khẩu \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng lấy lại mật khẩu đã quên. \\
+\hline
+\textbf{Tác nhân} & Khách hàng\\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Người dùng đã có tài khoản trong hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn nút “Quên mật khẩu”. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị màn hình quên mật khẩu. \newline
+2. Khách hàng nhập thông tin email hoặc số điện thoại đã đăng ký tài khoản. \newline
+3. Hệ thống xác thực thông tin. \newline
+4. Hệ thống gửi đường dẫn đến trang đổi mật khẩu đến email hoặc sms của khách hàng. \newline
+5. Khách hàng nhập mật khẩu mới. \newline
+6. Hệ thống kiểm tra và cập nhật mật khẩu mới. \\
+\hline
+\textbf{Hậu điều kiện} & Khách hàng thiết lập mật khẩu mới thành công. \\
+\hline
+\textbf{Luồng thay thế} & Không \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin email hoặc số điện thoại không tồn tại trong hệ thống. \newline
+\textbf{Ngoại lệ 2: Tại bước 6} \newline
+6a. Mật khẩu mới không hợp lệ hoặc không đúng định dạng yêu cầu. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Quản lý thông tin cá nhân}
+\label{tab:uc-profile-management} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & [UC4] Quản lý thông tin cá nhân \\
+\hline
+\textbf{Tóm tắt mô tả} & Khách hàng xem và cập nhật thông tin cá nhân của mình trên hệ thống. \\
+\hline
+\textbf{Tác nhân} & Khách hàng. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với internet được đảm bảo. \newline
+4. Khách hàng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng truy cập vào mục “Thông tin cá nhân” trên giao diện. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Hệ thống hiển thị thông tin cá nhân hiện tại của khách hàng. \newline
+2. Khách hàng chọn chức năng chỉnh sửa thông tin. \newline
+3. Khách hàng nhập các thông tin mới cần thay đổi. \newline
+4. Hệ thống thực hiện kiểm tra, lưu thay đổi và cập nhật hồ sơ vào cơ sở dữ liệu. \\
+\hline
+\textbf{Hậu điều kiện} & Thông tin cá nhân mới được cập nhật thành công và hiển thị chính xác. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 2} \newline
+2a. Nếu khách hàng chỉ xem lại thông tin cá nhân mà không cần chỉnh sửa thì không chọn nút chỉnh sửa thông tin cá nhân. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Thông tin cập nhật không hợp lệ (sai định dạng hoặc thiếu trường bắt buộc), hệ thống thông báo lỗi. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Hủy đơn hàng}
+\label{tab:uc-cancel-order} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Hủy đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng hủy đơn hàng đã đặt trong một số điều kiện nhất định. \\
+\hline
+\textbf{Tác nhân} & Khách hàng. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Đơn hàng đang ở trạng thái cho phép hủy (ví dụ: Chờ xác nhận hoặc Chờ lấy hàng). \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng nhấn chọn chức năng hủy đơn hàng. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Khách hàng mở danh sách đơn hàng cá nhân và chọn đơn hàng muốn hủy. \newline
+2. Hệ thống hiển thị thông tin chi tiết của đơn hàng đó. \newline
+3. Khách hàng nhấn nút “Hủy đơn hàng”. \newline
+4. Hệ thống yêu cầu khách hàng xác nhận lại và chọn/nhập lý do hủy. \newline
+5. Hệ thống thực hiện kiểm tra các điều kiện ràng buộc để hủy đơn hàng. \newline
+6. Hệ thống cập nhật trạng thái đơn hàng thành “Đã hủy” và gửi thông báo xác nhận cho khách hàng. \\
+\hline
+\textbf{Hậu điều kiện} & Đơn hàng được chuyển sang trạng thái hủy thành công và hệ thống ngừng các quy trình xử lý tiếp theo. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 4} \newline
+4a. Khách hàng thay đổi ý định và từ chối xác nhận hủy, hệ thống đóng cửa sổ xác nhận và giữ nguyên trạng thái hiện tại của đơn hàng. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 5} \newline
+5a. Đơn hàng đã chuyển sang trạng thái không thể hủy (ví dụ: Đang giao hàng), hệ thống thông báo từ chối yêu cầu hủy đơn hàng. \newline
+5b. Lỗi kết nối cơ sở dữ liệu hoặc hệ thống không phản hồi, thông báo lỗi cho người dùng và không thay đổi trạng thái đơn hàng. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Xem trạng thái đơn hàng}
+\label{tab:uc-view-order-status} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Xem trạng thái đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép khách hàng theo dõi tiến trình của các đơn hàng sau khi đặt (chờ xác nhận, đang giao, đã giao thành công hoặc đã hủy). \\
+\hline
+\textbf{Tác nhân} & Khách hàng \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Khách hàng đã đăng nhập thành công vào hệ thống. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Khách hàng chọn chức năng “Đơn hàng của tôi” hoặc “Xem đơn hàng” trên giao diện người dùng. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Khách hàng truy cập vào mục danh sách đơn hàng theo trạng thái cần xem. \newline
+2. Hệ thống truy xuất và hiển thị danh sách các đơn hàng gần nhất phù hợp với yêu cầu. \newline
+3. Khách hàng chọn một đơn hàng cụ thể để xem chi tiết. \newline
+4. Hệ thống hiển thị chi tiết trạng thái, lộ trình và tiến trình xử lý hiện tại của đơn hàng đó. \\
+\hline
+\textbf{Hậu điều kiện} & Khách hàng nắm bắt được thông tin chi tiết về trạng thái và tiến trình xử lý thực tế của đơn hàng. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 2} \newline
+2a. Nếu không có đơn hàng nào phù hợp với bộ lọc hoặc lịch sử, hệ thống hiển thị danh sách trống và thông báo cho người dùng. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Quản lý sản phẩm}
+\label{tab:uc-admin-product-management} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Quản lý sản phẩm \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép quản trị viên thêm mới, chỉnh sửa thông tin, hoặc xóa sản phẩm trong danh mục hệ thống. \\
+\hline
+\textbf{Tác nhân} & Quản trị viên. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Quản trị viên đã đăng nhập thành công vào hệ thống quản trị. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Quản trị viên nhấn chọn chức năng “Quản lý sản phẩm” trên giao diện quản trị điều hành. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Quản trị viên lựa chọn tác vụ cần thực hiện: thêm mới, chỉnh sửa hoặc xóa sản phẩm. \newline
+2. Hệ thống hiển thị biểu mẫu hoặc cửa sổ xác nhận tương ứng với tác vụ đã chọn. \newline
+3. Quản trị viên thực hiện nhập mới hoặc cập nhật các thông tin sản phẩm. \newline
+4. Hệ thống thực hiện kiểm tra tính hợp lệ của dữ liệu đầu vào. \newline
+5. Hệ thống thực hiện lưu thông tin sản phẩm vào cơ sở dữ liệu. \newline
+6. Hệ thống gửi thông báo xác nhận thao tác thành công cho quản trị viên. \\
+\hline
+\textbf{Hậu điều kiện} & Danh mục sản phẩm được cập nhật chính xác trong hệ thống và hiển thị lên giao diện người dùng. \\
+\hline
+\textbf{Luồng thay thế} & \textbf{Luồng thay thế 1: Tại bước 3} \newline
+3a. Quản trị viên nhấn nút hủy thao tác hoặc thoát màn hình trước khi nhấn lưu, hệ thống sẽ không thực hiện bất kỳ thay đổi nào đối với dữ liệu. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 4} \newline
+4a. Nếu dữ liệu nhập vào không hợp lệ (sai định dạng giá, thiếu thông tin bắt buộc...), hệ thống báo lỗi chi tiết và yêu cầu quản trị viên hiệu chỉnh lại. \\
+\hline
+\end{longtable}
+
+\needspace{3\baselineskip}
+\begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
+\caption{Đặc tả trường hợp sử dụng: Cập nhật trạng thái đơn hàng}
+\label{tab:uc-admin-update-order-status} \\
+\hline
+\textbf{Tên trường hợp sử dụng} & Cập nhật trạng thái đơn hàng \\
+\hline
+\textbf{Tóm tắt mô tả} & Cho phép quản trị viên hoặc nhân viên vận hành thay đổi trạng thái đơn hàng (xác nhận, đang giao, đã giao, hủy) để khách hàng tiện theo dõi. \\
+\hline
+\textbf{Tác nhân} & Quản trị viên. \\
+\hline
+\textbf{Tiền điều kiện} & 1. Hệ thống hoạt động bình thường. \newline
+2. Cơ sở dữ liệu được kết nối với hệ thống. \newline
+3. Kết nối với Internet được đảm bảo. \newline
+4. Quản trị viên đã đăng nhập thành công vào hệ thống quản trị. \\
+\hline
+\textbf{Sự kiện kích hoạt} & Quản trị viên chọn một đơn hàng cụ thể từ danh sách đơn hàng để thực hiện cập nhật trạng thái. \\
+\hline
+\textbf{Các bước thực hiện} & 1. Quản trị viên truy cập vào danh mục quản lý danh sách đơn hàng. \newline
+2. Hệ thống truy xuất và hiển thị thông tin chi tiết của đơn hàng được chọn. \newline
+3. Quản trị viên lựa chọn trạng thái mới phù hợp với tiến độ thực tế. \newline
+4. Hệ thống thực hiện cập nhật trạng thái đơn hàng vào cơ sở dữ liệu. \newline
+5. Hệ thống tự động gửi thông báo cập nhật cho khách hàng về trạng thái mới của đơn hàng. \\
+\hline
+\textbf{Hậu điều kiện} & Trạng thái đơn hàng được cập nhật thành công trong hệ thống và đồng bộ với giao diện của khách hàng. \\
+\hline
+\textbf{Luồng thay thế} & Không. \\
+\hline
+\textbf{Luồng ngoại lệ} & \textbf{Ngoại lệ 1: Tại bước 3} \newline
+3a. Nếu đơn hàng đã bị khách hàng hủy ngay tại thời điểm quản trị viên đang thao tác cập nhật, hệ thống sẽ hiển thị thông báo lỗi và yêu cầu tải lại trang. \\
+\hline
+\end{longtable}
+
+\subsection*{Sơ đồ lớp} \label{sec:appx_class_diagram}
+Phần này trình bày chi tiết sơ đồ lớp cho các dịch vụ hỗ trợ và quản trị bổ sung của hệ thống, bao gồm dịch vụ người dùng, sản phẩm, giỏ hàng và quản trị. Các thành phần này kế thừa nhất quán kiến trúc tổng thể đã được trình bày tại mục \ref{sec}, đồng thời được lược giản một số thành phần phụ trợ nhằm đảm bảo tính trực quan và tránh lặp lại các khuôn mẫu thiết kế tương đồng.
+
+Hình \ref{fig:user_service_class_diagram} minh họa kiến trúc của dịch vụ người dùng. Dịch vụ này quản lý các chức năng liên quan đến xác thực, quản lý thông tin cá nhân và địa chỉ người dùng. Tương tự các dịch vụ khác trong hệ thống, kiến trúc được xây dựng theo hướng phân tách giữa truy vấn và xử lý trạng thái, đồng thời sử dụng cơ chế xử lý sự kiện nội bộ nhằm giảm mức độ phụ thuộc giữa các thành phần. Để đảm bảo tính trực quan, biểu đồ tập trung vào hai nghiệp vụ chính là xác thực và quản lý địa chỉ, trong khi các chức năng khác như hồ sơ người dùng hoặc tài khoản thanh toán được chủ ý lược giản.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/user-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ người dùng}
+\label{fig:user_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:product_service_class_diagram} minh họa kiến trúc của dịch vụ sản phẩm. Dịch vụ này chịu trách nhiệm quản lý thông tin sản phẩm, biến thể sản phẩm và chính sách giảm giá. Biểu đồ tập trung mô tả hai nghiệp vụ chính là quản lý sản phẩm và quản lý chương trình khuyến mãi, đồng thời thể hiện cơ chế cập nhật dữ liệu bất đồng bộ và xử lý các tác vụ nền phục vụ đồng bộ trạng thái hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/product-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ sản phẩm}
+\label{fig:product_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:cart_service_class_diagram} minh họa kiến trúc của dịch vụ giỏ hàng. Dịch vụ này chịu trách nhiệm quản lý thông tin sản phẩm được người dùng lựa chọn trong quá trình mua sắm. Biểu đồ thể hiện các nghiệp vụ chính như thêm sản phẩm, cập nhật số lượng, xóa dữ liệu và tính toán giá trị đơn hàng, đồng thời cho thấy sự phân tách giữa luồng truy vấn và xử lý thay đổi trạng thái.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{images/chap6/class_diagram/cart-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ giỏ hàng}
+\label{fig:cart_service_class_diagram}
+\end{figure}
+
+Hình \ref{fig:admin_service_class_diagram} minh họa kiến trúc của dịch vụ quản trị. Dịch vụ này hỗ trợ các tác vụ quản trị hệ thống như tạo báo cáo thống kê và lưu trữ lịch sử thao tác của quản trị viên. Biểu đồ tập trung mô tả các thành phần xử lý báo cáo và cơ chế ghi nhận hành động nhằm hỗ trợ theo dõi hoạt động và quản lý dữ liệu vận hành của hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{images/chap6/class_diagram/admin-service.png}
+\vspace{0.5cm}
+\caption{Sơ đồ lớp dịch vụ quản trị}
+\label{fig:admin_service_class_diagram}
+\end{figure}
+
+\subsection*{Sơ đồ hoạt động} \label{sec:appx_activity_diagram}
+Phần này mô tả chi tiết sơ đồ hoạt động cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:activity_diagram} thông qua các bảng từ bảng \ref{fig:act_register} đến bảng \ref{fig:act_change_status}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/register.png}
+   \vspace{0.5cm} 
+   \caption{Sơ đồ hoạt động chức năng Đăng ký tài khoản}
+    \label{fig:act_register}
+\end{figure}
+Hình \ref{fig:act_register} mô tả quy trình người dùng mới nhập thông tin cá nhân. Hệ thống kiểm tra tính hợp lệ của dữ liệu (email, mật khẩu), tạo tài khoản mới trong cơ sở dữ liệu và thông báo kết quả đăng ký.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/login.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động chức năng Đăng nhập}
+    \label{fig:act_login}
+\end{figure}
+Hình \ref{fig:act_login} mô tả quá trình người dùng nhập thông tin xác thực. Hệ thống đối chiếu với cơ sở dữ liệu, cấp quyền truy cập (token/session) nếu thông tin đúng hoặc báo lỗi nếu sai lệch.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/forgot_password.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động chức năng Quên mật khẩu}
+    \label{fig:act_forgot_pass}
+\end{figure}
+Hình \ref{fig:act_forgot_pass} mô tả quy trình khôi phục quyền truy cập khi người dùng quên mật khẩu, bao gồm các bước nhập email, xác thực mã OTP/Link và thiết lập mật khẩu mới.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/manage_personal_information.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Quản lý thông tin cá nhân}
+    \label{fig:act_manage_info}
+\end{figure}
+Hình \ref{fig:act_manage_info} mô tả luồng quản lí thông tin cá nhân. Tính năng này cho phép người dùng xem và chỉnh sửa thông tin hồ sơ cá nhân (tên, số điện thoại, địa chỉ), sau đó cập nhật lại vào hệ thống.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap3/activity_diagram/view_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Xem trạng thái đơn hàng}
+    \label{fig:act_view_order}
+\end{figure}
+Hình \ref{fig:act_view_order} cho thấy người dùng theo dõi tiến trình của đơn hàng đã đặt (Chờ xác nhận, Đang giao, Đã giao, v.v.) thông qua giao diện lịch sử mua hàng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/chap3/activity_diagram/cancel_order.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Hủy đơn hàng (Phía người dùng)}
+    \label{fig:act_cancel_order}
+\end{figure}
+Quy trình cho phép người dùng yêu cầu hủy đơn hàng khi đơn chưa được chuyển sang trạng thái vận chuyển, hệ thống cập nhật trạng thái và hoàn tiền (nếu có) được mô tả ở hình \ref{fig:act_cancel_order}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/chap3/activity_diagram/manage_product.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Quản lý sản phẩm (Admin)}
+    \label{fig:act_manage_product}
+\end{figure}
+Hình \ref{fig:act_manage_product} mô tả luồng quản lí sản phẩm. Luồng này dành cho Quản trị viên: Thực hiện các chức năng Thêm mới, Cập nhật thông tin, hoặc Ẩn/Xóa sản phẩm khỏi hệ thống.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/chap3/activity_diagram/change_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ hoạt động Cập nhật trạng thái đơn hàng (Admin)}
+    \label{fig:act_change_status}
+\end{figure}
+Quy trình xử lý đơn hàng phía Admin: Xác nhận đơn, chuyển sang trạng thái đóng gói, giao hàng, hoặc hoàn tất đơn hàng được biểu diễn qua hình \ref{fig:act_change_status}.
+
+\subsection*{Sơ đồ tuần tự} \label{sec:appx_sequence_diagram}
+
+Phần này mô tả chi tiết sơ đồ tuần tự cho các nghiệp vụ hỗ trợ và quản lý bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{sec:sequence_diagram} thông qua các bảng từ bảng \ref{fig:seq_register} đến bảng \ref{fig:seq_change_status}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/register.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Đăng ký tài khoản}
+    \label{fig:seq_register}
+\end{figure}
+Hình \ref{fig:seq_register} mô tả trình tự tương tác khi người dùng gửi yêu cầu đăng ký. Hệ thống kiểm tra sự tồn tại của email/tên đăng nhập trong cơ sở dữ liệu trước khi khởi tạo đối tượng tài khoản mới và phản hồi kết quả.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/login.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Đăng nhập}
+    \label{fig:seq_login}
+\end{figure}
+Hình \ref{fig:seq_login} thể hiện luồng xác thực: Người dùng nhập thông tin, hệ thống đối chiếu dữ liệu mã hóa trong Database. Nếu khớp, hệ thống khởi tạo phiên làm việc (Session/Token) và chuyển hướng người dùng vào trang chủ.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/forgot_password.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự chức năng Quên mật khẩu}
+    \label{fig:seq_forgot_pass}
+\end{figure}
+Hình \ref{fig:seq_forgot_pass} mô tả quá trình tương tác để khôi phục tài khoản: Gửi yêu cầu xác thực qua email, kiểm tra mã xác nhận (OTP) và thực hiện cập nhật mật khẩu mới vào cơ sở dữ liệu.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/manage_personal_information.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Quản lý thông tin cá nhân}
+    \label{fig:seq_manage_info}
+\end{figure}
+Hình \ref{fig:seq_manage_info} mô tả luồng khi người dùng yêu cầu xem hoặc sửa đổi thông tin. Hệ thống truy xuất dữ liệu hiện tại để hiển thị, sau đó nhận dữ liệu mới, thực hiện validation và cập nhật lại vào hệ thống lưu trữ.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/view_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Xem trạng thái đơn hàng}
+    \label{fig:seq_view_order}
+\end{figure}
+Hình \ref{fig:seq_view_order} mô tả luồng khi người dùng gửi yêu cầu xem chi tiết đơn hàng. Hệ thống truy xuất thông tin từ bảng Order và OrderDetails, trả về trạng thái hiện tại (ví dụ: Đang giao, Đã hoàn thành) cho giao diện người dùng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/cancel_order.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Hủy đơn hàng (Người dùng)}
+    \label{fig:seq_cancel_order}
+\end{figure}
+Hình \ref{fig:seq_cancel_order} mô tả luồng hủy đơn hàng. Hệ thống kiểm tra điều kiện hủy (ví dụ: đơn chưa giao). Nếu hợp lệ, hệ thống cập nhật trạng thái đơn hàng thành "Cancelled", hoàn lại tồn kho (nếu cần) và thông báo thành công.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/chap3/sequence_diagram/manage_product.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Quản lý sản phẩm}
+    \label{fig:seq_manage_product}
+\end{figure}
+Admin gửi yêu cầu Thêm/Sửa/Xóa. Hệ thống thực hiện Validate dữ liệu đầu vào, sau đó thực hiện lệnh SQL tương ứng xuống Database và trả về kết quả cập nhật danh sách sản phẩm. Hình \ref{fig:seq_manage_product} là sơ đồ tuần tự cho luồng quản lí sản phẩm.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/chap3/sequence_diagram/change_order_status.png}
+   \vspace{0.5cm} \caption{Sơ đồ tuần tự Cập nhật trạng thái đơn hàng}
+    \label{fig:seq_change_status}
+\end{figure}
+Hình \ref{fig:seq_change_status} biểu diễn luồng khi admin chọn đơn hàng và trạng thái mới (ví dụ: Xác nhận -> Đang giao). Hệ thống cập nhật bản ghi trong Database và có thể kích hoạt gửi email thông báo cho khách hàng.
+
+\subsection*{ERD Mapping}
+
+Sau khi xác lập các thực thể và mối quan hệ tại mức khái niệm thông qua sơ đồ ERD ở chương \ref{sec:erd_section}, nhóm tiến hành ánh xạ các thành phần này sang lược đồ quan hệ logic. Bước này đóng vai trò quan trọng trong việc chuyển đổi các thực thể trừu tượng thành cấu trúc bảng cụ thể, xác định chính xác kiểu dữ liệu, khóa chính, khóa ngoại và các ràng buộc toàn vẹn.
+
+Do đặc thù của kiến trúc Microservices với cơ chế mỗi dịch vụ sở hữu một cơ sở dữ liệu riêng biệt, phần ánh xạ dữ liệu dưới đây được nhóm trình bày phân rã theo từng domain nghiệp vụ. Cách tiếp cận này không chỉ đảm bảo tính độc lập và khả năng mở rộng của từng dịch vụ mà còn làm rõ cách thức các khóa ngoại logic được sử dụng để duy trì mối liên kết dữ liệu giữa các thành phần trong hệ thống.
+
+Hình \ref{fig:mapping_erd_user_service} mô tả chi tiết quá trình chuyển đổi từ các thực thể trừu tượng sang cấu trúc dữ liệu logic cho dịch vụ người dùng.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-user-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của user service.}
+    \label{fig:mapping_erd_user_service}
+\end{figure}
+
+Hình \ref{fig:mapping_erd_product_service} minh họa cách thức cấu trúc hóa các thực thể danh mục sản phẩm thành các bảng dữ liệu logic.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-product-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của product service.}
+    \label{fig:mapping_erd_product_service}
+\end{figure}
+
+Quá trình chuyển đổi từ ERD sang lược đồ quan hệ logic cho dịch vụ giỏ hàng được trình bày chi tiết tại Hình \ref{fig:mapping_erd_cart_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-cart-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của cart service.}
+    \label{fig:mapping_erd_cart_service}
+\end{figure}
+
+Đặc tả chi tiết các bảng dữ liệu cho quy trình giao dịch được thể hiện qua lược đồ logic tại Hình \ref{fig:mapping_erd_order_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-order-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của order service.}
+    \label{fig:mapping_erd_order_service}
+\end{figure}
+
+Hình \ref{fig:mapping_erd_admin_service} hiện thực hóa các yêu cầu về quản trị và báo cáo thành cấu trúc bảng cụ thể.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-admin-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của admin service.}
+    \label{fig:mapping_erd_admin_service}
+\end{figure}
+
+Đặc tả chi tiết các bảng dữ liệu cho quy trình điều phối được thể hiện qua lược đồ logic tại Hình \ref{fig:mapping_erd_orchestration_service}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/chap6/erd/erd-mapping-orchestration-service.png}
+   \vspace{0.5cm} \caption{Lược đồ quan hệ logic ánh xạ ERD của orchestration service.}
+    \label{fig:mapping_erd_orchestration_service}
+\end{figure}
+
+\subsection*{Danh mục các API chi tiết}
+
+\subsubsection*{User Service}
+Bảng \ref{tab:full_user_api_appendix} dưới đây là danh sách đầy đủ các Endpoint của User Service được triển khai trong hệ thống.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - User Service}
+\label{tab:full_user_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{User Profile} & GET & \texttt{/api/users/profile/me} & Lấy thông tin cá nhân. \\ \cline{2-4} 
+ & PUT & \texttt{/api/users/profile/me} & Cập nhật thông tin cá nhân. \\ \cline{2-4} 
+ & PUT & \texttt{/api/users/change-avatar/me} & Thay đổi ảnh đại diện. \\ \hline
+Mật khẩu & PUT & \texttt{/api/users/change-password/me} & Thay đổi mật khẩu người dùng. \\ \hline
+\multirow{7}{*}{Payment Accounts} & GET & \texttt{/api/payment-accounts/\{id\}} & Lấy thông tin tài khoản cụ thể. \\ \cline{2-4} 
+ & GET & \texttt{/api/payment-accounts/paged} & Liệt kê danh sách phân trang. \\ \cline{2-4} 
+ & GET & \texttt{/api/payment-accounts/default} & Truy xuất tài khoản mặc định. \\ \cline{2-4} 
+ & POST & \texttt{/api/payment-accounts} & Tạo mới tài khoản thanh toán. \\ \cline{2-4} 
+ & PUT & \texttt{/api/payment-accounts/\{id\}} & Cập nhật thông tin tài khoản. \\ \cline{2-4} 
+ & DELETE & \texttt{/api/payment-accounts/\{id\}} & Xóa tài khoản thanh toán. \\ \cline{2-4} 
+ & PATCH & \texttt{/api/payment-accounts/set-default/\{id\}} & Thiết lập tài khoản mặc định. \\ \hline
+\multirow{7}{*}{Addresses} & GET & \texttt{/api/addresses/\{id\}} & Lấy thông tin địa chỉ cụ thể. \\ \cline{2-4} 
+ & GET & \texttt{/api/addresses/paged} & Liệt kê danh sách phân trang. \\ \cline{2-4} 
+ & GET & \texttt{/api/addresses/default} & Truy xuất địa chỉ mặc định. \\ \cline{2-4} 
+ & POST & \texttt{/api/addresses} & Tạo mới địa chỉ giao hàng. \\ \cline{2-4} 
+ & PUT & \texttt{/api/addresses/\{id\}} & Cập nhật thông tin địa chỉ. \\ \cline{2-4} 
+ & DELETE & \texttt{/api/addresses/\{id\}} & Xóa địa chỉ giao hàng. \\ \cline{2-4} 
+ & PATCH & \texttt{/api/addresses/set-default/\{id\}} & Thiết lập địa chỉ mặc định. \\ \hline
+\multirow{6}{*}{Authentication} & POST & \texttt{/api/auth/login/local} & Đăng nhập bằng tài khoản nội bộ. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/login/google} & Đăng nhập thông qua Google SSO. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/refresh-token} & Cấp mới Access Token. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/logout} & Đăng xuất và hủy phiên làm việc. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/forget-password} & Yêu cầu khôi phục mật khẩu. \\ \cline{2-4} 
+ & POST & \texttt{/api/auth/reset-password} & Đặt lại mật khẩu mới. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Product Service}
+
+Nhằm phục vụ công tác tra cứu toàn diện, phần này liệt kê danh mục đầy đủ các điểm cuối của Product Service, bao gồm các thao tác quản lý danh mục và các cấu hình chi tiết cho biến thể sản phẩm. Danh sách được trình bày tại Bảng \ref{tab:full_product_api_appendix}.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Product Service}
+\label{tab:full_product_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Sản phẩm (User)} & GET & \texttt{/api/products/{id}} & Xem chi tiết sản phẩm. \\ \cline{2-4}
+& GET & \texttt{/api/products/paged} & Lấy danh sách phân trang. \\ \cline{2-4}
+& GET & \texttt{/api/products/search-filter} & Tìm kiếm và lọc sản phẩm. \\ \hline
+\multirow{6}{*}{Sản phẩm (Admin)} & POST & \texttt{/api/products/admin} & Thêm sản phẩm mới. \\ \cline{2-4}
+& PUT & \texttt{/api/products/admin/{id}} & Cập nhật thông tin sản phẩm. \\ \cline{2-4}
+& DELETE & \texttt{/api/products/admin/{id}} & Xóa sản phẩm khỏi hệ thống. \\ \cline{2-4}
+& POST & \texttt{/api/products/admin/{id}/variant} & Thêm biến thể mới. \\ \cline{2-4}
+& PUT & \texttt{/api/products/admin/{id}/variant/{vId}} & Cập nhật biến thể. \\ \cline{2-4}
+& DELETE & \texttt{/api/products/admin/{id}/variant/{vId}} & Xóa biến thể sản phẩm. \\ \hline
+\multirow{4}{*}{Khuyến mãi} & GET & \texttt{/api/discounts/paged} & Liệt kê các mã giảm giá. \\ \cline{2-4}
+& POST & \texttt{/api/discounts/admin} & Tạo mới mã giảm giá. \\ \cline{2-4}
+& PUT & \texttt{/api/discounts/admin/{id}} & Chỉnh sửa chương trình ưu đãi. \\ \cline{2-4}
+& PUT & \texttt{/api/discounts/admin/{id}/apply-products} & Áp dụng mã cho sản phẩm. \\ \hline
+\multirow{3}{*}{Danh mục / Nhãn hàng} & POST & \texttt{/api/categories/admin} & Tạo mới danh mục. \\ \cline{2-4}
+& PATCH & \texttt{/api/categories/admin/{id}} & Cập nhật danh mục. \\ \cline{2-4}
+& POST & \texttt{/api/brands/admin} & Thêm mới thương hiệu. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Orchestration Service}
+
+Phần này cung cấp danh mục đầy đủ các điểm cuối thuộc dịch vụ điều phối, bao gồm các công cụ giả lập thanh toán phục vụ kiểm thử và các API truy vấn báo cáo tổng hợp từ nhiều nguồn dữ liệu.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Orchestration Service}
+\label{tab:full_orchestration_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Thanh toán} & POST & \texttt{/api/payments} & Thực hiện giao dịch thanh toán. \\ \cline{2-4}
+& POST & \texttt{/api/payments/simulate} & Giả lập thành công giao dịch. \\ \cline{2-4}
+& POST & \texttt{/api/payments/simulate/cancel} & Giả lập lỗi/hủy giao dịch. \\ \hline
+\multirow{3}{*}{Quy trình Checkout} & POST & \texttt{/api/checkout/preview/init} & Xem trước thông tin đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/checkout/recalculate} & Tính toán lại giá trị khi đổi mã giảm. \\ \cline{2-4}
+& POST & \texttt{/api/checkout/confirm} & Hoàn tất quy trình đặt hàng. \\ \hline
+\multirow{3}{*}{Quản lý Saga} & GET & \texttt{/api/sagas/{id}} & Lấy thông tin chi tiết một Saga. \\ \cline{2-4}
+& GET & \texttt{/api/sagas/get-order/{id}} & Truy xuất đơn hàng từ Saga ID. \\ \cline{2-4}
+& POST & \texttt{/api/sagas/cancel-order} & Yêu cầu hủy giao dịch phân tán. \\ \hline
+\multirow{2}{*}{Báo cáo (Admin)} & GET & \texttt{/api/orchestration/admin/.../top-selling} & Thống kê sản phẩm bán chạy. \\ \cline{2-4}
+& GET & \texttt{/api/orchestration/admin/.../monthly-revenue} & Thống kê doanh thu theo tháng. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Order Service}
+
+Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê đầy đủ các điểm cuối liên quan đến việc cập nhật trạng thái thanh toán qua mã QR, quản lý nhật ký vận chuyển và các thao tác quản trị dành cho nhân viên vận hành hệ thống.
+
+\begin{table}[H]
+\centering
+\caption{Danh mục đầy đủ API - Order Service}
+\label{tab:full_order_api_appendix}
+\begin{tabular}{|l|c|l|l|}
+\hline
+\textbf{Nhóm chức năng} & \textbf{Method} & \textbf{Đường dẫn} & \textbf{Chức năng} \\ \hline
+\multirow{3}{*}{Đơn hàng (User)} & GET & \texttt{/api/orders} & Danh sách đơn hàng đã mua. \\ \cline{2-4}
+& GET & \texttt{/api/orders/{id}} & Chi tiết đơn hàng cụ thể. \\ \cline{2-4}
+& GET & \texttt{/api/payments/{id}/qr} & Lấy mã QR thanh toán đơn hàng. \\ \hline
+\multirow{3}{*}{Quản trị (Admin)} & GET & \texttt{/api/orders/admin} & Danh sách đơn hàng toàn hệ thống. \\ \cline{2-4}
+& PATCH & \texttt{/api/orders/admin/{id}/status} & Cập nhật trạng thái đơn hàng. \\ \cline{2-4}
+& POST & \texttt{/api/orders/admin/{id}/...} & Tạo mới nhật ký giao hàng. \\ \hline
+\multirow{3}{*}{Nhật ký giao hàng} & GET & \texttt{/api/delivery-logs/order/{id}} & Lấy toàn bộ lịch sử giao hàng. \\ \cline{2-4}
+& PUT & \texttt{/api/orders/admin/{id}/...} & Chỉnh sửa nhật ký giao hàng. \\ \cline{2-4}
+& DELETE & \texttt{/api/orders/admin/{id}/...} & Xóa nhật ký giao hàng. \\ \hline
+\multirow{3}{*}{Phản hồi} & POST & \texttt{/api/orders/feedback} & Đánh giá sản phẩm đã mua. \\ \cline{2-4}
+& PUT & \texttt{/api/orders/feedback/{id}} & Chỉnh sửa nội dung đánh giá. \\ \cline{2-4}
+& GET & \texttt{/api/orders/feedback/{id}} & Xem feedback theo đơn hàng. \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection*{Các trường hợp kiểm thử còn lại của end-to-end testing} \label{sec:appx_e2e_testing}
+
+Phần này bổ sung các trường hợp kiểm thử chi tiết cho các tính năng chưa được nhắc đến ở phần end-to-end testing tại mục \ref{sec:e2e_testing}.
+\subsubsection*{Tính năng thanh toán đa phương thức}
+
+Tính năng thanh toán đa phương thức cho phép người dùng linh hoạt lựa chọn giữa các hình thức giao dịch truyền thống và trực tuyến giả lập. Quy trình này xác minh khả năng xử lý của hệ thống khi tiếp nhận các phương thức thanh toán khác nhau và đảm bảo trạng thái đơn hàng được cập nhật chính xác sau khi giao dịch hoàn tất.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/chap8/fr/payment.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Thanh toán đa phương thức}
+\label{fig:flow_payment}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng thanh toán giả lập cũng như khả năng xử lý các tình huống hủy bỏ giao dịch từ phía người dùng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Thanh toán đa phương thức}
+\label{tab:tc_payment}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-008-001 & Phương thức COD & Lựa chọn hình thức thanh toán khi nhận hàng và xác nhận đơn. & Hệ thống ghi nhận phương thức COD và chuyển đơn hàng sang trạng thái chờ xác nhận. & Passed \\ \hline
+TC-008-002 & Hủy thanh toán trực tuyến & Lựa chọn thanh toán mã QR nhưng thực hiện hủy bỏ giao dịch. & Hệ thống dừng quy trình thanh toán an toàn và giữ nguyên trạng thái chờ của đơn hàng. & Passed \\ \hline
+TC-008-003 & Thanh toán trực tuyến thành công & Thực hiện quét mã QR giả lập và xác nhận hoàn tất giao dịch trực tuyến. & Hệ thống xác nhận thanh toán thành công và cập nhật trạng thái đơn hàng đã thanh toán. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng xem chi tiết đơn hàng}
+
+Tính năng xem chi tiết đơn hàng cho phép người dùng theo dõi đầy đủ thông tin của đơn hàng đã đặt, bao gồm danh sách sản phẩm, số lượng, tổng tiền và trạng thái xử lý. Quy trình này giúp xác minh khả năng truy xuất và hiển thị dữ liệu đơn hàng của hệ thống một cách chính xác và đầy đủ.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/chap8/fr/check_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Xem chi tiết đơn hàng}
+\label{fig:flow_order_detail}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xem chi tiết đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Xem chi tiết đơn hàng}
+\label{tab:tc_order_detail}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-009-001 & Xem đơn hàng hợp lệ & Người dùng chọn một đơn hàng trong danh sách & Hệ thống hiển thị đầy đủ thông tin chi tiết đơn hàng & Passed \\ \hline
+TC-009-002 & Hiển thị danh sách sản phẩm & Mở chi tiết đơn hàng có nhiều sản phẩm & Hệ thống hiển thị đúng các sản phẩm trong đơn hàng & Passed \\ \hline
+TC-009-003 & Hiển thị tổng tiền & Truy cập trang chi tiết đơn hàng & Tổng tiền đơn hàng được hiển thị chính xác & Passed \\ \hline
+TC-009-004 & Đơn hàng không tồn tại & Truy cập bằng mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo không tìm thấy đơn hàng & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng hủy đơn hàng}
+
+Tính năng hủy đơn hàng cho phép người dùng hủy các đơn hàng chưa hoàn tất xử lý hoặc giao hàng. Quy trình này giúp xác minh khả năng cập nhật trạng thái đơn hàng của hệ thống và đảm bảo các ràng buộc nghiệp vụ được xử lý chính xác khi thực hiện thao tác hủy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{images/chap8/fr/cancel_order.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Hủy đơn hàng}
+\label{fig:flow_cancel_order}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng hủy đơn hàng.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Hủy đơn hàng}
+\label{tab:tc_cancel_order}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-010-001 & Hủy đơn hàng hợp lệ & Người dùng hủy đơn hàng đang chờ xử lý & Hệ thống cập nhật trạng thái đơn hàng thành đã hủy & Passed \\ \hline
+TC-010-002 & Xác nhận hủy đơn hàng & Người dùng nhấn nút hủy đơn hàng & Hệ thống hiển thị hộp thoại xác nhận hủy & Passed \\ \hline
+TC-010-003 & Đơn hàng không tồn tại & Người dùng gửi yêu cầu hủy với mã đơn hàng không hợp lệ & Hệ thống hiển thị thông báo lỗi phù hợp & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng quản lý hồ sơ cá nhân}
+
+Tính năng quản lý hồ sơ cá nhân cho phép người dùng xem và cập nhật các thông tin cá nhân, thay đổi mật khẩu và cập nhật ảnh đại diện. Quy trình này kiểm tra khả năng lưu trữ, xác thực dữ liệu đầu vào và đảm bảo tính bảo mật khi người dùng thực hiện các thay đổi nhạy cảm trên hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/profile-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý hồ sơ cá nhân}
+\label{fig:flow_profile_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng cập nhật thông tin và kiểm soát bảo mật tài khoản.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý hồ sơ cá nhân}
+\label{tab:tc_profile_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-002-001 & Xem thông tin hồ sơ & Tải trang hồ sơ với phiên đăng nhập hợp lệ. & Hệ thống hiển thị đầy đủ và chính xác thông tin cá nhân (họ tên, email, số điện thoại). & Passed \\ \hline
+TC-002-002 & Cập nhật thông tin thành công & Thay đổi họ tên và số điện thoại và lưu thiết lập. & Hệ thống xác nhận lưu thành công và cập nhật ngay trên giao diện mà không cần tải lại trang. & Passed \\ \hline
+TC-002-003 & Đổi mật khẩu thành công & Nhập đúng mật khẩu hiện tại và thiết lập mật khẩu mới hợp lệ. & Mật khẩu được cập nhật thành công trên cơ sở dữ liệu, các trường nhập liệu tự động xóa trống. & Passed \\ \hline
+TC-002-004 & Sai mật khẩu hiện tại & Đổi mật khẩu nhưng nhập sai mật khẩu cũ. & Hệ thống từ chối yêu cầu và hiển thị cảnh báo lỗi sai mật khẩu. & Passed \\ \hline
+TC-002-005 & Thay đổi ảnh đại diện & Tải lên tập tin hình ảnh hợp lệ để làm ảnh đại diện. & Ảnh đại diện mới được cập nhật và hiển thị thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Tính năng quản lý báo cáo và thống kê}
+
+Tính năng quản lý báo cáo cung cấp cho quản trị viên công cụ để tổng hợp dữ liệu kinh doanh, chẳng hạn như báo cáo doanh thu và sản phẩm bán chạy. Kịch bản kiểm thử tập trung vào quá trình hệ thống trích xuất dữ liệu, tạo lập tệp tin Excel, và lưu trữ trên nền tảng đám mây.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/report-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý báo cáo và thống kê}
+\label{fig:flow_report_management}
+\end{figure}
+
+Bảng dưới đây mô tả các ca kiểm thử nhằm xác nhận khả năng vận hành của hệ thống xuất báo cáo và ghi nhận hành vi.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý báo cáo và thống kê}
+\label{tab:tc_report_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-061 & Hiển thị danh sách báo cáo & Tải trang quản lý báo cáo đối với cơ sở dữ liệu đã có dữ liệu mẫu. & Hệ thống liệt kê toàn bộ các báo cáo đã tạo kèm theo thông tin loại báo cáo và ngày xuất. & Passed \\ \hline
+TC-011-063 & Khởi tạo báo cáo doanh thu & Gửi yêu cầu trích xuất báo cáo doanh thu theo tháng. & Hệ thống gọi API nền, tạo tệp Excel, lưu trữ lên Cloudinary và hiển thị kết quả thành công. & Passed \\ \hline
+TC-011-064 & Tải xuống tệp tin báo cáo & Nhấp chuột vào đường dẫn tải xuống của một báo cáo hoàn chỉnh. & Trình duyệt chuyển hướng đến liên kết lưu trữ đám mây và tải về tệp tin hợp lệ. & Passed \\ \hline
+TC-011-067 & Truy xuất nhật ký hệ thống & Chuyển sang phần theo dõi nhật ký hoạt động (Action Logs). & Danh sách hiển thị chi tiết các thao tác của hệ thống theo từng khoảng thời gian. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+
+\subsection*{Mô hình hệ thống và lưu đồ hoạt động}
+Các sơ đồ phân tích và thiết kế hệ thống:
+\begin{itemize}
+    \item Sơ đồ usecase (Usecase Diagram)
+    \item Sơ đồ hoạt động (Activity Diagram)
+    \item Sơ đồ tuần tự (Sequence Diagram)
+    \item Sơ đồ thực thể - mối quan hệ (ERD)
+    \item Sơ đồ kiến trúc hệ thống (Architecture Diagram)
+\end{itemize}
+
+\noindent
+Những sơ đồ này hỗ trợ làm rõ luồng xử lý, tương tác giữa các thành phần và cấu trúc dữ liệu trọng yếu của hệ thống.
+
+\noindent
+\textbf{Link tổng hợp sơ đồ:} \\
+\url{https://drive.google.com/file/d/14pyk5joFueK1Urpb3XtDuxG2ympmKHd4/view}
+
+\subsection*{Quá trình làm việc của nhóm}
+
+Trong giai đoạn hiện thực hệ thống, mỗi thành viên tham gia hiện thực với vai trò chính dựa trên thế mạnh cá nhân. Đồng thời, khi cần thiết, các thành viên cũng tham gia hỗ trợ cho các phần khác.
+
+\begin{itemize}
+    \item Nguyễn Ngọc Quế Chi (BE): Chủ yếu hiện thực các Microservices và thiết lập luồng Event-Driven Architecture sử dụng Kafka topics. Đồng thời quản lý các thành phần cơ sở dữ liệu và triển khai hệ thống backend cho các của dịch vụ nghiệp vụ.
+    \item Trần Nguyễn Anh Khoa (FE): Chịu trách nhiệm thiết kế giao diện người dùng bằng Next.js 16 và Tailwind CSS v4. Hiện thực hóa các thành phần tương tác (UI Components), tích hợp API từ Backend và xây dựng luồng phản hồi streaming cho Trợ lý ảo AI.
+    \item Phạm Quốc Toàn (AI/ML Engineer): Chịu trách nhiệm thiết kế và hiện thực hệ thống AI Agent, bao gồm xây dựng pipeline thu thập và xử lý dữ liệu, thiết kế kiến trúc đa cơ sở dữ liệu (PostgreSQL, Neo4j, ChromaDB) và triển khai cơ chế truy xuất dữ liệu. Đồng thời phát triển AI Agent dựa trên LangGraph, tích hợp với các nguồn dữ liệu để xử lý hội thoại nhiều bước.
+\end{itemize}
+
+Nhóm thực hiện đồ án theo mô hình Agile, chia công việc thành các sprint 2 tuần. Mỗi sprint bao gồm các hoạt động: lập kế hoạch, phân công nhiệm vụ, thực hiện, kiểm thử và đánh giá tiến độ. Các nhiệm vụ cụ thể và quá trình thực hiện chi tiết của từng thành viên sẽ được trình bày đầy đủ trong bảng \ref{tab:task-assigment} dưới đây.
+
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+%         \hline
+%         \textbf{STT} & \textbf{Sprint}         & \textbf{Công việc}                                                                                                 & \textbf{Workload từng người}                                                                                                                                                                                                                                                                                       \\ \hline
+%         1            & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu.                                                      &
+%         Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân...                                                                                                                                                                                                                           \\ \hline
+%         2            & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+%         Phạm Quốc Toàn: Xây dựng Vector Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng.                                                                                                                                                                                     \\ \hline
+%                      & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026                                                                                           &                                                                                                                                                                                                                                                                                    \\ \hline
+%         3            & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Graph Database\newline
+%         Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka.                                                                                                                                                                    \\ \hline
+%         4            & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng.                                                                &
+%         Phạm Quốc Toàn: Xây dựng Relational Database\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+%         Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng.                                                                                                                                                                                                                \\ \hline
+%         5            & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá.                                             &
+%         Phạm Quốc Toàn: Hiện thực AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng.                                                                                                                                                                       \\ \hline
+%         6            & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin.                                                                                 &
+%         Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+%         Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+%         Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. Các hoạt động của admin đều được lưu lại trong bảng adminActionLog sau khi nhận thông điệp từ Kafka.                                                                \\ \hline
+%         7            & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo.                         &
+%         Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+%         Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+%         Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin. Vẽ sơ đồ các test scenrio cho các tính năng chính trong hệ thống và viết testcase. Viết báo cáo. Sửa các lỗi xảy ra trong quá trình kiểm thử.                                                                                                                                                  \\ \hline
+%         8            & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống.                                                                                      &
+%         Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+%         Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra tính nhất quán của giao diện cuối cùng. \newline
+%         Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo.                                                                                                                                                                                                                                                                                                          \\ \hline
+%     \end{tabular}
+%     \caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+%     \label{tab:task-assigment}
+% \end{table}
+
+
+
+
+\vspace{0.5cm}
+\begin{longtable}{|c|p{2cm}|p{3.5cm}|p{6cm}|}
+\caption{Quá trình làm việc của nhóm theo sprint và workload từng người}
+\label{tab:task-assigment} \\
+
+\hline
+\textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{STT} & \textbf{Sprint} & \textbf{Công việc} & \textbf{Workload từng người} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & 12/01/2026 - 25/01/2026 & Hiện thực các tính năng xác thực người dùng và quên mật khẩu. &
+Phạm Quốc Toàn: Thu thập dữ liệu thực tế về sản phẩm và chính sách\newline
+Trần Nguyễn Anh Khoa: Xây dựng bộ giao diện xác thực người dùng (Đăng nhập, Đăng ký, Quên mật khẩu). Hiện thực hóa các Form Validation và tích hợp API Auth. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API đăng nhập, đăng xuất, quên mật khẩu, chỉnh sửa thông tin cá nhân... \\ \hline
+
+2 & 26/01/2026 - 08/02/2026 & Hiện thực các tính năng hiển thị, tìm kiếm, lọc sản phẩm, tạo mock data cho dữ liệu sản phẩm. Đồng thời hiện thực chức năng giỏ hàng. &
+Phạm Quốc Toàn: Xây dựng Vector Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện danh sách sản phẩm, bộ lọc tìm kiếm và trang chi tiết sản phẩm. Hiện thực giao diện giỏ hàng và logic quản lý trạng thái tại Client. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực và kiểm thử các API tìm kiếm và lọc sản phẩm, lấy dữ liệu chi tiết sản phẩm, thêm sản phẩm vào giỏ hàng và quản lí giỏ hàng. \\ \hline
+
+ & 09/02/2026 - 22/02/2026 & Nghỉ Tết Nguyên đán 2026 & \\ \hline
+
+3 & 23/02/2026 - 08/03/2026 & Hiện thực tính năng xem sơ lược đơn hàng, đặt hàng. &
+Phạm Quốc Toàn: Xây dựng Graph Database\newline
+Trần Nguyễn Anh Khoa: Hiện thực luồng thanh toán đa bước, hiển thị tóm tắt đơn hàng và thông tin vận chuyển. Tích hợp các API đặt hàng và xử lý trạng thái phản hồi từ server. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực orchestration service và các api đặt hàng và xem thông tin đặt hàng. Xây dựng luồng quản lí đặt hàng qua saga orchestration pattern và kafka. \\ \hline
+
+4 & 09/03/2026 - 22/03/2026 & Hiện thực các tính năng thanh toán và hủy đơn hàng. &
+Phạm Quốc Toàn: Xây dựng Relational Database\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện thanh toán, hiển thị mã QR giả lập và tích hợp luồng xử lý kết quả. Hiện thực tính năng hủy đơn hàng và giao diện thông báo. \newline
+Nguyễn Ngọc Quế Chi: Giả lập mã QR cho thanh toán và luồng đền bù khi hủy đơn hàng. Hiện thực các API thanh toán và hủy đơn hàng. \\ \hline
+
+5 & 23/03/2026 - 05/04/2026 & Kiểm tra và sửa lỗi các tác vụ đơn hàng, hiện thực tính năng đánh giá. &
+Phạm Quốc Toàn: Hiện thực AI Agent\newline
+Trần Nguyễn Anh Khoa: Xây dựng giao diện theo dõi trạng thái đơn hàng. Hiện thực tính năng đánh giá sản phẩm (Rating/Review) và sửa lỗi hiển thị cho các luồng nghiệp vụ. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra và sửa lỗi cho các API đặt hàng, thanh toán và hủy đơn hàng. Hiện thực các API hiển thị trạng thái giao hàng và đánh giá sau khi nhận hàng. \\ \hline
+
+6 & 06/04/2026 - 19/04/2026 & Hiện thực các tính năng của admin. &
+Phạm Quốc Toàn: Kiểm thử AI Agent\newline
+Trần Nguyễn Anh Khoa: Phát triển Dashboard cho Admin, xây dựng các bảng quản trị sản phẩm, danh mục và biểu đồ thống kê doanh thu cơ bản. \newline
+Nguyễn Ngọc Quế Chi: Hiện thực các API tạo sản phẩm, brand, category... và các API cập nhật trạng thái đơn hàng, lấy thông tin về doanh thu hàng tháng và sản phẩm bán chạy. \\ \hline
+
+7 & 20/04/2026 - 03/05/2026 & Chuẩn bị testcase và kiểm thử end-to-end các tính năng chính trong hệ thống, viết báo cáo. &
+Phạm Quốc Toàn: Tích hợp AI Agent vào hệ thống và kiểm thử\newline
+Trần Nguyễn Anh Khoa: Thực hiện kiểm thử tích hợp giao diện, tối ưu hóa tốc độ tải trang và trải nghiệm người dùng. Viết báo cáo phần Frontend. \newline
+Nguyễn Ngọc Quế Chi: Kiểm tra các API của admin, viết testcase và báo cáo. \\ \hline
+
+8 & 04/05/2026 - 10/05/2026 & Hoàn tất báo cáo và hệ thống. &
+Phạm Quốc Toàn: Hoàn thiện báo cáo\newline
+Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra giao diện. \newline
+Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo. \\ \hline
+
+\end{longtable}
+
+\subsection*{Báo cáo hiệu năng chi tiết (Lighthouse)}
+Dưới đây là các báo cáo đầy đủ về hiệu năng, khả năng truy cập và tối ưu hóa SEO của hệ thống được trích xuất từ Google Lighthouse.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.85\linewidth]{images/appendix/lh_desktop_full.png}
+        \caption{Báo cáo Desktop (Đầy đủ)}
+        \label{fig:lh_desktop_full}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.85\linewidth]{images/appendix/lh_mobile_full.png}
+        \caption{Báo cáo Mobile (Đầy đủ)}
+        \label{fig:lh_mobile_full}
+    \end{minipage}
+\end{figure}

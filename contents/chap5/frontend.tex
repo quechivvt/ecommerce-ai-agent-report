@@ -1,0 +1,190 @@
+\subsection{Frontend}
+Trong quá trình phát triển giao diện cho hệ thống thương mại điện tử tích hợp AI Agent, nhóm đã tiến hành nghiên cứu các giải pháp hiện đại nhằm tối ưu hoá đồng thời ba yếu tố: tốc độ tải trang (performance), trải nghiệm người dùng (UX) và khả năng bảo trì mã nguồn. Dưới đây là phân tích chi tiết về các quyết định lựa chọn công nghệ cho tầng Frontend.
+
+\subsubsection{Framework}
+
+Giao diện người dùng của hệ thống yêu cầu sự kết hợp giữa các trang nội dung tĩnh (danh sách sản phẩm) cần tối ưu SEO và các thành phần tương tác động (giỏ hàng, chatbot) cần phản hồi tức thì. Nhóm đã thực hiện so sánh giữa ba hướng tiếp cận phổ biến nhất hiện nay tại bảng \ref{tab:frontend_framework_comparison}.
+
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+        \caption{So sánh các framework phát triển Frontend} \label{tab:frontend_framework_comparison}                                                                                                                       \\
+        \hline
+        \centering\textbf{Công nghệ}                                                                        & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endfirsthead
+
+        \caption[]{So sánh các framework phát triển Frontend (tt)}                                                                                                                                                          \\ \hline
+        \centering\textbf{Công nghệ}                                                                        & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endhead
+
+        React (Vite)                                                                                        &
+        - Tốc độ phát triển cực nhanh, cộng đồng hỗ trợ lớn và thư viện phong phú. \newline
+        - Cơ chế Client-side Rendering (CSR) giúp trải nghiệm điều hướng mượt mà sau khi trang đã tải xong. &
+        - Hiệu năng SEO kém do nội dung được render tại trình duyệt. \newline
+        - Thời gian tải trang đầu tiên (FCP) chậm đối với các ứng dụng quy mô lớn.                          &
+        Không lựa chọn do yêu cầu khắt khe về tối ưu SEO và tốc độ hiển thị nội dung ban đầu cho người dùng.                                                                                                                \\ \hline
+
+        Angular                                                                                             &
+        - Cấu trúc chặt chẽ, tích hợp sẵn mọi công cụ cần thiết (batteries-included). \newline
+        - Phù hợp cho các ứng dụng doanh nghiệp có quy trình quản lý mã nguồn nghiêm ngặt.                  &
+        - Độ dốc học tập cao và kích thước bundle ban đầu lớn. \newline
+        - Khả năng tùy biến linh hoạt cho các tính năng hiện đại như Streaming UI còn hạn chế.              &
+        Không chọn vì mức độ phức tạp không cần thiết và không tối ưu cho việc phát triển nhanh các tính năng AI tích hợp.                                                                                                  \\ \hline
+
+        Next.js (App Router)                                                                                &
+        - Hỗ trợ hoàn hảo Server-side Rendering (SSR) và Static Site Generation (SSG) giúp tối ưu SEO tuyệt đối. \newline
+        - React Server Components giúp giảm tải JavaScript client-side, tăng tốc độ FCP. \newline
+        - Tích hợp sẵn cơ chế Streaming và tối ưu hóa hình ảnh.                                             &
+        - Mô hình App Router đòi hỏi cách tiếp cận mới về quản lý state và hiệu ứng. \newline
+        - Phụ thuộc nhiều vào hệ sinh thái của Vercel để đạt hiệu suất tốt nhất.                            &
+        Được chọn nhờ khả năng render phía server mạnh mẽ, hỗ trợ streaming cho chatbot AI và kiến trúc hiện đại giúp mã nguồn sạch sẽ, dễ mở rộng.                                                                         \\ \hline
+    \end{longtable}
+\end{center}
+
+\vspace{-30pt}
+
+Next.js 16 (dựa trên React 19) được nhóm lựa chọn làm nền tảng cốt lõi. Khác với mô hình Single Page Application (SPA) truyền thống, Next.js cho phép nhóm thực hiện các thao tác lấy dữ liệu trực tiếp trên server, giúp ẩn đi các lời gọi API nhạy cảm và cải thiện đáng kể điểm số Core Web Vitals. Đặc biệt, tính năng \textbf{Streaming UI} là yếu tố quyết định để hiện thực hóa giao diện Trợ lý Ảo, cho phép hiển thị câu trả lời ngay khi từng từ (token) được AI tạo ra, mang lại cảm giác hội thoại tự nhiên cho khách hàng.
+
+\subsubsection{Giao diện và các thư viện thành phần}
+
+Đối với một hệ thống thương mại điện tử có hàng trăm thành phần giao diện, việc quản lý mã nguồn CSS sao cho vừa gọn nhẹ, vừa dễ tùy biến là một thách thức lớn. Bảng \ref{tab:ui_comparison} tóm tắt các giải pháp được nhóm cân nhắc.
+
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+        \caption{So sánh các công nghệ UI và Styling} \label{tab:ui_comparison}                                                                                                                                       \\
+        \hline
+        \centering\textbf{Công nghệ}                                                                  & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endfirsthead
+
+        \caption[]{So sánh các công nghệ UI và Styling (tt)}                                                                                                                                                          \\ \hline
+        \centering\textbf{Công nghệ}                                                                  & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endhead
+
+        Ant Design / Material UI                                                                      &
+        - Cung cấp số lượng lớn các component hoàn chỉnh, có sẵn logic phức tạp. \newline
+        - Phù hợp cho các trang quản trị (Admin panel) cần triển khai nhanh.                          &
+        - Kích thước thư viện rất lớn, khó tối ưu bundle size. \newline
+        - Rất khó tùy biến giao diện theo thiết kế riêng mà không bị ghi đè (override) quá nhiều CSS. &
+        Không chọn vì làm chậm tốc độ tải trang của người dùng cuối và gây khó khăn trong việc xây dựng bộ nhận diện thương hiệu riêng.                                                                               \\ \hline
+
+        shadcn/ui + Tailwind CSS                                                                      &
+        - Mô hình "Copy and Paste" giúp toàn quyền kiểm soát mã nguồn component. \newline
+        - Tối ưu hóa CSS bundle cực tốt nhờ Tailwind CSS v4. \newline
+        - Đảm bảo tiêu chuẩn Accessibility (Radix UI).                                                &
+        - Cần nhiều thời gian hơn để xây dựng nền tảng ban đầu so với các UI kit đóng gói sẵn. \newline
+        - Phụ thuộc vào kỹ năng viết Tailwind của lập trình viên.                                     &
+        Được chọn nhờ khả năng tùy biến tuyệt đối, hiệu năng vượt trội và tương thích hoàn hảo với Server Components của Next.js.                                                                                     \\ \hline
+    \end{longtable}
+\end{center}
+
+\vspace{-30pt}
+
+Nhóm sử dụng Tailwind CSS v4 kết hợp với thư viện \textbf{shadcn/ui}. Cách tiếp cận này cho phép nhóm sở hữu các thành phần giao diện chất lượng cao nhưng vẫn có thể can thiệp trực tiếp vào mã nguồn để tùy chỉnh, đảm bảo tính nhất quán và tuân thủ chuẩn accessibility trong dài hạn.
+
+\subsubsection{Quản lý trạng thái và dữ liệu}
+
+Trong kiến trúc Next.js hiện đại, việc phân tách giữa dữ liệu từ server (Server State) và trạng thái tương tác của người dùng (Client State) là vô cùng quan trọng. Bảng \ref{tab:state_comparison} so sánh các phương án quản lý.
+
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+        \caption{So sánh các giải pháp quản lý trạng thái} \label{tab:state_comparison}                                                                                                           \\
+        \hline
+        \centering\textbf{Công nghệ}                                              & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endfirsthead
+
+        \caption[]{So sánh các giải pháp quản lý trạng thái (tt)}                                                                                                                                 \\ \hline
+        \centering\textbf{Công nghệ}                                              & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endhead
+
+        Axios / Fetch thuần                                                       &
+        - Đơn giản, không phụ thuộc thư viện bên ngoài. \newline
+        - Kiểm soát hoàn toàn logic gọi API.                                      &
+        - Phải tự viết logic cho Caching, Retry, Loading state và Error handling. \newline
+        - Dễ gây ra hiện tượng "Prop Drilling" hoặc lặp lại code xử lý dữ liệu.   &
+        Không chọn vì tốn quá nhiều chi phí để xây dựng lại các tính năng quản lý dữ liệu phức tạp.                                                                                               \\ \hline
+
+        Redux / Redux Toolkit                                                     &
+        - Hệ sinh thái mạnh, công cụ debug (DevTools) tuyệt vời. \newline
+        - Quản lý state tập trung, phù hợp cho các luồng dữ liệu cực kỳ phức tạp. &
+        - Quá nhiều Boilerplate code (Action, Reducer, Store). \newline
+        - Làm tăng độ phức tạp của ứng dụng khi xử lý các tương tác nhỏ.          &
+        Không lựa chọn do cấu trúc quá cồng kềnh, gây khó khăn cho việc mở rộng nhanh và làm chậm hiệu năng rendering.                                                                            \\ \hline
+
+        TanStack Query + Zustand                                                  &
+        - Tự động hóa việc Caching, Refetching và đồng bộ dữ liệu Backend. \newline
+        - Zustand cực kỳ nhẹ, API đơn giản, ít Boilerplate. \newline
+        - Phân tách rõ ràng giữa Server State và Client State.                    &
+        - Cần học thêm cơ chế quản lý cache của TanStack Query. \newline
+        - Đòi hỏi sự kỷ luật trong việc định nghĩa các Key cho Query.             &
+        Được chọn nhờ sự cân bằng hoàn hảo giữa hiệu năng và tốc độ phát triển, giúp mã nguồn sạch sẽ và dễ bảo trì.                                                                              \\ \hline
+    \end{longtable}
+\end{center}
+
+\subsubsection{Xác thực dữ liệu và kiểm thử}
+
+Để đảm bảo tính an toàn và ổn định của hệ thống, nhóm đã lựa chọn các công cụ kiểm tra dữ liệu và kiểm thử hiện đại. Bảng \ref{tab:validation_testing_comparison} trình bày sự so sánh giữa các lựa chọn.
+
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{longtable}{|p{2.5cm}|p{4cm}|p{4cm}|p{3.5cm}|}
+        \caption{So sánh công cụ Validation và Testing} \label{tab:validation_testing_comparison}                                                                                        \\
+        \hline
+        \centering\textbf{Công nghệ}                                     & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endfirsthead
+
+        \caption[]{So sánh công cụ Validation và Testing (tt)}                                                                                                                           \\ \hline
+        \centering\textbf{Công nghệ}                                     & \centering\textbf{Ưu điểm} & \centering\textbf{Nhược điểm} & \centering\arraybackslash\textbf{Lý do lựa chọn} \\ \hline
+        \endhead
+
+        Yup / Joi                                                        &
+        - Phổ biến, dễ sử dụng, hỗ trợ tốt cho các form cơ bản. \newline
+        - Cú pháp khai báo schema rõ ràng.                               &
+        - Khả năng suy luận kiểu dữ liệu (Type Inference) trong TypeScript còn hạn chế. \newline
+        - Kích thước thư viện lớn hơn so với các giải pháp mới.          &
+        Không chọn vì khó tích hợp chặt chẽ với hệ thống kiểu dữ liệu (Types) của dự án.                                                                                                 \\ \hline
+
+        Zod                                                              &
+        - Suy luận kiểu dữ liệu tự động 100\% (Schema is the source of truth). \newline
+        - Kích thước nhẹ, hỗ trợ đầy đủ các tính năng xác thực phức tạp. &
+        - Cú pháp có thể hơi lạ lẫm với những người đã quen dùng Yup.    &
+        Được chọn nhờ sự an toàn tuyệt đối về kiểu dữ liệu khi làm việc với TypeScript.                                                                                                  \\ \hline
+
+        Jest                                                             &
+        - Tiêu chuẩn ngành, tính năng đầy đủ, cộng đồng lớn. \newline
+        - Hỗ trợ tốt cho các dự án React cũ.                             &
+        - Tốc độ chạy test chậm đối với các dự án lớn. \newline
+        - Cấu hình phức tạp khi làm việc với ESM và Next.js hiện đại.    &
+        Không chọn do hiệu năng thực thi và độ trễ khi khởi động môi trường kiểm thử.                                                                                                    \\ \hline
+
+        Vitest                                                           &
+        - Tốc độ thực thi cực nhanh nhờ sử dụng Vite worker threads. \newline
+        - Tương thích 100\% với các API của Jest. \newline
+        - Tích hợp mượt mà với cấu hình dự án hiện đại.                  &
+        - Cộng đồng và các plugin đi kèm chưa phong phú bằng Jest.       &
+        Được chọn để tối ưu hóa quy trình CI/CD và trải nghiệm phát triển của lập trình viên.                                                                                            \\ \hline
+    \end{longtable}
+\end{center}
+
+\subsubsection{Tổng hợp công nghệ Frontend}
+
+Bảng \ref{tab:frontend_summary} tổng kết lại các công nghệ được áp dụng tại tầng giao diện:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \caption{Tổng hợp các công nghệ sử dụng tại Frontend}
+    \label{tab:frontend_summary}
+    \begin{tabular}{|l|p{4.5cm}|p{6.5cm}|}
+        \hline
+        \textbf{Thành phần} & \textbf{Công nghệ}    & \textbf{Vai trò cốt lõi}                                        \\ \hline
+        Framework           & Next.js 16 (React 19) & Nền tảng render phía server, tối ưu SEO và hiệu năng.           \\ \hline
+        Styling             & Tailwind CSS v4       & Thiết kế giao diện theo hướng utility-first, tối ưu CSS bundle. \\ \hline
+        UI Library          & shadcn/ui             & Xây dựng hệ thống component nhất quán và dễ tùy biến.           \\ \hline
+        Server State        & TanStack Query v5     & Quản lý cache và đồng bộ dữ liệu từ các Microservices.          \\ \hline
+        Client State        & Zustand               & Quản lý trạng thái ứng dụng (Giỏ hàng, User) gọn nhẹ.           \\ \hline
+        Validation          & Zod                   & Xác thực dữ liệu form và đảm bảo an toàn kiểu dữ liệu.          \\ \hline
+        Testing             & Vitest                & Chạy các bộ kiểm thử đơn vị và tích hợp cho tầng giao diện.     \\ \hline
+    \end{tabular}
+\end{table}

@@ -1,0 +1,210 @@
+\subsection{Kiểm thử luồng nghiệp vụ cuối} \label{sec:end_to_end_testing}
+
+Kiểm thử luồng nghiệp vụ cuối là giai đoạn quan trọng nhất nhằm xác minh khả năng phối hợp giữa các dịch vụ phân tán và hạ tầng truyền tin. Hệ thống được kiểm thử theo phương pháp hộp đen dựa trên các kịch bản sử dụng. Quy trình này xác minh sự phối hợp giữa các thành phần giao diện và hệ thống xử lý nghiệp vụ phân tán trong một luồng nghiệp vụ hoàn chỉnh.
+
+Khác với các bài kiểm thử đơn vị, kiểm thử luồng nghiệp vụ cuối tập trung vào việc mô phỏng hành trình thực tế của khách hàng trên hệ thống. Quá trình này đảm bảo rằng dữ liệu được luân chuyển chính xác qua các ranh giới dịch vụ từ khi người dùng xác thực danh tính, tìm kiếm sản phẩm cho đến khi hoàn tất thanh toán. Việc kiểm chứng tập trung vào sự đồng bộ trạng thái giữa các cơ sở dữ liệu độc lập thông qua cơ chế truyền tải sự kiện, đảm bảo hệ thống không xảy ra sai sót về logic nghiệp vụ khi có sự tương tác giữa nhiều thành phần cùng lúc.
+
+Dưới đây là nội dung chi tiết về các kịch bản kiểm thử được phân tách theo từng tính năng cốt lõi của hệ thống. Mỗi tính năng bao gồm sơ đồ luồng nghiệp vụ và danh sách các ca kiểm thử tương ứng nhằm đảm bảo tính đúng đắn của logic phần mềm. Ở phần này, nhóm chỉ mô tả kịch bản kiểm thử cho một số tính năng chủ chốt. Các tính năng còn lại sẽ được trình bày chi tiết trong phần phụ lục \ref{sec:appx_e2e_testing}.
+
+\subsubsection{Tính năng tìm kiếm và lọc sản phẩm}
+
+Sơ đồ dưới đây trình bày các bước thực hiện và các nhánh rẽ nghiệp vụ chi tiết khi người dùng tương tác với bộ lọc sản phẩm trên hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/chap8/fr/filter.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng tìm kiếm và lọc sản phẩm}
+\label{fig:flow_filter}
+\end{figure}
+
+Dựa trên các luồng xử lý tại Hình \ref{fig:flow_filter}, danh sách các ca kiểm thử chi tiết cho tính năng tìm kiếm và lọc sản phẩm được tổng hợp tại Bảng \ref{tab:tc_filter_full} nhằm xác minh tính chính xác của dữ liệu trả về.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử chi tiết tính năng Tìm kiếm và lọc sản phẩm}
+\label{tab:tc_filter_full}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-005-001 & Tìm kiếm từ khóa & Nhập từ khóa vào ô tìm kiếm và nhấn Enter & Danh sách hiển thị sản phẩm có tên hoặc mô tả chứa từ khóa & Passed \\ \hline
+TC-005-002 & Lọc giá tối thiểu & Chọn mức giá thấp nhất tại bộ lọc & Hệ thống chỉ hiển thị sản phẩm có đơn giá lớn hơn hoặc bằng mức chọn & Passed \\ \hline
+TC-005-003 & Lọc giá tối đa & Chọn mức giá cao nhất tại bộ lọc & Hệ thống chỉ hiển thị sản phẩm có đơn giá nhỏ hơn hoặc bằng mức chọn & Passed \\ \hline
+TC-005-004 & Sắp xếp danh sách & Lựa chọn các tiêu chí sắp xếp như giá hoặc ngày tạo & Danh sách sản phẩm được thay đổi thứ tự hiển thị đúng theo yêu cầu & Passed \\ \hline
+TC-005-005 & Lọc theo danh mục & Chọn một loại sản phẩm cụ thể trên menu & Chỉ các sản phẩm thuộc danh mục đã chọn mới xuất hiện trên màn hình & Passed \\ \hline
+TC-005-006 & Lọc theo nhãn hàng & Lựa chọn thương hiệu sản phẩm mong muốn & Kết quả trả về đúng với thương hiệu người dùng đã yêu cầu lọc & Passed \\ \hline
+TC-005-007 & Kết hợp giá và hãng & Thiết lập khoảng giá kèm theo thương hiệu cụ thể & Sản phẩm hiển thị phải thỏa mãn đồng thời cả điều kiện giá và nhãn hàng & Passed \\ \hline
+TC-005-008 & Kết hợp danh mục và từ khóa & Tìm kiếm từ khóa bên trong một danh mục nhất định & Kết quả trả về thuộc đúng danh mục và có chứa từ khóa tìm kiếm & Passed \\ \hline
+TC-005-009 & Kết hợp nhiều tiêu chí & Lọc theo danh mục và giá kèm sắp xếp kết quả & Dữ liệu hiển thị đúng danh mục và khoảng giá theo thứ tự sắp xếp chọn lọc & Passed \\ \hline
+TC-005-010 & Áp dụng tất cả bộ lọc & Thiết lập toàn bộ các tiêu chí lọc hiện có & Hệ thống xử lý chính xác và trả về kết quả thỏa mãn mọi ràng buộc & Passed \\ \hline
+TC-005-011 & Từ khóa không tồn tại & Tìm kiếm với một chuỗi ký tự không có trong dữ liệu & Hệ thống thông báo không tìm thấy sản phẩm phù hợp với tiêu chí & Passed \\ \hline
+TC-005-012 & Sai biệt hãng và danh mục & Kết hợp nhãn hàng và danh mục không có sản phẩm & Màn hình hiển thị thông báo không có kết quả phù hợp & Passed \\ \hline
+TC-005-013 & Giá tối đa thấp hơn tối thiểu & Thiết lập mức giá tối đa nhỏ hơn mức tối thiểu & Hệ thống xử lý logic và không trả về sản phẩm nào hoặc báo lỗi lọc & Passed \\ \hline
+TC-005-014 & Giá tối thiểu cao hơn tối đa & Điều chỉnh giá tối thiểu vượt quá giới hạn giá tối đa & Hệ thống đảm bảo tính nhất quán và yêu cầu điều chỉnh lại khoảng giá & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng thêm sản phẩm vào giỏ hàng và đặt hàng}
+
+Đây là luồng nghiệp vụ trọng tâm kết nối trực tiếp giữa các dịch vụ sản phẩm và kho hàng. Quy trình này bao gồm ba giai đoạn chính là thêm sản phẩm vào hệ thống lưu trữ tạm thời, điều chỉnh số lượng hàng hóa và thực hiện khởi tạo đơn hàng chính thức. Các sơ đồ dưới đây mô tả chi tiết các bước thực hiện và các nhánh rẽ logic tương ứng với từng giai đoạn.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{images/chap8/fr/add-to-cart.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ Thêm sản phẩm và Quản lý giỏ hàng}
+\label{fig:flow_cart}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{images/chap8/fr/checkout.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ Đặt hàng}
+\label{fig:flow_checkout}
+\end{figure}
+
+Dựa trên các quy trình tại Hình \ref{fig:flow_cart} và Hình \ref{fig:flow_checkout}, danh sách các ca kiểm thử dưới đây được thiết lập để xác minh tính chính xác của dữ liệu khi luân chuyển qua các trạng thái khác nhau trong chu trình mua sắm.
+
+Bảng \ref{tab:tc_cart_checkout_full} dưới đây là danh mục mô tả các kịch bản kiểm thử chi tiết cho quy trình này. Các ca kiểm thử được thiết kế để xác minh tính chính xác của dữ liệu khi người dùng thực hiện thay đổi số lượng hàng hóa và áp dụng các chính sách khuyến mãi trong giai đoạn thanh toán.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử quy trình Quản lý giỏ hàng và Đặt hàng}
+\label{tab:tc_cart_checkout_full}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+\multicolumn{5}{|l|}{\textbf{Giai đoạn 1: Thêm vào giỏ hàng}} \\ \hline
+TC-007-001 & Sản phẩm hết hàng & Thêm sản phẩm có số lượng tồn kho bằng không. & Hệ thống hiển thị thông báo lỗi và từ chối thao tác. & Passed \\ \hline
+TC-007-002 & Thêm sản phẩm mới & Thêm sản phẩm còn hàng chưa có trong giỏ. & Bản ghi mới được tạo với số lượng mặc định là một. & Passed \\ \hline
+TC-007-003 & Sản phẩm hiện hữu & Thêm sản phẩm đã tồn tại sẵn trong giỏ hàng. & Hệ thống tự động tăng số lượng sản phẩm lên một đơn vị. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Giai đoạn 2: Quản lý giỏ hàng}} \\ \hline
+TC-007-004 & Tăng số lượng thành công & Nhấn nút tăng số lượng khi còn đủ hàng tồn kho. & Số lượng cập nhật và tổng giá trị giỏ hàng tăng chính xác. & Passed \\ \hline
+TC-007-005 & Tăng số lượng thất bại & Tăng số lượng vượt quá khả năng cung ứng của kho. & Hệ thống ngăn chặn hành động và hiển thị cảnh báo lỗi. & Passed \\ \hline
+TC-007-006 & Giảm số lượng thành công & Nhấn nút giảm khi sản phẩm đang có từ hai món trở lên. & Số lượng giảm đi một đơn vị và tổng tiền cập nhật đúng. & Passed \\ \hline
+TC-007-007 & Giảm số lượng thất bại & Giảm số lượng sản phẩm xuống dưới mức tối thiểu là một. & Hệ thống không thực thi lệnh giảm hoặc yêu cầu xóa món hàng. & Passed \\ \hline
+TC-007-008 & Xóa sản phẩm & Sử dụng chức năng loại bỏ sản phẩm ra khỏi giỏ. & Sản phẩm bị xóa hoàn toàn khỏi danh sách chờ mua. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Giai đoạn 3: Thanh toán và Đặt hàng}} \\ \hline
+TC-007-009 & Thanh toán tiêu chuẩn & Đặt hàng với thông tin mặc định không thay đổi. & Đơn hàng khởi tạo thành công và lưu trữ vào cơ sở dữ liệu. & Passed \\ \hline
+TC-007-010 & Mã giảm giá hết hạn & Áp dụng mã Voucher đã quá thời hạn sử dụng. & Hệ thống từ chối áp dụng và yêu cầu kiểm tra lại mã. & Passed \\ \hline
+TC-007-011 & Mã giảm giá hết lượt & Áp dụng mã Voucher đã đạt giới hạn số lần sử dụng. & Hệ thống báo lỗi mã không còn hiệu lực sử dụng. & Passed \\ \hline
+TC-007-012 & Mã không tồn tại & Nhập chuỗi ký tự mã giảm giá sai lệch. & Hệ thống thông báo mã không hợp lệ hoặc không tìm thấy. & Passed \\ \hline
+TC-007-013 & Thay đổi thông tin & Cập nhật địa chỉ hoặc ghi chú trước khi đặt hàng. & Đơn hàng ghi nhận chính xác các thông tin mới nhất. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+
+\subsubsection{Tính năng trợ lý khách hàng AI}
+
+Tính năng trợ lý tư vấn khách hàng AI cho phép người dùng tương tác bằng ngôn ngữ tự nhiên để tìm kiếm sản phẩm, so sánh và tra cứu chính sách cửa hàng. Quy trình này xác minh khả năng xử lý hội thoại đa lượt của hệ thống, bao gồm tích lũy bộ lọc qua các lượt hội thoại, cá nhân hóa theo lịch sử mua hàng, và truy xuất thông tin chính xác từ cơ sở dữ liệu sản phẩm cũng như chính sách cửa hàng.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/chap8/fr/ai.png}
+\vspace{0.7cm}
+\caption{Sơ đồ luồng nghiệp vụ tính năng Trợ lý khách hàng AI}
+\label{fig:flow_agent}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng xử lý hội thoại cũng như khả năng suy luận và truy xuất thông tin của tác nhân AI.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Trợ lý khách hàng AI}
+\label{tab:tc_agent}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-AGT-001 & Cá nhân hóa theo lịch sử mua hàng & Người dùng đăng nhập với tài khoản có lịch sử mua hàng, gửi tin nhắn đầu tiên. & Trợ lý ưu tiên thương hiệu và màu sắc phù hợp với lịch sử mua hàng của người dùng. & Passed \\ \hline
+TC-AGT-002 & Tích lũy bộ lọc qua nhiều lượt hội thoại & Người dùng lần lượt nhập danh mục, khoảng giá, RAM và thương hiệu qua 3 lượt hội thoại. & Trạng thái hội thoại lưu đầy đủ tất cả bộ lọc sau mỗi lượt mà không mất dữ liệu cũ. & Passed \\ \hline
+TC-AGT-003 & Xóa bộ lọc khi đổi danh mục & Người dùng chuyển từ yêu cầu tìm laptop sang điện thoại trong cùng một phiên. & Danh mục được cập nhật, toàn bộ bộ lọc cũ được xóa và trạng thái bắt đầu lại. & Passed \\ \hline
+TC-AGT-004 & Gợi ý sản phẩm theo bộ lọc & Người dùng yêu cầu tìm laptop Dell RAM 16GB dưới 20 triệu. & Trợ lý trả về danh sách sản phẩm thực từ cơ sở dữ liệu khớp với tất cả điều kiện lọc. & Passed \\ \hline
+TC-AGT-005 & So sánh hai sản phẩm cụ thể & Người dùng yêu cầu so sánh MacBook Air M4 và ASUS Vivobook S14. & Trợ lý nhận diện và truy xuất đầy đủ thông tin cả hai sản phẩm, đưa ra so sánh chi tiết. & Passed \\ \hline
+TC-AGT-006 & Tra cứu chính sách cửa hàng & Người dùng hỏi về chính sách đổi trả hàng. & Trợ lý trả lời chính xác dựa trên dữ liệu chính sách, không tự bịa đặt thông tin. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng quản lý thông tin sản phẩm}
+
+Tính năng quản lý sản phẩm dành cho quản trị viên bao gồm các nghiệp vụ liên quan đến việc duy trì danh mục hàng hóa, thương hiệu, biến thể (variant) và mã giảm giá (discount). Quy trình kiểm thử tập trung vào việc xác minh tính toàn vẹn của dữ liệu, khả năng xử lý các ràng buộc khóa ngoại và tính chính xác của bộ lọc tìm kiếm trong giao diện quản trị.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/product-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý thông tin sản phẩm}
+\label{fig:flow_product_management}
+\end{figure}
+
+Danh sách dưới đây là các ca kiểm thử tiêu biểu cho các luồng tương tác với danh mục hàng hóa và sản phẩm.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý thông tin sản phẩm}
+\label{tab:tc_product_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Danh mục (Category) \& Thương hiệu (Brand)}} \\ \hline
+TC-011-001 & Tạo mới danh mục & Nhập tên danh mục hợp lệ và xác nhận tạo mới. & Dữ liệu được khởi tạo thành công và xuất hiện trong danh sách. & Passed \\ \hline
+TC-011-002 & Tạo danh mục trùng tên & Nhập tên danh mục đã tồn tại trong hệ thống. & Hệ thống báo lỗi trùng tên và ngăn chặn việc tạo mới. & Passed \\ \hline
+TC-011-007 & Xóa danh mục có ràng buộc & Xóa một danh mục đang chứa các sản phẩm hoạt động bên trong. & Hệ thống ngăn chặn thao tác và hiển thị cảnh báo lỗi ràng buộc khóa ngoại. & Passed \\ \hline
+TC-011-011 & Tạo mới thương hiệu & Nhập tên thương hiệu mới và xác nhận lưu. & Thương hiệu mới hiển thị trong danh sách quản trị. & Passed \\ \hline
+TC-011-012 & Tạo thương hiệu trùng tên & Khởi tạo thương hiệu với tên đã có sẵn. & Hệ thống hiển thị thông báo lỗi trùng lặp dữ liệu. & Passed \\ \hline
+TC-011-014 & Cập nhật thương hiệu & Thay đổi tên thương hiệu hiện tại sang tên mới hợp lệ. & Thông tin được cập nhật thành công trên giao diện và DB. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Sản phẩm (Product)}} \\ \hline
+TC-011-021 & Tạo sản phẩm đơn biến thể & Thêm sản phẩm mới với một cấu hình duy nhất. & Sản phẩm hiển thị đúng giá và thông tin trên lưới quản trị. & Passed \\ \hline
+TC-011-022 & Tạo sản phẩm đa biến thể & Thêm sản phẩm kèm theo nhiều lựa chọn bộ nhớ, màu sắc. & Hệ thống lưu trữ chính xác toàn bộ danh sách biến thể đi kèm. & Passed \\ \hline
+TC-011-023 & Trùng mã biến thể & Khởi tạo sản phẩm với hai biến thể có chung mã định danh (Variant Code). & API từ chối thực thi và trả về lỗi trùng lặp mã biến thể. & Passed \\ \hline
+TC-011-024 & Chỉnh sửa sản phẩm & Thay đổi tên, giá hiển thị và thương hiệu của sản phẩm. & Thông tin mới được cập nhật và đồng bộ ngay trên giao diện. & Passed \\ \hline
+TC-011-027 & Lưu trữ sản phẩm & Thực hiện thao tác Archive một sản phẩm không còn kinh doanh. & Sản phẩm biến mất khỏi danh sách hiển thị cho khách hàng. & Passed \\ \hline
+TC-011-029 & Tìm kiếm theo từ khóa & Nhập từ khóa tìm kiếm sản phẩm tại trang quản trị. & Chỉ các sản phẩm có tên khớp với từ khóa mới được hiển thị. & Passed \\ \hline
+TC-011-033 & Bộ lọc kết hợp & Lọc theo tổ hợp thương hiệu, danh mục và khoảng giá. & Danh sách trả về chính xác sản phẩm thỏa mãn mọi tiêu chí lọc. & Passed \\ \hline
+TC-011-034 & Phân trang sản phẩm & Chuyển đổi giữa các trang danh sách sản phẩm. & Dữ liệu trang mới được tải nhanh chóng và chính xác. & Passed \\ \hline
+\multicolumn{5}{|l|}{\textbf{Quản lý Mã giảm giá (Discount)}} \\ \hline
+TC-011-036 & Khởi tạo mã giảm giá & Thiết lập mã giảm giá theo phần trăm với đầy đủ điều kiện. & Mã giảm giá được tạo thành công và sẵn sàng sử dụng. & Passed \\ \hline
+TC-011-039 & Áp dụng cho thương hiệu & Gán mã giảm giá cụ thể cho toàn bộ sản phẩm của một thương hiệu. & Mã giảm giá được kích hoạt đúng cho nhóm sản phẩm đã chọn. & Passed \\ \hline
+TC-011-040 & Chỉnh sửa mã giảm giá & Cập nhật lại giá trị và thời hạn hiệu lực của mã. & Thông tin mã giảm giá được cập nhật thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tính năng quản lý đơn hàng}
+
+Tính năng quản lý đơn hàng cho phép quản trị viên theo dõi toàn bộ vòng đời của một giao dịch, từ lúc tiếp nhận đến khi vận chuyển và hoàn tất. Quy trình kiểm thử xác minh khả năng chuyển đổi trạng thái đơn hàng theo đúng logic nghiệp vụ, đồng thời cập nhật nhật ký giao hàng (delivery log) nhằm duy trì tính minh bạch.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/order-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý đơn hàng}
+\label{fig:flow_order_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng điều phối đơn hàng và nhật ký vận chuyển.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý đơn hàng}
+\label{tab:tc_order_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-042 & Lọc đơn hàng theo trạng thái & Chọn bộ lọc theo trạng thái (ví dụ: đang chờ xác nhận hoặc đang giao). & Hệ thống chỉ hiển thị những đơn hàng có trạng thái tương ứng. & Passed \\ \hline
+TC-011-046 & Hiển thị chi tiết đơn hàng & Truy cập trang chi tiết của một đơn hàng cụ thể. & Hệ thống hiển thị chính xác danh sách mặt hàng, tổng tiền và tiến trình xử lý. & Passed \\ \hline
+TC-011-048 & Chuyển đổi trạng thái hợp lệ & Quản trị viên cập nhật trạng thái đơn hàng theo thứ tự nghiệp vụ cho phép. & Trạng thái được cập nhật thành công trên giao diện và cơ sở dữ liệu. & Passed \\ \hline
+TC-011-051 & Thêm nhật ký vận chuyển & Khởi tạo dòng trạng thái mới mô tả tiến trình giao hàng (ví dụ: đã đến trạm trung chuyển). & Dòng nhật ký mới được thêm vào chuỗi sự kiện vận chuyển với mốc thời gian chính xác. & Passed \\ \hline
+TC-011-053 & Chỉnh sửa nhật ký vận chuyển & Cập nhật nội dung hoặc trạng thái của một sự kiện giao hàng đã tồn tại. & Thông tin được lưu lại và đồng bộ trực tiếp lên giao diện theo dõi. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Tài liệu quản lý kiểm thử chi tiết}
+Toàn bộ các bước thực hiện cụ thể và các trường hợp kiểm thử mở rộng cho toàn bộ hệ thống được lưu trữ tại tệp tin dưới đây:
+
+Truy cập tài liệu chi tiết tại: \href{https://docs.google.com/spreadsheets/d/1mHcj2cuIYbw-0h5_UOIEGGMhs_ll_Lcr/edit?usp=sharing&ouid=108057400976358149425&rtpof=true&sd=true}{Google Sheet}
+
