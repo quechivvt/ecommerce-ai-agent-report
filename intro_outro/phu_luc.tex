@@ -775,6 +775,36 @@ TC-008-003 & Thanh toán trực tuyến thành công & Thực hiện quét mã Q
 \end{tabularx}
 \end{table}
 
+\subsubsection*{Tính năng quản lý hồ sơ cá nhân}
+
+Tính năng quản lý hồ sơ cá nhân cho phép người dùng xem và cập nhật các thông tin cá nhân, thay đổi mật khẩu và cập nhật ảnh đại diện. Quy trình này kiểm tra khả năng lưu trữ, xác thực dữ liệu đầu vào và đảm bảo tính bảo mật khi người dùng thực hiện các thay đổi nhạy cảm trên hệ thống.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/profile-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý hồ sơ cá nhân}
+\label{fig:flow_profile_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng cập nhật thông tin và kiểm soát bảo mật tài khoản.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý hồ sơ cá nhân}
+\label{tab:tc_profile_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-002-001 & Xem thông tin hồ sơ & Tải trang hồ sơ với phiên đăng nhập hợp lệ. & Hệ thống hiển thị đầy đủ và chính xác thông tin cá nhân (họ tên, email, số điện thoại). & Passed \\ \hline
+TC-002-002 & Cập nhật thông tin thành công & Thay đổi họ tên và số điện thoại và lưu thiết lập. & Hệ thống xác nhận lưu thành công và cập nhật ngay trên giao diện mà không cần tải lại trang. & Passed \\ \hline
+TC-002-003 & Đổi mật khẩu thành công & Nhập đúng mật khẩu hiện tại và thiết lập mật khẩu mới hợp lệ. & Mật khẩu được cập nhật thành công trên cơ sở dữ liệu, các trường nhập liệu tự động xóa trống. & Passed \\ \hline
+TC-002-004 & Sai mật khẩu hiện tại & Đổi mật khẩu nhưng nhập sai mật khẩu cũ. & Hệ thống từ chối yêu cầu và hiển thị cảnh báo lỗi sai mật khẩu. & Passed \\ \hline
+TC-002-005 & Thay đổi ảnh đại diện & Tải lên tập tin hình ảnh hợp lệ để làm ảnh đại diện. & Ảnh đại diện mới được cập nhật và hiển thị thành công. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
 \subsubsection*{Tính năng xem chi tiết đơn hàng}
 
 Tính năng xem chi tiết đơn hàng cho phép người dùng theo dõi đầy đủ thông tin của đơn hàng đã đặt, bao gồm danh sách sản phẩm, số lượng, tổng tiền và trạng thái xử lý. Quy trình này giúp xác minh khả năng truy xuất và hiển thị dữ liệu đơn hàng của hệ thống một cách chính xác và đầy đủ.
@@ -1031,6 +1061,7 @@ Trần Nguyễn Anh Khoa: Hoàn thiện báo cáo tổng kết và kiểm tra gi
 Nguyễn Ngọc Quế Chi: Hoàn tất báo cáo. \\ \hline
 
 \end{longtable}
+
 
 \subsection*{Báo cáo hiệu năng chi tiết (Lighthouse)}
 Dưới đây là các báo cáo đầy đủ về hiệu năng, khả năng truy cập và tối ưu hóa SEO của hệ thống được trích xuất từ Google Lighthouse.

@@ -195,35 +195,6 @@ Câu hỏi dễ gây ảo giác (TC-AGT-016 -- 020) & 5 & 5 (100\%) & 0 & 0 \\ \
 
 Kết quả cho thấy tác nhân AI xử lý chính xác toàn bộ 20 ca kiểm thử. Đối với các câu hỏi trong phạm vi, trợ lý truy xuất và trả lời đúng thông tin từ cơ sở dữ liệu sản phẩm và chính sách. Đối với các câu hỏi ngoài phạm vi, trợ lý nhận biết và từ chối đúng mà không cố gắng trả lời. Đáng chú ý, không có trường hợp ảo giác nào được ghi nhận trong toàn bộ quá trình kiểm thử, cho thấy tác nhân AI hoạt động đáng tin cậy trong việc chỉ cung cấp thông tin có căn cứ từ dữ liệu thực tế.
 
-\subsubsection{Tính năng quản lý hồ sơ cá nhân}
-
-Tính năng quản lý hồ sơ cá nhân cho phép người dùng xem và cập nhật các thông tin cá nhân, thay đổi mật khẩu và cập nhật ảnh đại diện. Quy trình này kiểm tra khả năng lưu trữ, xác thực dữ liệu đầu vào và đảm bảo tính bảo mật khi người dùng thực hiện các thay đổi nhạy cảm trên hệ thống.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/chap8/fr/profile-management.png}
-\vspace{0.7cm}
-\caption{Giao diện tính năng Quản lý hồ sơ cá nhân}
-\label{fig:flow_profile_management}
-\end{figure}
-
-Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng cập nhật thông tin và kiểm soát bảo mật tài khoản.
-
-\begin{table}[H]
-\centering
-\caption{Các ca kiểm thử tính năng Quản lý hồ sơ cá nhân}
-\label{tab:tc_profile_management}
-\small
-\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
-\hline
-\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
-TC-002-001 & Xem thông tin hồ sơ & Tải trang hồ sơ với phiên đăng nhập hợp lệ. & Hệ thống hiển thị đầy đủ và chính xác thông tin cá nhân (họ tên, email, số điện thoại). & Passed \\ \hline
-TC-002-002 & Cập nhật thông tin thành công & Thay đổi họ tên và số điện thoại và lưu thiết lập. & Hệ thống xác nhận lưu thành công và cập nhật ngay trên giao diện mà không cần tải lại trang. & Passed \\ \hline
-TC-002-003 & Đổi mật khẩu thành công & Nhập đúng mật khẩu hiện tại và thiết lập mật khẩu mới hợp lệ. & Mật khẩu được cập nhật thành công trên cơ sở dữ liệu, các trường nhập liệu tự động xóa trống. & Passed \\ \hline
-TC-002-004 & Sai mật khẩu hiện tại & Đổi mật khẩu nhưng nhập sai mật khẩu cũ. & Hệ thống từ chối yêu cầu và hiển thị cảnh báo lỗi sai mật khẩu. & Passed \\ \hline
-TC-002-005 & Thay đổi ảnh đại diện & Tải lên tập tin hình ảnh hợp lệ để làm ảnh đại diện. & Ảnh đại diện mới được cập nhật và hiển thị thành công. & Passed \\ \hline
-\end{tabularx}
-\end{table}
 
 \subsubsection{Tính năng quản lý thông tin sản phẩm}
 

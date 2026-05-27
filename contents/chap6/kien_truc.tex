@@ -339,58 +339,15 @@ Riêng AI agent service sở hữu ba cơ sở dữ liệu độc lập: cơ s�
     \label{fig:component_diagram}
 \end{figure}
 
-Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần cốt lõi và luồng giao tiếp trong kiến trúc hệ thống thương mại điện tử tích hợp Trợ lý Ảo AI. Hệ thống được thiết kế theo hướng sự kiện (Event-Driven) kết hợp kiến trúc Microservices, bao gồm các tầng chính sau:
+Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần công nghệ cốt lõi và luồng giao tiếp thực tế của hệ thống. Do vai trò và chức năng nghiệp vụ của các tầng đã được trình bày chi tiết ở mục trước, phần này tập trung tóm tắt các công nghệ và nền tảng chính được áp dụng cho từng thành phần:
 
-\textbf{Tầng giao diện người dùng}
-
-Tầng Frontend được phát triển bằng framework Next.js 16 (với React 19) nhằm cung cấp giao diện tương tác tốc độ cao và tối ưu SEO.
 \begin{itemize}
-    \item \textbf{Quản lý trạng thái (State Management):} Sử dụng thư viện Zustand (với các store: \texttt{auth}, \texttt{cart}, \texttt{orderFlow}, ...) để duy trì các trạng thái cục bộ mượt mà ở phía người dùng.
-    \item \textbf{Quản lý dữ liệu máy chủ (Server State):} Tích hợp TanStack React Query để tối ưu bộ nhớ đệm (cache), đồng bộ và xử lý vòng đời của dữ liệu tải về từ Backend.
-    \item \textbf{Giao tiếp mạng:} Axios được sử dụng làm HTTP Client tập trung, tích hợp các interceptor nhằm xử lý JWT Bearer và tự động làm mới token (silent token refresh). 
-    \item \textbf{Bảo mật định tuyến:} Các lời gọi API được định tuyến (rewrite proxy) thông qua Next.js sang API Gateway, che giấu địa chỉ thực của máy chủ. Đối với tính năng Trợ lý Ảo, các lời gọi từ Frontend được thực hiện trực tiếp (bypasses Axios) đến endpoint của AI Agent (như \texttt{/api/agent/chat}, \texttt{/api/agent/purchase}) nhưng vẫn được điều hướng qua API Gateway chung.
-\end{itemize}
-\bigskip
-
-\textbf{Tầng API Gateway}
-
-Mọi lưu lượng truy cập từ Frontend đều đi qua Spring Cloud Gateway, hoạt động tại cổng 8080. Gateway đóng vai trò như một lớp trung gian (proxy), định tuyến các luồng yêu cầu đồng bộ chuẩn RESTful đến các dịch vụ (microservices) tương ứng, bao gồm cả dịch vụ AI. Việc tập trung mọi lối vào giúp nâng cao bảo mật và dễ dàng quản lý truy cập mạng.
-\bigskip
-
-\textbf{Tầng Backend Core (Các dịch vụ nghiệp vụ cốt lõi)}
-
-Hệ thống nghiệp vụ được phân rã thành 6 dịch vụ độc lập, phát triển trên nền tảng Spring Boot. Các dịch vụ này giao tiếp đồng bộ với API Gateway và bất đồng bộ qua hệ thống Event Bus.
-\begin{itemize}
-    \item \textbf{User Service:} Đảm nhiệm xác thực (Auth), quản lý người dùng và địa chỉ.
-    \item \textbf{Product Service:} Xử lý dữ liệu sản phẩm, thương hiệu, danh mục và khuyến mãi.
-    \item \textbf{Cart Service:} Quản lý trạng thái giỏ hàng của người dùng.
-    \item \textbf{Order Service:} Chịu trách nhiệm ghi nhận đơn hàng, thanh toán, giao hàng và phản hồi.
-    \item \textbf{Orchestration Service:} Hoạt động như một bộ điều phối Saga trung tâm (Saga Orchestrator). Dịch vụ này quản lý toàn vẹn luồng nghiệp vụ thanh toán, đặt hàng và hủy đơn hàng nhằm đảm bảo tính nhất quán dữ liệu xuyên suốt các dịch vụ độc lập.
-    \item \textbf{Admin Service:} Quản trị hệ thống, xử lý liên hệ và ghi nhận nhật ký hoạt động (Action Logs).
-\end{itemize}
-\bigskip
-
-\textbf{Tầng AI Agent (Trợ lý Ảo)}
-
-Trợ lý Ảo AI được xây dựng như một dịch vụ độc lập sử dụng Python FastAPI. Sự độc lập này không chỉ cho phép tận dụng triệt để hệ sinh thái LLM và các công cụ AI liên quan, mà còn tạo tiền đề vững chắc cho việc kiểm thử Trợ lý Ảo về tính chính xác và tối ưu hiệu suất sinh văn bản độc lập với hệ thống chính.
-\begin{itemize}
-    \item \textbf{Động cơ AI (AI Engine):} Sử dụng đồ thị trạng thái LangGraph (bao gồm các bước \texttt{parse} $\rightarrow$ \texttt{resolve} $\rightarrow$ \texttt{reason} $\rightarrow$ \texttt{tools}) kết hợp với LangChain và OpenAI, tạo ra phản hồi thông minh thông qua luồng tư duy và gọi công cụ (tool calling).
-    \item \textbf{Đồng bộ dữ liệu thời gian thực:} Tích hợp Kafka Consumer (sử dụng thư viện \texttt{confluent\_kafka} với nhóm \texttt{ai\_service\_sync\_group}) để lắng nghe các sự kiện nghiệp vụ quan trọng từ hệ thống lõi.
-\end{itemize}
-\bigskip
-
-\textbf{Tầng Event Bus (Điều phối sự kiện)}
-
-Hệ thống sử dụng Apache Kafka làm trục xương sống cho việc trao đổi dữ liệu bất đồng bộ. Việc sử dụng Kafka đảm bảo hệ thống có mức độ phụ thuộc thấp (decoupled communication) và hiện thực hóa mô hình Saga cũng như CQRS. Ví dụ, khi sản phẩm thay đổi, sự kiện \textbf{\texttt{product.detail.command}} được phát đi để Cart Service và AI Service cập nhật dữ liệu (materialized views) nội bộ. Các sự kiện như \textbf{\texttt{order.events}}, \textbf{\texttt{payment.events}} được Orchestration Service tiêu thụ để điều phối các giao dịch phức tạp một cách bền bỉ và nhất quán.
-\bigskip
-
-\textbf{Tầng Database (Lưu trữ dữ liệu)}
-
-Tuân thủ nguyên tắc Database-per-Service, mỗi microservice sở hữu một cơ sở dữ liệu vật lý hoặc logic riêng biệt.
-\begin{itemize}
-    \item Các dịch vụ Java và bản sao dữ liệu của AI Agent lưu trữ trên Supabase PostgreSQL (phân tán ở các vùng như \texttt{ap-southeast-2}, \texttt{ap-south-1}).
-    \item AI Agent quản lý biểu đồ hành vi mua hàng (Customer $\rightarrow$ BOUGHT $\rightarrow$ Variant) thông qua Graph Database Neo4j Aura, và sử dụng ChromaDB để lưu trữ vector đặc trưng cho hệ thống gợi ý và truy vấn ngữ nghĩa.
-    \item Ảnh và phương tiện (Media) được lưu trữ trên nền tảng Cloudinary CDN.
+    \item \textbf{Tầng giao diện người dùng (Frontend):} Phát triển trên nền tảng Next.js 16 (React 19). Ứng dụng Zustand để quản lý Client State và TanStack React Query cho Server State. Giao tiếp mạng được xử lý qua Axios với cơ chế tự động làm mới token.
+    \item \textbf{Tầng API Gateway:} Sử dụng Spring Cloud Gateway (cổng 8080) làm điểm định tuyến tập trung và bảo vệ các dịch vụ nội bộ (microservices).
+    \item \textbf{Tầng Backend Core:} Các dịch vụ nghiệp vụ cốt lõi được xây dựng bằng framework Spring Boot.
+    \item \textbf{Tầng AI Agent (Trợ lý Ảo):} Tách biệt hoàn toàn dưới dạng dịch vụ độc lập viết bằng Python FastAPI, sử dụng LangGraph và LangChain làm động cơ AI (AI Engine). Hệ thống AI đồng bộ dữ liệu thời gian thực từ Backend Core thông qua Kafka Consumer.
+    \item \textbf{Tầng Event Bus (Điều phối sự kiện):} Apache Kafka hoạt động như trục xương sống trao đổi thông điệp bất đồng bộ, hiện thực hóa các mô hình phân tán như Saga Orchestration và CQRS.
+    \item \textbf{Tầng Database (Lưu trữ dữ liệu):} Áp dụng mô hình Database-per-Service. Dữ liệu quan hệ được lưu trữ tại Supabase PostgreSQL. Dịch vụ AI sử dụng kết hợp Neo4j Aura (Graph Database) và ChromaDB (Vector Database) phục vụ phân tích ngữ nghĩa. Hình ảnh và phương tiện truyền thông được quản lý qua Cloudinary CDN.
 \end{itemize}
 \bigskip
 
