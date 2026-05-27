@@ -14,80 +14,79 @@ Từ những phân tích về nhu cầu kỹ thuật và khả năng phát tri�
 \end{itemize}
 
 \begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.4}
-\small
-\begin{tabularx}{\textwidth}{|p{4.5cm}|X|X|X|}
-\hline
-\textbf{Tiêu chí theo yêu cầu hệ thống} &
-\textbf{Monolithic Architecture} &
-\textbf{Microservices Architecture} &
-\textbf{Event-Driven + Cloud-Native Architecture} \\
-\hline
+    \centering
+    \renewcommand{\arraystretch}{1.4}
+    \small
+    \begin{tabularx}{\textwidth}{|p{4.5cm}|X|X|X|}
+        \hline
+        \textbf{Tiêu chí theo yêu cầu hệ thống}               &
+        \textbf{Monolithic Architecture}                      &
+        \textbf{Microservices Architecture}                   &
+        \textbf{Event-Driven + Cloud-Native Architecture}                             \\
+        \hline
 
-Khả năng mở rộng từng chức năng độc lập &
-Thấp. Toàn bộ hệ thống phải scale cùng nhau &
-Có thể scale theo từng service &
-Cao. Các service và consumer có thể scale độc lập theo tải thực tế \\
-\hline
+        Khả năng mở rộng từng chức năng độc lập               &
+        Thấp. Toàn bộ hệ thống phải scale cùng nhau           &
+        Có thể scale theo từng service                        &
+        Cao. Các service và consumer có thể scale độc lập theo tải thực tế            \\
+        \hline
 
-Hỗ trợ xử lý bất đồng bộ và realtime &
-Hạn chế, chủ yếu xử lý đồng bộ &
-Có hỗ trợ nhưng cần cơ chế giao tiếp bổ sung &
-Tốt, phù hợp cho xử lý event realtime và message-driven workflow \\
-\hline
+        Hỗ trợ xử lý bất đồng bộ và realtime                  &
+        Hạn chế, chủ yếu xử lý đồng bộ                        &
+        Có hỗ trợ nhưng cần cơ chế giao tiếp bổ sung          &
+        Tốt, phù hợp cho xử lý event realtime và message-driven workflow              \\
+        \hline
 
-Tính cô lập giữa các thành phần &
-Thấp. Lỗi ở một module dễ ảnh hưởng toàn hệ thống &
-Tốt hơn nhờ tách service &
-Cao. Các service hoạt động độc lập thông qua event broker \\
-\hline
+        Tính cô lập giữa các thành phần                       &
+        Thấp. Lỗi ở một module dễ ảnh hưởng toàn hệ thống     &
+        Tốt hơn nhờ tách service                              &
+        Cao. Các service hoạt động độc lập thông qua event broker                     \\
+        \hline
 
-Khả năng triển khai và cập nhật riêng từng thành phần &
-Khó triển khai riêng lẻ &
-Có thể triển khai từng service độc lập &
-Tốt. Hỗ trợ CI/CD và rolling deployment hiệu quả trên Cloud \\
-\hline
+        Khả năng triển khai và cập nhật riêng từng thành phần &
+        Khó triển khai riêng lẻ                               &
+        Có thể triển khai từng service độc lập                &
+        Tốt. Hỗ trợ CI/CD và rolling deployment hiệu quả trên Cloud                   \\
+        \hline
 
-Độ tin cậy và khả năng chịu lỗi &
-Thấp. Dễ xảy ra lỗi dây chuyền &
-Trung bình &
-Cao nhờ cơ chế phân tán và bất đồng bộ \\
-\hline
+        Độ tin cậy và khả năng chịu lỗi                       &
+        Thấp. Dễ xảy ra lỗi dây chuyền                        &
+        Trung bình                                            &
+        Cao nhờ cơ chế phân tán và bất đồng bộ                                        \\
+        \hline
 
-Khả năng tận dụng hạ tầng Cloud &
-Hạn chế &
-Có hỗ trợ &
-Tốt. Phù hợp với container orchestration, auto scaling và load balancing \\
-\hline
+        Khả năng tận dụng hạ tầng Cloud                       &
+        Hạn chế                                               &
+        Có hỗ trợ                                             &
+        Tốt. Phù hợp với container orchestration, auto scaling và load balancing      \\
+        \hline
 
-Hỗ trợ tích hợp AI Agent &
-Khó tích hợp và mở rộng riêng AI service &
-Có thể triển khai AI thành service riêng &
-Phù hợp. AI Agent có thể hoạt động như service độc lập và giao tiếp qua event \\
-\hline
+        Hỗ trợ tích hợp AI Agent                              &
+        Khó tích hợp và mở rộng riêng AI service              &
+        Có thể triển khai AI thành service riêng              &
+        Phù hợp. AI Agent có thể hoạt động như service độc lập và giao tiếp qua event \\
+        \hline
 
-Khả năng mở rộng trong tương lai &
-Hạn chế khi hệ thống lớn dần &
-Khá tốt &
-Tốt, phù hợp với hệ thống phân tán quy mô lớn \\
-\hline
+        Khả năng mở rộng trong tương lai                      &
+        Hạn chế khi hệ thống lớn dần                          &
+        Khá tốt                                               &
+        Tốt, phù hợp với hệ thống phân tán quy mô lớn                                 \\
+        \hline
 
-Độ linh hoạt trong phát triển và bảo trì &
-Thấp &
-Trung bình &
-Cao \\
-\hline
+        Độ linh hoạt trong phát triển và bảo trì              &
+        Thấp                                                  &
+        Trung bình                                            &
+        Cao                                                                           \\
+        \hline
 
-Mức độ phù hợp với đề tài &
-Thấp &
-Khá phù hợp &
-Phù hợp nhất \\
-\hline
-
-\end{tabularx}
-\caption{So sánh các kiến trúc hệ thống theo yêu cầu của đề tài}
-\label{tab:architecture-comparison}
+        Mức độ phù hợp với đề tài                             &
+        Thấp                                                  &
+        Khá phù hợp                                           &
+        Phù hợp nhất                                                                  \\
+        \hline
+    \end{tabularx}
+    \caption{So sánh các kiến trúc hệ thống theo yêu cầu của đề tài}
+    \label{tab:architecture-comparison}
 \end{table}
 
 Sau khi tìm hiểu, nghiên cứu về cơ sở lý thuyết của các mô hình kiến trúc phổ biến như \textit{Monolithic}, \textit{Microservices} và \textit{EDA + Cloud-Native}, nhóm lựa chọn kiến trúc \textbf{EDA + Cloud-Native} vì những lý do sau:
@@ -271,7 +270,7 @@ Tầng này bao gồm bảy dịch vụ độc lập theo chức năng, trong đ
 \end{itemize}
 Các microservice không có bất kỳ liên kết trực tiếp nào với nhau trong sơ đồ, thay vào đó toàn bộ giao tiếp đều phải thông qua Event Broker. Điều này giúp cho mỗi service được vận hành tách biệt, giúp giảm thiểu tình trạng xung đột logic, tăng tính chủ động khi triển khai và bảo trì, và bên cạnh đó còn giúp hỗ trợ nhóm phân chia công việc dễ dàng hơn trong giai đoạn hiện thực hệ thống.
 
-Ngoài ra, về mặt cấu trúc nội bộ, mỗi Microservice nghiệp vụ được nhóm tổ chức theo mô hình phân tầng cơ bản. 
+Ngoài ra, về mặt cấu trúc nội bộ, mỗi Microservice nghiệp vụ được nhóm tổ chức theo mô hình phân tầng cơ bản.
 
 \begin{figure}[H]
     \centering
@@ -303,11 +302,11 @@ Sơ đồ \ref{fig:frontend_internal_architecture} mô tả các thành phần c
     \item \textbf{App Router \& Server Components:} Next.js App Router quản lý luồng điều hướng và render các Server Components phía máy chủ. Điều này giúp giảm thiểu đáng kể lượng JavaScript tải xuống trình duyệt, đồng thời cho phép lấy dữ liệu (fetching) trực tiếp từ server-side trước khi gửi HTML về cho khách hàng.
     \item \textbf{BFF (Backend for Frontend):} Các Route Handlers của Next.js đóng vai trò là một lớp BFF trung gian. Client-side components không gọi trực tiếp tới các Microservices ở Backend mà thông qua các API routes nội bộ. Lớp này giúp ẩn đi các thông tin nhạy cảm (như API Gateway URL), hợp nhất các lời gọi API và thực hiện các biến đổi dữ liệu cần thiết trước khi trả về UI.
     \item \textbf{Features-based Modules:} Mã nguồn được tổ chức theo các tính năng (features) như \texttt{auth}, \texttt{cart}, \texttt{product}, \texttt{order} và \texttt{chat-ai}. Mỗi module chứa đầy đủ các thành phần (components), trạng thái (store), và hooks riêng biệt, giúp tăng tính cô lập và dễ dàng mở rộng.
-    \item \textbf{State Management Partitioning:} 
-        \begin{itemize}
-            \item \textbf{Server State:} Sử dụng TanStack Query để quản lý cache, đồng bộ và quản lý vòng đời của dữ liệu từ backend.
-            \item \textbf{Client State:} Sử dụng Zustand để quản lý các trạng thái cục bộ mượt mà, không gây re-render dư thừa.
-        \end{itemize}
+    \item \textbf{State Management Partitioning:}
+          \begin{itemize}
+              \item \textbf{Server State:} Sử dụng TanStack Query để quản lý cache, đồng bộ và quản lý vòng đời của dữ liệu từ backend.
+              \item \textbf{Client State:} Sử dụng Zustand để quản lý các trạng thái cục bộ mượt mà, không gây re-render dư thừa.
+          \end{itemize}
     \item \textbf{AI Chat Integration:} Thành phần Chatbot được thiết kế để giao tiếp với AI Agent Service thông qua các giao thức RESTful tiêu chuẩn. Hệ thống sử dụng các thư viện quản lý yêu cầu (fetching) để gửi câu hỏi từ người dùng dưới dạng JSON và nhận về phản hồi đã được xử lý hoàn chỉnh từ Backend, giúp đảm bảo tính đồng bộ và dễ dàng quản lý lịch sử hội thoại tại Client State.
 \end{itemize}
 
@@ -329,3 +328,101 @@ Tầng Database chịu trách nhiệm lưu trữ dữ liệu cho từng microser
 Các service chính như User, Cart, Order, Product và Admin đều sử dụng cơ sở dữ liệu quan hệ, đảm bảo lưu trữ dữ liệu theo cấu trúc bảng truyền thống.
 
 Riêng AI agent service sở hữu ba cơ sở dữ liệu độc lập: cơ sở dữ liệu quan hệ, cơ sở dữ liệu Vector và cơ sở dữ liệu Graph, tương ứng với ba loại dữ liệu mà service này cần quản lý. Điều này cho phép dịch vụ Trợ lý Ảo vận hành trên những tập dữ liệu phù hợp với nhu cầu xử lý của nó.
+
+
+\subsubsection{Kiến trúc thành phần}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/chap6/component-diagram.png}
+    \vspace{0.5cm}
+    \caption{Sơ đồ thành phần kiến trúc hệ thống}
+    \label{fig:component_diagram}
+\end{figure}
+
+Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần cốt lõi và luồng giao tiếp trong kiến trúc hệ thống thương mại điện tử tích hợp Trợ lý Ảo AI. Hệ thống được thiết kế theo hướng sự kiện (Event-Driven) kết hợp kiến trúc Microservices, bao gồm các tầng chính sau:
+
+\textbf{Tầng giao diện người dùng}
+
+Tầng Frontend được phát triển bằng framework Next.js 16 (với React 19) nhằm cung cấp giao diện tương tác tốc độ cao và tối ưu SEO.
+\begin{itemize}
+    \item \textbf{Quản lý trạng thái (State Management):} Sử dụng thư viện Zustand (với các store: \texttt{auth}, \texttt{cart}, \texttt{orderFlow}, ...) để duy trì các trạng thái cục bộ mượt mà ở phía người dùng.
+    \item \textbf{Quản lý dữ liệu máy chủ (Server State):} Tích hợp TanStack React Query để tối ưu bộ nhớ đệm (cache), đồng bộ và xử lý vòng đời của dữ liệu tải về từ Backend.
+    \item \textbf{Giao tiếp mạng:} Axios được sử dụng làm HTTP Client tập trung, tích hợp các interceptor nhằm xử lý JWT Bearer và tự động làm mới token (silent token refresh). 
+    \item \textbf{Bảo mật định tuyến:} Các lời gọi API được định tuyến (rewrite proxy) thông qua Next.js sang API Gateway, che giấu địa chỉ thực của máy chủ. Đối với tính năng Trợ lý Ảo, các lời gọi từ Frontend được thực hiện trực tiếp (bypasses Axios) đến endpoint của AI Agent (như \texttt{/api/agent/chat}, \texttt{/api/agent/purchase}) nhưng vẫn được điều hướng qua API Gateway chung.
+\end{itemize}
+\bigskip
+
+\textbf{Tầng API Gateway}
+
+Mọi lưu lượng truy cập từ Frontend đều đi qua Spring Cloud Gateway, hoạt động tại cổng 8080. Gateway đóng vai trò như một lớp trung gian (proxy), định tuyến các luồng yêu cầu đồng bộ chuẩn RESTful đến các dịch vụ (microservices) tương ứng, bao gồm cả dịch vụ AI. Việc tập trung mọi lối vào giúp nâng cao bảo mật và dễ dàng quản lý truy cập mạng.
+\bigskip
+
+\textbf{Tầng Backend Core (Các dịch vụ nghiệp vụ cốt lõi)}
+
+Hệ thống nghiệp vụ được phân rã thành 6 dịch vụ độc lập, phát triển trên nền tảng Spring Boot. Các dịch vụ này giao tiếp đồng bộ với API Gateway và bất đồng bộ qua hệ thống Event Bus.
+\begin{itemize}
+    \item \textbf{User Service:} Đảm nhiệm xác thực (Auth), quản lý người dùng và địa chỉ.
+    \item \textbf{Product Service:} Xử lý dữ liệu sản phẩm, thương hiệu, danh mục và khuyến mãi.
+    \item \textbf{Cart Service:} Quản lý trạng thái giỏ hàng của người dùng.
+    \item \textbf{Order Service:} Chịu trách nhiệm ghi nhận đơn hàng, thanh toán, giao hàng và phản hồi.
+    \item \textbf{Orchestration Service:} Hoạt động như một bộ điều phối Saga trung tâm (Saga Orchestrator). Dịch vụ này quản lý toàn vẹn luồng nghiệp vụ thanh toán, đặt hàng và hủy đơn hàng nhằm đảm bảo tính nhất quán dữ liệu xuyên suốt các dịch vụ độc lập.
+    \item \textbf{Admin Service:} Quản trị hệ thống, xử lý liên hệ và ghi nhận nhật ký hoạt động (Action Logs).
+\end{itemize}
+\bigskip
+
+\textbf{Tầng AI Agent (Trợ lý Ảo)}
+
+Trợ lý Ảo AI được xây dựng như một dịch vụ độc lập sử dụng Python FastAPI. Sự độc lập này không chỉ cho phép tận dụng triệt để hệ sinh thái LLM và các công cụ AI liên quan, mà còn tạo tiền đề vững chắc cho việc kiểm thử Trợ lý Ảo về tính chính xác và tối ưu hiệu suất sinh văn bản độc lập với hệ thống chính.
+\begin{itemize}
+    \item \textbf{Động cơ AI (AI Engine):} Sử dụng đồ thị trạng thái LangGraph (bao gồm các bước \texttt{parse} $\rightarrow$ \texttt{resolve} $\rightarrow$ \texttt{reason} $\rightarrow$ \texttt{tools}) kết hợp với LangChain và OpenAI, tạo ra phản hồi thông minh thông qua luồng tư duy và gọi công cụ (tool calling).
+    \item \textbf{Đồng bộ dữ liệu thời gian thực:} Tích hợp Kafka Consumer (sử dụng thư viện \texttt{confluent\_kafka} với nhóm \texttt{ai\_service\_sync\_group}) để lắng nghe các sự kiện nghiệp vụ quan trọng từ hệ thống lõi.
+\end{itemize}
+\bigskip
+
+\textbf{Tầng Event Bus (Điều phối sự kiện)}
+
+Hệ thống sử dụng Apache Kafka làm trục xương sống cho việc trao đổi dữ liệu bất đồng bộ. Việc sử dụng Kafka đảm bảo hệ thống có mức độ phụ thuộc thấp (decoupled communication) và hiện thực hóa mô hình Saga cũng như CQRS. Ví dụ, khi sản phẩm thay đổi, sự kiện \textbf{\texttt{product.detail.command}} được phát đi để Cart Service và AI Service cập nhật dữ liệu (materialized views) nội bộ. Các sự kiện như \textbf{\texttt{order.events}}, \textbf{\texttt{payment.events}} được Orchestration Service tiêu thụ để điều phối các giao dịch phức tạp một cách bền bỉ và nhất quán.
+\bigskip
+
+\textbf{Tầng Database (Lưu trữ dữ liệu)}
+
+Tuân thủ nguyên tắc Database-per-Service, mỗi microservice sở hữu một cơ sở dữ liệu vật lý hoặc logic riêng biệt.
+\begin{itemize}
+    \item Các dịch vụ Java và bản sao dữ liệu của AI Agent lưu trữ trên Supabase PostgreSQL (phân tán ở các vùng như \texttt{ap-southeast-2}, \texttt{ap-south-1}).
+    \item AI Agent quản lý biểu đồ hành vi mua hàng (Customer $\rightarrow$ BOUGHT $\rightarrow$ Variant) thông qua Graph Database Neo4j Aura, và sử dụng ChromaDB để lưu trữ vector đặc trưng cho hệ thống gợi ý và truy vấn ngữ nghĩa.
+    \item Ảnh và phương tiện (Media) được lưu trữ trên nền tảng Cloudinary CDN.
+\end{itemize}
+\bigskip
+
+\subsubsection{Kiến trúc triển khai}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/chap6/deployment-diagram.png}
+    \vspace{0.5cm}
+    \caption{Sơ đồ triển khai hệ thống}
+    \label{fig:deployment_diagram}
+\end{figure}
+
+Sơ đồ \ref{fig:deployment_diagram} thể hiện chi tiết cách thức các thành phần của hệ thống được phân bổ, kết nối và triển khai thực tế trên hạ tầng mạng. Kiến trúc triển khai này mô tả chân thực cấu trúc vật lý của hệ thống, tận dụng sức mạnh của các dịch vụ đám mây được quản lý (Managed Services) kết hợp cùng kỹ thuật đóng gói vùng chứa (Containerization).
+
+\textbf{Khối Vercel Cloud (Frontend Hosting)}
+
+Mã nguồn Frontend (Next.js) được triển khai trực tiếp lên mạng lưới Vercel Edge. Việc triển khai này tận dụng khả năng Server-Side Rendering (SSR) mạnh mẽ và phân phối tĩnh (Static Assets) qua CDN toàn cầu của Vercel, mang lại tốc độ truy cập cực nhanh cho khách hàng. Vercel Analytics cũng được tích hợp sẵn để theo dõi và đánh giá hiệu suất phía giao diện người dùng.
+\bigskip
+
+\textbf{Khối Microsoft Azure VM (Backend Hosting)}
+
+Toàn bộ hệ sinh thái Microservices (bao gồm 6 dịch vụ Spring Boot, 1 dịch vụ FastAPI AI, API Gateway và Apache Kafka) được đóng gói thành các container Docker và điều phối cục bộ bằng công cụ \textbf{Docker Compose} trên một máy chủ ảo (Virtual Machine) duy nhất thuộc nền tảng Microsoft Azure (với địa chỉ IP: 57.155.2.144). 
+\begin{itemize}
+    \item \textbf{Mạng cục bộ (Bridge Network):} Các container giao tiếp an toàn qua một mạng nội bộ chung có tên là \texttt{tyk}. Kiến trúc này không mở cổng (port) trực tiếp ra bên ngoài, ngoại trừ cổng 8080 của API Gateway, giúp tối ưu hóa khả năng bảo vệ hệ thống trước các truy cập trái phép.
+    \item \textbf{Kafka Broker:} Hệ thống sử dụng Confluent Kafka (\texttt{cp-kafka:7.8.0}) chạy ở chế độ KRaft (không phụ thuộc vào Zookeeper). Đây là một container tự lưu trữ (self-hosted) ngay trong VM, góp phần giảm thiểu đáng kể độ trễ nội bộ khi truyền tải Luồng sự kiện (Event stream) giữa các dịch vụ so với việc sử dụng hệ thống Kafka ngoại vi trên đám mây.
+\end{itemize}
+\bigskip
+
+\textbf{Khối dịch vụ đám mây ngoại vi (External Managed Services)}
+
+Thay vì tự quản trị toàn bộ hệ quản trị cơ sở dữ liệu, hệ thống khai thác tối đa mô hình dịch vụ đám mây để đảm bảo độ an toàn và khả năng sao lưu:
+\begin{itemize}
+    \item \textbf{Supabase PostgreSQL Pooler:} Cơ sở dữ liệu quan hệ được ủy thác cho Supabase. Mỗi dịch vụ lưu trữ dữ liệu tại các Region AWS khác nhau nhằm mô phỏng môi trường phân tán dữ liệu thực tế.
+    \item \textbf{Neo4j Aura \& Dịch vụ LLM:} Dữ liệu đồ thị nằm trên cụm máy chủ Neo4j Aura. Việc tương tác nội dung văn bản AI dựa vào Groq API cho suy luận LLM nhanh chóng, tích hợp công cụ LangSmith để giám sát hành vi và luồng tư duy, qua đó hỗ trợ đắc lực trong việc kiểm thử và hoàn thiện Trợ lý Ảo.
+\end{itemize}
