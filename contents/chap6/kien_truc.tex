@@ -339,7 +339,7 @@ Riêng AI agent service sở hữu ba cơ sở dữ liệu độc lập: cơ s�
     \label{fig:component_diagram}
 \end{figure}
 
-Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần công nghệ cốt lõi và luồng giao tiếp thực tế của hệ thống. Do vai trò và chức năng nghiệp vụ của các tầng đã được trình bày chi tiết ở mục trước, phần này tập trung tóm tắt các công nghệ và nền tảng chính được áp dụng cho từng thành phần:
+Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần công nghệ cốt lõi và luồng giao tiếp thực tế của hệ thống. Do giới hạn kích thước hiển thị trong tài liệu, phiên bản đầy đủ với độ phân giải cao được cung cấp tại \href{https://drive.google.com/file/d/1qQgxTPdSjFGyEHMbc9x7tZ9cWqRHhKW-/view?usp=drive_link}{liên kết đính kèm} nhằm hỗ trợ việc quan sát các thành phần rõ ràng hơn. Do vai trò và chức năng nghiệp vụ của các tầng đã được trình bày chi tiết ở mục trước, phần này tập trung tóm tắt các công nghệ và nền tảng chính được áp dụng cho từng thành phần:
 
 \begin{itemize}
     \item \textbf{Tầng giao diện người dùng (Frontend):} Phát triển trên nền tảng Next.js 16 (React 19). Ứng dụng Zustand để quản lý Client State và TanStack React Query cho Server State. Giao tiếp mạng được xử lý qua Axios với cơ chế tự động làm mới token.
@@ -360,7 +360,7 @@ Sơ đồ \ref{fig:component_diagram} biểu diễn các thành phần công ngh
     \label{fig:deployment_diagram}
 \end{figure}
 
-Sơ đồ \ref{fig:deployment_diagram} thể hiện chi tiết cách thức các thành phần của hệ thống được phân bổ, kết nối và triển khai thực tế trên hạ tầng mạng. Kiến trúc triển khai này mô tả chân thực cấu trúc vật lý của hệ thống, tận dụng sức mạnh của các dịch vụ đám mây được quản lý (Managed Services) kết hợp cùng kỹ thuật đóng gói vùng chứa (Containerization).
+Sơ đồ \ref{fig:deployment_diagram} thể hiện chi tiết cách thức các thành phần của hệ thống được phân bổ, kết nối và triển khai thực tế trên hạ tầng mạng. Do giới hạn kích thước hiển thị trong tài liệu, phiên bản đầy đủ với độ phân giải cao được cung cấp tại \href{https://drive.google.com/file/d/1qfIlCt7C07wGTaG6CrbSDzNkafoRDNpT/view?usp=drive_link}{liên kết đính kèm} nhằm hỗ trợ việc quan sát các thành phần rõ ràng hơn. Kiến trúc triển khai này mô tả chân thực cấu trúc vật lý của hệ thống, tận dụng sức mạnh của các dịch vụ đám mây được quản lý (Managed Services) kết hợp cùng kỹ thuật đóng gói vùng chứa (Containerization).
 
 \textbf{Khối Vercel Cloud (Frontend Hosting)}
 
@@ -369,7 +369,7 @@ Mã nguồn Frontend (Next.js) được triển khai trực tiếp lên mạng l
 
 \textbf{Khối Microsoft Azure VM (Backend Hosting)}
 
-Toàn bộ hệ sinh thái Microservices (bao gồm 6 dịch vụ Spring Boot, 1 dịch vụ FastAPI AI, API Gateway và Apache Kafka) được đóng gói thành các container Docker và điều phối cục bộ bằng công cụ \textbf{Docker Compose} trên một máy chủ ảo (Virtual Machine) duy nhất thuộc nền tảng Microsoft Azure (với địa chỉ IP: 57.155.2.144). 
+Toàn bộ hệ sinh thái Microservices (bao gồm 6 dịch vụ Spring Boot, 1 dịch vụ FastAPI AI, API Gateway và Apache Kafka) được đóng gói thành các container Docker và điều phối cục bộ bằng công cụ \textbf{Docker Compose} trên một máy chủ ảo (Virtual Machine) duy nhất thuộc nền tảng Microsoft Azure (với địa chỉ IP: 57.155.2.144).
 \begin{itemize}
     \item \textbf{Mạng cục bộ (Bridge Network):} Các container giao tiếp an toàn qua một mạng nội bộ chung có tên là \texttt{tyk}. Kiến trúc này không mở cổng (port) trực tiếp ra bên ngoài, ngoại trừ cổng 8080 của API Gateway, giúp tối ưu hóa khả năng bảo vệ hệ thống trước các truy cập trái phép.
     \item \textbf{Kafka Broker:} Hệ thống sử dụng Confluent Kafka (\texttt{cp-kafka:7.8.0}) chạy ở chế độ KRaft (không phụ thuộc vào Zookeeper). Đây là một container tự lưu trữ (self-hosted) ngay trong VM, góp phần giảm thiểu đáng kể độ trễ nội bộ khi truyền tải Luồng sự kiện (Event stream) giữa các dịch vụ so với việc sử dụng hệ thống Kafka ngoại vi trên đám mây.
