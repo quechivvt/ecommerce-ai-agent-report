@@ -87,12 +87,6 @@ Các bản thiết kế giao diện được xây dựng và quản lý trên n�
     \caption{Giao diện Đánh giá sản phẩm}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\linewidth]{images/chap6/ui/ui_report_management.png}
-    \vspace{0.5cm}
-    \caption{Giao diện Báo cáo thống kê}
-\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -108,7 +102,7 @@ Các bản thiết kế giao diện được xây dựng và quản lý trên n�
 \vspace{12pt}
 
 \subsection*{Đặc tả chi tiết các trường hợp sử dụng} \label{sec:appx_usecase_detail}
-Phần này trình bày chi tiết các bảng đặc tả trường hợp sử dụng cho các chức năng quản trị và các nghiệp vụ hỗ trợ, bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{ss:usecase_detail} thông qua các bảng từ \ref{tab:uc-register} đến bảng \ref{tab:uc-admin-update-order-status}. 
+Phần này trình bày chi tiết các bảng đặc tả trường hợp sử dụng cho các chức năng quản trị và các nghiệp vụ hỗ trợ, bổ sung cho các nghiệp vụ cốt lõi đã được trình bày tại mục \ref{ss:usecase_detail} thông qua các bảng từ \ref{tab:uc-register} đến bảng \ref{tab:uc-admin-update-order-status}.
 
 \needspace{3\baselineskip}
 \begin{longtable}{|>{\bfseries}p{4cm}|p{11.5cm}|}
@@ -386,7 +380,7 @@ Phần này trình bày chi tiết các bảng đặc tả trường hợp sử 
 \end{longtable}
 
 \subsection*{Sơ đồ lớp} \label{sec:appx_class_diagram}
-Phần này trình bày chi tiết sơ đồ lớp cho các dịch vụ hỗ trợ và quản trị bổ sung của hệ thống, bao gồm dịch vụ người dùng, sản phẩm, giỏ hàng và quản trị. Các thành phần này kế thừa nhất quán kiến trúc tổng thể đã được trình bày tại mục \ref{sec}, đồng thời được lược giản một số thành phần phụ trợ nhằm đảm bảo tính trực quan và tránh lặp lại các khuôn mẫu thiết kế tương đồng.
+Phần này trình bày chi tiết sơ đồ lớp cho các dịch vụ hỗ trợ và quản trị bổ sung của hệ thống, bao gồm dịch vụ người dùng, sản phẩm, giỏ hàng và quản trị. Các thành phần này kế thừa nhất quán kiến trúc tổng thể đã được trình bày tại mục \ref{sec:class_diagram}, đồng thời được lược giản một số thành phần phụ trợ nhằm đảm bảo tính trực quan và tránh lặp lại các khuôn mẫu thiết kế tương đồng.
 
 Hình \ref{fig:user_service_class_diagram} minh họa kiến trúc của dịch vụ người dùng. Dịch vụ này quản lý các chức năng liên quan đến xác thực, quản lý thông tin cá nhân và địa chỉ người dùng. Tương tự các dịch vụ khác trong hệ thống, kiến trúc được xây dựng theo hướng phân tách giữa truy vấn và xử lý trạng thái, đồng thời sử dụng cơ chế xử lý sự kiện nội bộ nhằm giảm mức độ phụ thuộc giữa các thành phần. Để đảm bảo tính trực quan, biểu đồ tập trung vào hai nghiệp vụ chính là xác thực và quản lý địa chỉ, trong khi các chức năng khác như hồ sơ người dùng hoặc tài khoản thanh toán được chủ ý lược giản.
 
@@ -746,7 +740,7 @@ Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê
 
 \subsection*{Các trường hợp kiểm thử còn lại của end-to-end testing} \label{sec:appx_e2e_testing}
 
-Phần này bổ sung các trường hợp kiểm thử chi tiết cho các tính năng chưa được nhắc đến ở phần end-to-end testing tại mục \ref{sec:e2e_testing}.
+Phần này bổ sung các trường hợp kiểm thử chi tiết cho các tính năng chưa được nhắc đến ở phần end-to-end testing tại mục \ref{sec:end_to_end_testing}.
 \subsubsection*{Tính năng thanh toán đa phương thức}
 
 Tính năng thanh toán đa phương thức cho phép người dùng linh hoạt lựa chọn giữa các hình thức giao dịch truyền thống và trực tuyến giả lập. Quy trình này xác minh khả năng xử lý của hệ thống khi tiếp nhận các phương thức thanh toán khác nhau và đảm bảo trạng thái đơn hàng được cập nhật chính xác sau khi giao dịch hoàn tất.
