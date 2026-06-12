@@ -741,6 +741,37 @@ Nhằm phục vụ công tác tra cứu và quản trị, phần này liệt kê
 \subsection*{Các trường hợp kiểm thử còn lại của end-to-end testing} \label{sec:appx_e2e_testing}
 
 Phần này bổ sung các trường hợp kiểm thử chi tiết cho các tính năng chưa được nhắc đến ở phần end-to-end testing tại mục \ref{sec:end_to_end_testing}.
+
+\subsubsection*{Tính năng quản lý đơn hàng}
+
+Tính năng quản lý đơn hàng cho phép quản trị viên theo dõi toàn bộ vòng đời của một giao dịch, từ lúc tiếp nhận đến khi vận chuyển và hoàn tất. Quy trình kiểm thử xác minh khả năng chuyển đổi trạng thái đơn hàng theo đúng logic nghiệp vụ, đồng thời cập nhật nhật ký giao hàng (delivery log) nhằm duy trì tính minh bạch.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/chap8/fr/order-management.png}
+\vspace{0.7cm}
+\caption{Giao diện tính năng Quản lý đơn hàng}
+\label{fig:flow_order_management}
+\end{figure}
+
+Dưới đây là mô tả các kịch bản kiểm thử nhằm đánh giá tính đúng đắn của luồng điều phối đơn hàng và nhật ký vận chuyển.
+
+\begin{table}[H]
+\centering
+\caption{Các ca kiểm thử tính năng Quản lý đơn hàng}
+\label{tab:tc_order_management}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|c|}
+\hline
+\textbf{ID} & \textbf{Tên kiểm thử} & \textbf{Mô tả kịch bản} & \textbf{Kết quả mong đợi} & \textbf{Trạng thái} \\ \hline
+TC-011-042 & Lọc đơn hàng theo trạng thái & Chọn bộ lọc theo trạng thái (ví dụ: đang chờ xác nhận hoặc đang giao). & Hệ thống chỉ hiển thị những đơn hàng có trạng thái tương ứng. & Passed \\ \hline
+TC-011-046 & Hiển thị chi tiết đơn hàng & Truy cập trang chi tiết của một đơn hàng cụ thể. & Hệ thống hiển thị chính xác danh sách mặt hàng, tổng tiền và tiến trình xử lý. & Passed \\ \hline
+TC-011-048 & Chuyển đổi trạng thái hợp lệ & Quản trị viên cập nhật trạng thái đơn hàng theo thứ tự nghiệp vụ cho phép. & Trạng thái được cập nhật thành công trên giao diện và cơ sở dữ liệu. & Passed \\ \hline
+TC-011-051 & Thêm nhật ký vận chuyển & Khởi tạo dòng trạng thái mới mô tả tiến trình giao hàng (ví dụ: đã đến trạm trung chuyển). & Dòng nhật ký mới được thêm vào chuỗi sự kiện vận chuyển với mốc thời gian chính xác. & Passed \\ \hline
+TC-011-053 & Chỉnh sửa nhật ký vận chuyển & Cập nhật nội dung hoặc trạng thái của một sự kiện giao hàng đã tồn tại. & Thông tin được lưu lại và đồng bộ trực tiếp lên giao diện theo dõi. & Passed \\ \hline
+\end{tabularx}
+\end{table}
+
 \subsubsection*{Tính năng thanh toán đa phương thức}
 
 Tính năng thanh toán đa phương thức cho phép người dùng linh hoạt lựa chọn giữa các hình thức giao dịch truyền thống và trực tuyến giả lập. Quy trình này xác minh khả năng xử lý của hệ thống khi tiếp nhận các phương thức thanh toán khác nhau và đảm bảo trạng thái đơn hàng được cập nhật chính xác sau khi giao dịch hoàn tất.
